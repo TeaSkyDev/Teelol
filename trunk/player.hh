@@ -1,8 +1,6 @@
 #ifndef DEF_PLAYER
 #define DEF_PLAYER
 
-#include "netez.hh"
-
 class Player {
 
 	public:
@@ -14,6 +12,10 @@ class Player {
 		int get_y();
 		std::string get_nick();
 
+	private:
+		std::string m_nick;
+		int 		m_x;
+		int 		m_y;
 
 };
 
