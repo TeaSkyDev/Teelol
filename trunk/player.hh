@@ -6,8 +6,14 @@
 class Player {
 
 	public:
-		Player(std::string nick, session_on_server * s);
-		
+		Player(std::string nick);
+
+		void set_position(unsigned int x, unsigned int y);
+
+		int get_x();
+		int get_y();
+		std::string get_nick();
+
 
 };
 

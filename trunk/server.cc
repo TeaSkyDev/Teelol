@@ -1,4 +1,4 @@
-#include <vector>
+#include <map>
 
 #include "proto.hh"
 #include "player.hh"
@@ -7,7 +7,8 @@ namespace Teelol{
   	using namespace netez;
   	using namespace std;
 
-  	vector<Player> players;
+  	struct session_on_server;
+  	map<Player, session_on_server*> players;
 
   	enum state_t {
   		STARTING,
@@ -18,17 +19,19 @@ namespace Teelol{
   		state_t state = STARTING;
   		string  nick;
 
-  		proto.send.sig_recv.connect(EZMETHOD(this, do_move));
-  		proto.send.sig_recv.connect(EZMETHOD(this, do_nick));
+  		proto.move.sig_recv.connect(EZMETHOD(this, do_move));
+  		proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
   	};
 
   	void do_move(int x, int y) {
 
   		bool move_ok = true;
 
-  		for(int i = 0; i < players.size(); i++) {
-  			if(players[i].get_nick() != nick) {
-  				if(players[i].get_x() == x && players[i].get_y() == y) {
+  		auto it = players.begin();
+
+  		for(it = players.begin(); it != players.end(); it++) {
+  			if(it->first.get_nick() != nick) {
+  				if(it->first.get_x() == x && it->first.get_y() == y) {
   					move_ok = false;
   				}
   			}
@@ -37,11 +40,11 @@ namespace Teelol{
   		if(move_ok) {
   			proto.moveOk(x, y);
 
-  			for(int i = 0; i < players.size(); i++) {
-	  			if(players[i].get_nick() != nick) {
-	  				players[i].session->proto.moved(x, y, nick);
+  			for(it = players.begin(); it != players.end(); it++) {
+	  			if(it->first.get_nick() != nick) {
+	  				it->second->proto.moved(x, y, nick);
 	  			} else {
-	  				players[i].set_position(x, y);
+	  				it->first.set_position(x, y);
 	  			}
   			}
   		} else {
