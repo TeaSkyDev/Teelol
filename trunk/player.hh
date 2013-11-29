@@ -8,9 +8,9 @@ class Player {
 
 		void set_position(unsigned int x, unsigned int y);
 
-		int get_x();
-		int get_y();
-		std::string get_nick();
+		int get_x()const;
+		int get_y()const;
+		std::string get_nick()const;
 
 	private:
 		std::string m_nick;

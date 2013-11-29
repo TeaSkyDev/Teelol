@@ -3,15 +3,15 @@
 
 using namespace std;
 
-Player::Player() : m_nick(nick) {}
+Player::Player(string nick) : m_nick(nick) {}
 
-int Player::get_x() {
+int Player::get_x() const{
 	return m_x;
 }
-int Player::get_y() {
+int Player::get_y() const{
 	return m_y;
 }
-string Player::get_nick() {
+string Player::get_nick() const {
 	return m_nick;
 }
 

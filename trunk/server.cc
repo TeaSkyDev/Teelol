@@ -8,7 +8,7 @@ namespace Teelol{
   using namespace std;
 
   struct session_on_server;
-  map<Player, session_on_server*> players;
+  map<Player*, session_on_server*> players;
 
   enum state_t {
     STARTING,
@@ -16,13 +16,14 @@ namespace Teelol{
   };
 
   struct session_on_server: public session<my_proto>{
+    state_t state;
+    string  nick;
 
     session_on_server(socket & io): session(io) {
-      state_t state = STARTING;
-      string  nick;
+      state = STARTING;
 
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
-      proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
+      //proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
     }
   	
 
@@ -33,8 +34,8 @@ namespace Teelol{
       auto it = players.begin();
 
       for(it = players.begin(); it != players.end(); it++) {
-	if(it->first.get_nick() != nick) {
-	  if(it->first.get_x() == x && it->first.get_y() == y) {
+	if(it->first->get_nick() != nick) {
+	  if(it->first->get_x() == x && it->first->get_y() == y) {
 	    move_ok = false;
 	  }
 	}
@@ -44,10 +45,10 @@ namespace Teelol{
 	proto.moveOk(x, y);
 
 	for(it = players.begin(); it != players.end(); it++) {
-	  if(it->first.get_nick() != nick) {
+	  if(it->first->get_nick() != nick) {
 	    it->second->proto.moved(x, y, nick);
 	  } else {
-	    it->first.set_position(x, y);
+	    it->first->set_position(x, y);
 	  }
 	}
       } else {
