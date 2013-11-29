@@ -23,7 +23,7 @@ namespace Teelol{
       state = STARTING;
 
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
-      //proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
+      proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
     }
   	
 
@@ -56,6 +56,24 @@ namespace Teelol{
 	}
 
     }
+
+    void do_nick(string n) {
+    	bool nick_ok = true;
+    	auto it = players.begin();
+
+      	for(it = players.begin(); it != players.end(); it++) {
+			if(it->first->get_nick() == nick) {
+	  			nick_ok = false;
+	  		}
+		}
+
+		if(nick_ok) {
+			proto.ok();
+		} else {
+			proto.err("erreur nick");
+		}
+    }
+
   };
 };
 
