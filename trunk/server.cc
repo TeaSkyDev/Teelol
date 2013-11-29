@@ -16,11 +16,14 @@ namespace Teelol{
   	};
 
   	struct session_on_server: public session<my_proto>{
-  		state_t state = STARTING;
-  		string  nick;
 
-  		proto.move.sig_recv.connect(EZMETHOD(this, do_move));
-  		proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
+  		session_on_server(socket & io): session(io) {
+	  		state_t state = STARTING;
+	  		string  nick;
+
+	  		proto.move.sig_recv.connect(EZMETHOD(this, do_move));
+	  		proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
+	  	}
   	};
 
   	void do_move(int x, int y) {
