@@ -5,10 +5,16 @@ namespace Teelol{
 
   using namespace std;
   using namespace netez;
-
-  struct session_on_client: public session<my_proto>{};
   
-
+  
+  
+  struct session_on_client: public session<my_proto>{
+    
+    session_on_client(socket &io): session<my_proto>(io){
+    }
+    
+    
+  };
 };
 
 
