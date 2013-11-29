@@ -40,6 +40,8 @@ namespace Teelol{
   			for(int i = 0; i < players.size(); i++) {
 	  			if(players[i].get_nick() != nick) {
 	  				players[i].session->proto.moved(x, y, nick);
+	  			} else {
+	  				players[i].set_position(x, y);
 	  			}
   			}
   		} else {
