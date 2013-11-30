@@ -57,20 +57,22 @@ namespace Teelol{
 
     }
 
-    void do_nick(string n) {
+    void do_nick(string _nick) {
     	bool nick_ok = true;
     	auto it = players.begin();
 
       	for(it = players.begin(); it != players.end(); it++) {
-			if(it->first->get_nick() == nick) {
+			if(it->first->get_nick() == _nick) {
 	  			nick_ok = false;
 	  		}
 		}
 
 		if(nick_ok) {
+			Player *new_player = new Player(n);
+			players[new_player] = this;
 			proto.ok();
 		} else {
-			proto.err("erreur nick");
+			proto.err("Nick already use !");
 		}
     }
 
