@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Player::Player(string nick) : m_nick(nick) {}
+Player::Player(string nick) : m_nick(nick), m_x(0), m_y(0) {}
 
 int Player::get_x() const{
 	return m_x;
