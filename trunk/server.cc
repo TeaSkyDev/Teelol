@@ -68,7 +68,7 @@ namespace Teelol{
 		}
 
 		if(nick_ok) {
-			Player *new_player = new Player(n);
+			Player *new_player = new Player(_nick);
 			players[new_player] = this;
 			proto.ok();
 		} else {

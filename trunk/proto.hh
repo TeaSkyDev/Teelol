@@ -17,7 +17,7 @@ namespace Teelol{
 
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),
-			  joined(this),   left(this)
+			  joined(this),   left(this), moved(this)
     {}
     
 
