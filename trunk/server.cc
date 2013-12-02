@@ -70,11 +70,25 @@ namespace Teelol{
 		if(nick_ok) {
 			Player *new_player = new Player(_nick);
 			players[new_player] = this;
+			nick = _nick;
 			proto.ok();
+			
+			//Préviens tout le monde que le joueur s'est connecté
+			player_joined();
 		} else {
 			proto.err("Nick already use !");
 		}
     }
+	
+	void player_joined() {
+		auto it = players.begin();
+		
+		for(it = players.begin(); it != players.end(); it++) {
+			if(it->first->get_nick() != nick) {
+				it->second->proto.joined(nick);
+			}
+		}
+	}
 
   };
 };
