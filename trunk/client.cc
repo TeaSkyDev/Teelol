@@ -41,6 +41,7 @@ namespace Teelol {
       for(int i = 0; i < players.size(); i++) {
         if(players[i]->get_nick() == nick) {
           players[i]->set_position(x, y);
+          break;
         }
       } 
     }
@@ -58,11 +59,18 @@ namespace Teelol {
     }
 
     void do_joined(string nick) {
-
+      players.push_back(new Player(nick));
     }
 
     void do_left(string nick) {
-
+      for(int i = 0; i < players.size(); i++) {
+        if(players[i]->get_nick() == nick) {
+          delete players[i];
+          players[i] = players[players.size() - 1];
+          players.pop_back();
+          break;
+        }
+      }
     }
     
   };
