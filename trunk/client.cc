@@ -31,6 +31,18 @@ namespace Teelol {
       proto.ok.sig_recv.connect(EZMETHOD(this, do_ok));
       proto.joined.sig_recv.connect(EZMETHOD(this, do_joined));
       proto.left.sig_recv.connect(EZMETHOD(this, do_left));
+
+      sig_begin.connect(EZMETHOD(this,on_begin));
+    }
+
+    void on_begin() {
+      string n;
+      cout << "nick : ";
+      cin >> n;
+
+      proto.nick(n);
+      proto.move(1, 1);
+      proto.quit();
     }
     
     void do_moveOk(int x ,int y){
