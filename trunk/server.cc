@@ -24,8 +24,36 @@ namespace Teelol{
 
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
       proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
+
+      sig_begin.connect(EZMETHOD(this,on_begin));
     }
   	
+
+    void on_begin() {
+    	int x = 0;
+    	int y = 0;
+
+    	//Si il y a au moins un joueur, on incrémente les coord jusqu'à avoir quelque chose de cool
+    	if(players.size() != 0) {
+			bool ok = false;
+			while(!ok) {
+				ok = true;
+				auto it = players.begin();
+
+				for(it = players.begin(); it != players.end(); it++) {
+					if(it->first->get_x() == x && it->first->get_y() == y) {
+						ok = false;
+					}
+				}
+
+				if(!ok) {
+					x++;
+					y++;
+				}
+			}
+			proto.moveOk(x, y);
+    	}
+    }
 
     void do_move(int x, int y) {
 
