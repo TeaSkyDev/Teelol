@@ -7,6 +7,7 @@ class Player {
 		Player(std::string nick);
 
 		void set_position(unsigned int x, unsigned int y);
+		void set_nick(std::string _nick);
 
 		int get_x()const;
 		int get_y()const;
