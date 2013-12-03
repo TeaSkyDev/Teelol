@@ -19,3 +19,6 @@ void Player::set_position(unsigned int x, unsigned int y) {
 	m_x = x;
 	m_y = y;
 }
+void Player::set_nick(string _nick) {
+	m_nick = _nick;
+}
