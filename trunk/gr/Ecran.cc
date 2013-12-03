@@ -31,7 +31,15 @@ namespace gr{
     SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format,0,0,0));
   }
 
+  void Ecran::Resize(int hauteur, int largeur){
+    SDL_FreeSurface(ecran);
+    height = hauteur;
+    width = largeur;
+    ecran = SDL_SetVideoMode(height, width, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+  }
+  
   Ecran::~Ecran(){
+    SDL_FreeSurface(ecran);
     SDL_Quit();
   }
 };
