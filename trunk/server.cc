@@ -103,6 +103,7 @@ namespace Teelol{
 			
 			//Préviens tout le monde que le joueur s'est connecté
 			player_joined();
+			proto.okNick(_nick);
 		} else {
 			proto.err("Nick already use !");
 		}

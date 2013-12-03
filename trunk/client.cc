@@ -31,6 +31,7 @@ namespace Teelol {
       proto.ok.sig_recv.connect(EZMETHOD(this, do_ok));
       proto.joined.sig_recv.connect(EZMETHOD(this, do_joined));
       proto.left.sig_recv.connect(EZMETHOD(this, do_left));
+      proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
 
       sig_begin.connect(EZMETHOD(this,on_begin));
     }
@@ -41,8 +42,7 @@ namespace Teelol {
       cin >> n;
 
       proto.nick(n);
-      proto.move(1, 1);
-      proto.quit();
+
     }
     
     void do_moveOk(int x ,int y){
@@ -62,11 +62,16 @@ namespace Teelol {
       cout << "System : " << err << endl;
     }
 
-    void do_ok() {
-      if(state = STARTING) {
+    void do_okNick(string n) {
+      if(state == STARTING) {
+
         state = STARTED;
       }
+      player->set_nick(n);
+      cout << "System : nick changed !" << endl;
+    }
 
+    void do_ok() {
       cout << "System : success" << endl;
     }
 
