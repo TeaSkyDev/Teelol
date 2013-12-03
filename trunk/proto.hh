@@ -14,10 +14,11 @@ namespace Teelol{
     message <5, void()>         ok;
     message <6, void(string)>   joined;
     message <7, void(string)>   left;
+    message <8, void()>         quit;
 
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
-			  nick(this),     err(this),  ok(this),
-			  joined(this),   left(this), moved(this)
+        nick(this),     err(this),  ok(this),
+        joined(this),   left(this), moved(this), quit(this)
     {}
     
 
