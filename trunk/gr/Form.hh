@@ -6,7 +6,6 @@
 using namespace std;
 
 
-
 //vitesse de deplacement des objets
 struct speed_t{
   int m_x;
@@ -25,7 +24,7 @@ public :
 
   ~Form();
 
-private:
+protected:
 
   SDL_Surface * m_surf;
   int m_x;

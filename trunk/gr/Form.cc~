@@ -1,6 +1,0 @@
-#include "Form.hh"
-
-
-void Form::set_image(string img){
-  surf = IMG_Load(img);
-}
