@@ -2,7 +2,7 @@
 
 
 void Form::set_image(string img){
-  m_surf = IMG_Load(img);
+
 }
 
 
