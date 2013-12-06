@@ -2,7 +2,16 @@
 #define _Form
 
 #include <SDL/SDL.h>
-#include <SDL_SDL_image.h>
+#include <iostream> 
+using namespace std;
+
+
+//vitesse de deplacement des objets
+struct speed_t{
+  int m_x;
+  int m_y;
+};
+
 
 class Form{
 public :
@@ -15,14 +24,14 @@ public :
 
   ~Form();
 
-private:
+protected:
 
   SDL_Surface * m_surf;
   int m_x;
   int m_y;
   int m_h; 
   int m_l;
-}
+};
 
 
 
