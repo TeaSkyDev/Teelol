@@ -24,6 +24,7 @@ namespace Teelol{
 
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
       proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
+      proto.quit.sig_recv.connect(EZMETHOD(this, do_quit));
 
       sig_begin.connect(EZMETHOD(this,on_begin));
     }
@@ -119,9 +120,20 @@ namespace Teelol{
 		}
 	}
 
+	void do_quit() {
+		auto it = players.begin();
+		
+		for(it = players.begin(); it != players.end(); it++) {
+			if(it->first->get_nick() != nick) {
+				it->second->proto.left(nick);
+			}
+		}	
+	}
+
   };
 };
 
+	
 
 int main(int argc, char ** argv){
   netez::server<Teelol::session_on_server> server(argc,argv);
