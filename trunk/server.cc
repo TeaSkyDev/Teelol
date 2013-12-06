@@ -1,14 +1,20 @@
 #include <map>
+#include <vector>
+#include <pthread.h>
 
 #include "proto.hh"
 #include "player.hh"
 
-namespace Teelol{
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+namespace Teelol {
+
   using namespace netez;
   using namespace std;
 
   struct session_on_server;
   map<Player*, session_on_server*> players;
+  vector<Player*> players_to_delete;
 
   enum state_t {
     STARTING,
@@ -126,6 +132,10 @@ namespace Teelol{
 		for(it = players.begin(); it != players.end(); it++) {
 			if(it->first->get_nick() != nick) {
 				it->second->proto.left(nick);
+			} else {
+				pthread_mutex_lock(&mutex);	
+				players_to_delete.push_back(it->first);
+				pthread_mutex_unlock(&mutex);
 			}
 		}	
 	}
@@ -133,11 +143,27 @@ namespace Teelol{
   };
 };
 
-	
+void * boucle_suppr(void * arg) {
+	while(1) {
+		if(Teelol::players_to_delete.size() != 0) {
+			pthread_mutex_lock(&mutex);
+			auto it = Teelol::players.find(Teelol::players_to_delete[Teelol::players_to_delete.size() - 1]);
+			Teelol::players.erase(it);
+			Teelol::players_to_delete.pop_back();
+			pthread_mutex_unlock(&mutex);
+		}
+	}
+}
 
 int main(int argc, char ** argv){
+  
+  pthread_t th_boucle_suppr;
+  pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
+
   netez::server<Teelol::session_on_server> server(argc,argv);
+
   server.join();
+  pthread_cancel(th_boucle_suppr);
 
 }
 				

@@ -34,6 +34,7 @@ namespace Teelol {
       proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
 
       sig_begin.connect(EZMETHOD(this,on_begin));
+      sig_end.connect(EZMETHOD(this, on_end));
     }
 
     void on_begin() {
@@ -43,6 +44,10 @@ namespace Teelol {
 
       proto.nick(n);
 
+    }
+
+    void on_end() {
+      proto.quit();
     }
     
     void do_moveOk(int x ,int y){
