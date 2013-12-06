@@ -1,6 +1,10 @@
 #ifndef DEF_PLAYER
 #define DEF_PLAYER
 
+/*
+	Classe représentant un joueur 
+*/
+
 class Player {
 
 	public:
