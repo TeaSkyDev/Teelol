@@ -4,6 +4,7 @@
 #include "player.hh"
 
 namespace Teelol{
+	
   using namespace netez;
   using namespace std;
 
