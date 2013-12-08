@@ -30,16 +30,18 @@
     void radical_move(int,int);
     void pass_row();
     void set_over_ground();
+    void add_obstacle(Form f);
 
-    direction_t collide(vector<Form> tab);//prend en entree un tableau d'obstacle
+    direction_t collide();
 
   private:
  
-    speed_t m_speed;//pour calculer la vitesse de deplacement des joueurs
+
     string m_img;
     int m_wait;
     bool m_wrong_img;
     bool m_ground; // vrai si le perso est sur le sol
+    vector <Form> m_obstacle;
   };
 
 #endif

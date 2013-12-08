@@ -7,7 +7,7 @@
 using namespace std;
 
 enum direction_t {
-  NORTH = 1, SOUTH, EAST, WEST
+  NORTH = 1, SOUTH, EAST, WEST, NONE
 };
 
 
@@ -18,7 +18,8 @@ public:
   direction_t get_direction();
 
 private:
-  bool is_inside(Form * f, Form * t);
+  direction_t is_inside(Form * f, Form * t);
+  bool is_inside(int, int , Form * f);
   direction_t m_direction;
 
 };
