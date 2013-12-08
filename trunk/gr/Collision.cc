@@ -12,7 +12,7 @@ bool Collision::is_inside(Form *f, Form * t){
   //TODO
 }
 
-direction__t Collision::get_direction(){
+direction_t Collision::get_direction(){
   return m_direction;
 }
 
