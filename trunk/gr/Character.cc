@@ -1,7 +1,7 @@
 #include "Character.hh"
 #include "Collision.hh"
 
-Character::Character(string img, int x, int y, int l, int h, Ecran * e){
+Character::Character(string img, int x, int y, int l, int h, Ecran * e) : Form(x, y, h, l) {
   m_x = x;
   m_y = y; 
   m_l = l; 
@@ -60,11 +60,30 @@ void Character::pass_row(){
     }*/
   m_x += m_speed.m_x;
   m_ground = (collide() == SOUTH);
+  
+  direction_t d = collide();
+  switch(d) {
+    case NORTH:
+      cout<< "north"<<endl;
+      break;
+    case SOUTH:
+      cout<<"south"<<endl;
+      break;
+    case EAST:
+      cout << "east" << endl;
+      break;
+    case WEST:
+      cout << "west" << endl;
+      break;
+  }
+
   if(!m_ground){
     cout<<"pas de sol"<<endl;
     if(m_speed.m_y < 20)
       m_speed.m_y++;
     m_y += m_speed.m_y;
+  } else {
+    //m_y -= 5;
   }
 }
 

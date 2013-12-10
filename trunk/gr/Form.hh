@@ -19,6 +19,7 @@
 
   class Form{
   public :
+    Form(int x, int y, int h, int l);
     //prend en entree un chemin vers une image
     void set_image(string img);
     int get_l();
