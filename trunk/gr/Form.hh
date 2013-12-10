@@ -4,7 +4,7 @@
 
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+
 #include <iostream> 
 #include "Ecran.hh"
   using namespace std;
@@ -25,6 +25,7 @@
     int get_h();
     int get_x();
     int get_y();
+    speed_t get_speed();
     void show();
     ~Form();
 
@@ -36,6 +37,7 @@
     int m_h; 
     int m_l;
     Ecran * m_e;
+    speed_t m_speed;
   };
 
 

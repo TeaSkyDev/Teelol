@@ -4,7 +4,7 @@
 #include <SDL/SDL.h>
 
 
-namespace gr{
+
 
   class Ecran{
     
@@ -23,5 +23,5 @@ namespace gr{
     int height, width;
     
   };
-};
+
 #endif
