@@ -5,6 +5,8 @@
 #include "proto.hh"
 #include "player.hh"
 
+#include "gr/Character.hh"
+
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 namespace Teelol {
@@ -103,7 +105,7 @@ namespace Teelol {
 		}
 
 		if(nick_ok) {
-			Player *new_player = new Player(_nick);
+			Player *new_player = new Player(_nick, 0, 0, 0, 0, NULL);
 			players[new_player] = this;
 			nick = _nick;
 			proto.ok();
