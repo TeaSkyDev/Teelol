@@ -22,7 +22,7 @@ namespace Teelol {
 
     session_on_client(socket &io): session<my_proto>(io){
 
-      player = new Player("nameless");
+      player = new Player("nameless", 0, 0, 0, 0, NULL);
       state  = STARTING;
 
       proto.moveOk.sig_recv.connect(EZMETHOD(this, do_moveOk));
@@ -81,7 +81,7 @@ namespace Teelol {
     }
 
     void do_joined(string nick) {
-      players.push_back(new Player(nick));
+      players.push_back(new Player(nick, 0, 0, 0, 0, NULL));
     }
 
     void do_left(string nick) {
@@ -98,7 +98,11 @@ namespace Teelol {
   };
 };
 
+
 int main(int argc, char ** argv){
+
+  
+
   netez::client<Teelol::session_on_client> client(argc,argv);
   client.join();
   
