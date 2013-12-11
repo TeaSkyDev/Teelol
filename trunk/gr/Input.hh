@@ -3,7 +3,7 @@
 
 namespace gr {
 	class Input {
-
+		
 	};
 }
 

@@ -1,6 +1,6 @@
 #include "Form.hh"
 
-
+Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {}
 
   void Form::set_image(string img){
     //temporaire

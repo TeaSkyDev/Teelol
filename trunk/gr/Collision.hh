@@ -20,6 +20,7 @@ public:
 private:
   direction_t is_inside(Form * f, Form * t);
   bool is_inside(int, int , Form * f);
+  bool col(Form * f, Form * t);
   direction_t m_direction;
 
 };
