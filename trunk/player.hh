@@ -1,11 +1,13 @@
 #ifndef DEF_PLAYER
 #define DEF_PLAYER
 
+#include "gr/Character.hh"
+
 /*
 	Classe représentant un joueur 
 */
 
-class Player {
+class Player : public Character {
 
 	public:
 		Player(std::string nick);
