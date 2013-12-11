@@ -39,3 +39,6 @@ void Event::reset_pressed(Mapp m){
 }
 
 
+bool Event::operator[](Mapp m){
+  return key_pressed(m);
+}
