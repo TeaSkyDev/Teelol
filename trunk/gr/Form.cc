@@ -3,17 +3,7 @@
 Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {}
 
   void Form::set_image(string img){
-    //temporaire
-    SDL_CreateRGBSurface(SDL_HWSURFACE, m_l, m_h, 32,0,0,0,0);
-    /* if(img == "")
-      m_surf = IMG_Load("../img/tee.png");
-    else if(img == "Spew")
-      m_surf = IMG_Load("../img/Spew.png");
-    else if(img == "DMG")
-      m_surf = IMG_Load("../img/DMG.png");
-    else 
-      m_surf = IMG_Load("../img/Health.png");
-    */
+    m_surf = IMG_Load(img.c_str());
   }
 
 
@@ -24,9 +14,22 @@ Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {}
 speed_t Form::get_speed(){return m_speed;}
 
   void Form::show(){
-    m_e->put(m_surf,m_x,m_y,m_h,m_l);
+    SDL_Rect rect;
+    rect.x = m_x;
+    rect.y = m_y;
+    rect.h = m_h;
+    rect.w = m_l;
+    m_e->put(m_surf,rect);
+    cout<<m_y;
+    cout<<rect.y;
     
   }
+
+
+
+void Form::set_screen(Ecran * e){
+  m_e = e;
+}
 
   Form::~Form(){
     //  SDL_FreeSurface(m_surf);

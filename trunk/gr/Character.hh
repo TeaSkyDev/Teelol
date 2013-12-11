@@ -18,6 +18,7 @@
   
     Character(string img, int, int , int , int , Ecran *);
 
+    void set_position(unsigned int x, unsigned int y);
     void move_left();
     void move_right();
     void stop_x();
