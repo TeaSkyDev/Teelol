@@ -2,6 +2,8 @@
 
 #include "proto.hh"
 #include "player.hh"
+#include "gr/Event.hh"
+#include "gr/Ecran.hh"
 
 namespace Teelol {
 
@@ -99,11 +101,30 @@ namespace Teelol {
 };
 
 
+
+
+void * routine(void * arg){
+  Ecran sc(400,400);
+  Event e;
+  Teelol::session_on_client * c = (Teelol::session_on_client*)arg;
+  while(!e[QUIT]){
+    e.UpdateEvent();
+    if(e[LEFT])
+      c->proto.move("left");
+    else if(e[RIGHT])
+      c->proto.move("right");
+    else c->proto.move("stop_x");
+    if(e[JUMP]) c->proto.move("jump");
+  }
+}
+
+
 int main(int argc, char ** argv){
-
-  
-
   netez::client<Teelol::session_on_client> client(argc,argv);
+  pthread_t th;
+  pthread_create(&th, NULL, routine, (void*)&client.session);
+  pthread_join(th,NULL);
   client.join();
+  
   
 }
