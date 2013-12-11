@@ -78,7 +78,9 @@ void Character::pass_row(){
       if(col.col_y != SOUTH) {
         m_y++;
       }
-      else {	iter = false;}
+      else {
+	m_speed.m_y = 0;
+	iter = false;}
     }
   }
   
