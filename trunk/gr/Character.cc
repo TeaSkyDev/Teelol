@@ -16,6 +16,13 @@ Character::Character(string img, int x, int y, int l, int h, Ecran * e) : Form(x
   m_saut = false;
 }
 
+
+void Character::set_position(unsigned int x, unsigned int y){
+  m_x = x;
+  m_y = y;
+}
+
+
 void Character::move_left(){
   m_speed.m_x = -5; 
 }
