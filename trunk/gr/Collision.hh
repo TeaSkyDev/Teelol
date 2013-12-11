@@ -6,10 +6,14 @@
 #include "Form.hh"
 using namespace std;
 
-enum direction_t {
+enum direction_e {
   NORTH = 1, SOUTH, EAST, WEST, NONE
 };
 
+struct direction_t {
+	direction_e col_x;
+	direction_e col_y;
+};
 
 class Collision{
 public:

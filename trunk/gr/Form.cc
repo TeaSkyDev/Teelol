@@ -23,9 +23,9 @@ Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {}
   int Form::get_y(){ return m_y;}
 speed_t Form::get_speed(){return m_speed;}
 
-void Form::show(){
+  void Form::show(){
     m_e->put(m_surf,m_x,m_y,m_h,m_l);
-    m_e->Flip();
+    
   }
 
   Form::~Form(){

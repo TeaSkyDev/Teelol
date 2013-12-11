@@ -61,25 +61,11 @@ void Character::pass_row(){
     set_image(m_img);
     m_wrong_img = false;
     }*/
-  m_x += m_speed.m_x;
-  m_ground = (collide() == SOUTH);
   
   direction_t d = collide();
-  switch(d) {
-    case NORTH:
-      cout<< "north"<<endl;
-      break;
-    case SOUTH:
-      cout<<"south"<<endl;
-      break;
-    case EAST:
-      cout << "east" << endl;
-      break;
-    case WEST:
-      cout << "west" << endl;
-      break;
-    default:
-      cout << "none" << endl;
+
+  if((d.col_x == EAST && m_speed.m_x > 0) || (d.col_x == WEST && m_speed.m_x < 0)) {
+    m_speed.m_x = 0;
   }
 
   if(m_speed.m_y < 0) {
@@ -87,12 +73,14 @@ void Character::pass_row(){
   } else {
     for(int i = 0; i < m_speed.m_y; i++) {
       direction_t col = collide();
-      if(col != SOUTH) {
+      cout << "col y = " << col.col_y << endl;
+      if(col.col_y != SOUTH) {
         m_y++;
       }
     }
   }
   
+  m_x += m_speed.m_x;
   m_speed.m_y++;
   
 }
