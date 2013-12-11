@@ -7,9 +7,14 @@ void routine(){
 
   Ecran sc(400,400);
   Event e;
-  Character r("",50,20,20,10,&sc), r2("",20,380,300,10,&sc), r3("", 50, 30, 10, 400, &sc);
+  Character r("",50,20,20,10,&sc), r2("",20,200,300,10,&sc);
+  vector <Character> c;
+  for(int i = 0 ; i  < 25 ; i++)
+    {
+      c.push_back(Character("", i*10, i*15, 15,15,&sc));
+      r.add_obstacle(c[i]);
+    }
   r.add_obstacle(r2);
-  r.add_obstacle(r3);
   while(!e[QUIT]){
     e.UpdateEvent();
     if(e[LEFT])
@@ -25,9 +30,11 @@ void routine(){
     r.show();
     r.pass_row();
     r2.show();
-    r3.show();
+
+    for(int i = 0 ; i < c.size() ; i++)
+      c[i].show();
     sc.Flip();
-    SDL_Delay(70);
+    SDL_Delay(50);
   }
 }
 
