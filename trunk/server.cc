@@ -69,13 +69,16 @@ namespace Teelol {
 
 		if(mv == "right") {
 			m_player->move_right();
-			cout << "right" << endl;
+			cout << nick << " move right" << endl;
     	} else if(mv == "left") {
     		m_player->move_left();
+    		cout << nick << " move left" << endl;
     	} else if(mv == "jump") {
     		m_player->jump();
+    		cout << nick << " jump" << endl;
     	} else if(mv == "stop_x") {
     		m_player->stop_x();
+    		cout << nick << " stop x" << endl;
     	}
 
     	proto.moveOk(m_player->get_x(), m_player->get_y());
@@ -86,7 +89,7 @@ namespace Teelol {
     			it->second->proto.moved(m_player->get_x(), m_player->get_y(), nick);
     		}
     	}
-	
+	cout << "TEST" << endl;
     }
 
     void do_nick(string _nick) {
@@ -101,10 +104,13 @@ namespace Teelol {
 
 		if(nick_ok) {
 			Player *new_player = new Player(_nick, 0, 0, 0, 0, NULL);
+			m_player = new_player;
 			players[new_player] = this;
 			nick = _nick;
 			proto.ok();
 			
+			cout << _nick << " a changé son pseudo" << endl;
+
 			//Préviens tout le monde que le joueur s'est connecté
 			player_joined();
 			proto.okNick(_nick);
