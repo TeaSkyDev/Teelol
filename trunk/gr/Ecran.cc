@@ -24,7 +24,7 @@
     SDL_Rect pos;
     pos.x = x;
     pos.y = y;
-    SDL_Surface *s2 = SDL_CreateRGBSurface(SDL_HWSURFACE, h,l,32,0,0,0,0);
+    SDL_Surface *s2 = SDL_CreateRGBSurface(SDL_HWSURFACE, l,h,32,0,0,0,0);
     SDL_FillRect(s2, NULL, SDL_MapRGB(ecran->format,255,255,255));
     SDL_BlitSurface(s2,NULL,ecran, &pos);
   }
