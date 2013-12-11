@@ -68,6 +68,7 @@ void Character::pass_row(){
     m_speed.m_x = 0;
   }
 
+  bool iter = true;
   if(m_speed.m_y < 0) {
     m_y += m_speed.m_y;
   } else {
@@ -77,11 +78,13 @@ void Character::pass_row(){
       if(col.col_y != SOUTH) {
         m_y++;
       }
+      else {	iter = false;}
     }
   }
   
   m_x += m_speed.m_x;
-  m_speed.m_y++;
+  if(iter)
+    m_speed.m_y++;
   
 }
 
