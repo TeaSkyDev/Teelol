@@ -41,6 +41,7 @@
     int m_wait;
     bool m_wrong_img;
     bool m_ground; // vrai si le perso est sur le sol
+    bool m_saut;
     vector <Form> m_obstacle;
   };
 

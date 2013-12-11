@@ -7,7 +7,7 @@ void routine(){
 
   Ecran sc(400,400);
   Event e;
-  Character r("",10,10,10,10,&sc), r2("",20,380,300,10,&sc);
+  Character r("",50,20,10,10,&sc), r2("",20,380,300,10,&sc);
   r.add_obstacle(r2);
   while(!e[QUIT]){
     e.UpdateEvent();
@@ -16,14 +16,16 @@ void routine(){
     else if(e[RIGHT])
       r.move_right();
     else r.stop_x();
-    if(e[JUMP])
+    if(e[JUMP]) {
       r.jump();
+      e.reset_pressed(JUMP);
+    }
     sc.clean();
     r.show();
     r.pass_row();
     r2.show();
     sc.Flip();
-    SDL_Delay(20);
+    SDL_Delay(70);
   }
 }
 

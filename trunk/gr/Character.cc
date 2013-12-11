@@ -13,6 +13,7 @@ Character::Character(string img, int x, int y, int l, int h, Ecran * e) : Form(x
   m_ground = true;
   m_speed.m_x = 0;
   m_speed.m_y = 0;
+  m_saut = false;
 }
 
 void Character::move_left(){
@@ -35,6 +36,8 @@ void Character::stop_y(){
 void Character::jump(){
   m_ground = false;
   m_speed.m_y = -5; 
+  m_saut = true;
+  m_y--;
 }
 
 void Character::take_dmg(){
@@ -75,16 +78,23 @@ void Character::pass_row(){
     case WEST:
       cout << "west" << endl;
       break;
+    default:
+      cout << "none" << endl;
   }
 
-  if(!m_ground){
-    cout<<"pas de sol"<<endl;
-    if(m_speed.m_y < 20)
-      m_speed.m_y++;
+  if(m_speed.m_y < 0) {
     m_y += m_speed.m_y;
   } else {
-    //m_y -= 5;
+    for(int i = 0; i < m_speed.m_y; i++) {
+      direction_t col = collide();
+      if(col != SOUTH) {
+        m_y++;
+      }
+    }
   }
+  
+  m_speed.m_y++;
+  
 }
 
 void Character::die(){
