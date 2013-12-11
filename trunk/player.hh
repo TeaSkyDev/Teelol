@@ -2,6 +2,7 @@
 #define DEF_PLAYER
 
 #include "gr/Character.hh"
+#include "gr/Ecran.hh"
 
 /*
 	Classe représentant un joueur 
@@ -10,19 +11,13 @@
 class Player : public Character {
 
 	public:
-		Player(std::string nick);
+		Player(std::string nick, int x, int y, int h, int l, Ecran * screen	);
 
-		void set_position(unsigned int x, unsigned int y);
 		void set_nick(std::string _nick);
-
-		int get_x()const;
-		int get_y()const;
 		std::string get_nick()const;
 
 	private:
 		std::string m_nick;
-		int 		m_x;
-		int 		m_y;
 
 };
 
