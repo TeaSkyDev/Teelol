@@ -14,6 +14,10 @@ Collision::Collision(Form * f, Form * t){
 }
 
 bool Collision::is_inside(int x,int y, Form *t){
+
+  cout << "x = " << x << ", get_x = " << t->get_x() << endl;
+  cout << "y = " << y << ", get_y = " << t->get_y() << endl;
+
   return (x >= t->get_x() 
 	  && x < t->get_x() + t->get_l()
 	  && y >= t->get_y()
@@ -36,21 +40,21 @@ direction_t Collision::is_inside(Form *f, Form * t){
     return EAST;
   else return NONE;*/
 
-  Form f1(t->get_x() + 3, t->get_y(), 3, t->get_l() - 6); //nord
-  Form f2(t->get_x() + 3, t->get_y() + t->get_h() - 3, 3, t->get_l() -6); //sud
-  Form f3(t->get_x() + t->get_l() - 3, t->get_y() + 3, t->get_h() - 6, 3); //est
-  Form f4(t->get_x(), t->get_y() + 3, t->get_l() - 6, 3); //ouest
+  Form f1(f->get_x() + 3, f->get_y(), 3, f->get_l() - 6); //nord
+  Form f2(f->get_x() + 3, f->get_y() + f->get_h() - 3, 3, f->get_l() -6); //sud
+  Form f3(f->get_x() + f->get_l() - 3, f->get_y() + 3, f->get_h() - 6, 3); //est
+  Form f4(f->get_x(), f->get_y() + 3, 3, f->get_h() - 6); //ouest
 
-  if(col(t, &f1)) {
+  if(col(&f1, t)) {
     return NORTH;
-  } else if(col(t, &f2)) {
+  } else if(col(&f2, t)) {
     return SOUTH;
-  } else if(col(t, &f3)) {
+  } else if(col(&f3, t)) {
     return EAST;
-  } else if(col(t, &f4)) {
+  } else if(col(&f4, t)) {
     return WEST;
   } else {
-    return SOUTH;
+    return NONE;
   }
 
 }
