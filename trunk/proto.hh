@@ -10,7 +10,7 @@ namespace Teelol{
   using namespace netez;
 
   struct my_proto: public protocol<>{
-    message <0, void(int, int)>         move;          //demande au serveur si un la position désirée est ok
+    message <0, void(string)>           move;          //demande au serveur si un la position désirée est ok
     message <1, void(int, int)>         moveOk;        //le serveur envoie les cooronnées possibles suite à le demande
     message <2, void(int, int, string)> moved;         //indique aux joueurs la nouvelle position de l'un d'entre eux
     message <3, void(string)>           nick;          //demande de changemenet/nouveau pseudo

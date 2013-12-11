@@ -26,6 +26,7 @@ namespace Teelol {
   struct session_on_server: public session<my_proto>{
     state_t state;
     string  nick;
+    Player * m_player;
 
     session_on_server(socket & io): session(io) {
       state = STARTING;
@@ -64,34 +65,27 @@ namespace Teelol {
     	}
     }
 
-    void do_move(int x, int y) {
+    void do_move(string mv) {
 
-      bool move_ok = true;
+		if(mv == "right") {
+			m_player->move_right();
+    	} else if(mv == "left") {
+    		m_player->move_left();
+    	} else if(mv == "jump") {
+    		m_player->jump();
+    	} else if(mv == "stop_x") {
+    		m_player->stop_x();
+    	}
 
-      auto it = players.begin();
+    	proto.moveOk(m_player->get_x(), m_player->get_y());
 
-      for(it = players.begin(); it != players.end(); it++) {
-	if(it->first->get_nick() != nick) {
-	  if(it->first->get_x() == x && it->first->get_y() == y) {
-	    move_ok = false;
-	  }
-	}
-      }
-
-      if(move_ok) {
-	proto.moveOk(x, y);
-
-	for(it = players.begin(); it != players.end(); it++) {
-	  if(it->first->get_nick() != nick) {
-	    it->second->proto.moved(x, y, nick);
-	  } else {
-	    it->first->set_position(x, y);
-	  }
-	}
-      } else {
-	  proto.err("Mauvaises cooordonnées.");
-	}
-
+    	auto it = players.begin();
+    	for(it = players.begin(); it != players.end(); it++) {
+    		if(it->first != m_player) {
+    			it->second->proto.moved(m_player->get_x(), m_player->get_y(), nick);
+    		}
+    	}
+	
     }
 
     void do_nick(string _nick) {
