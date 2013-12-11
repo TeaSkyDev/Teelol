@@ -69,6 +69,7 @@ namespace Teelol {
 
 		if(mv == "right") {
 			m_player->move_right();
+			cout << "right" << endl;
     	} else if(mv == "left") {
     		m_player->move_left();
     	} else if(mv == "jump") {
