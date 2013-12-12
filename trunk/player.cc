@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Player::Player(string nick, int x, int y, int h, int l, Ecran * screen) : m_nick(nick), Character("", x, y , h , l , screen) {}
+Player::Player(string nick, string img, int x, int y, int h, int l, Ecran * screen) : m_nick(nick), Character(img, x, y , h , l , screen) {}
 
 void Player::set_nick(string _nick) {
 	m_nick = _nick;
