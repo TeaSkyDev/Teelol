@@ -102,7 +102,8 @@ namespace Teelol {
 
     void do_addObstacle(int x, int y, int h, int l){
       
-      f.push_back(Character("",x,y,h,l,sc));
+      f.push_back(Character("../gr/img/Mur.png",x,y,h,l,sc));
+      
 
     }
     
