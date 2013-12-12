@@ -18,6 +18,7 @@ namespace Teelol {
   struct session_on_client: public session<my_proto>{
   
     vector<Player*> players;
+    vector<Character> f;
     Player * player;
     Ecran  *sc;
     state_t state;
@@ -34,6 +35,7 @@ namespace Teelol {
       proto.joined.sig_recv.connect(EZMETHOD(this, do_joined));
       proto.left.sig_recv.connect(EZMETHOD(this, do_left));
       proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
+      proto.addObstacle.sig_recv.connect(EZMETHOD(this, do_addObstacle));
 
       //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
@@ -53,10 +55,8 @@ namespace Teelol {
     }
     
     void do_moveOk(int x ,int y){
-      cout<<x<<","<<y<<endl;
+  
       player->set_position(x, y);
-      player->show();
-      sc->Flip();
     }
 
     void do_moved(int x, int y, string nick) {
@@ -99,7 +99,25 @@ namespace Teelol {
         }
       }
     }
+
+    void do_addObstacle(int x, int y, int h, int l){
+      
+      f.push_back(Character("",x,y,h,l,sc));
+
+    }
     
+    void affiche(){
+      sc->clean();
+      for(int i = 0 ; i < f.size() ; i++){
+
+	f[i].show();
+      }
+      for(int i = 0 ; i < players.size() ; i++){
+	players[i]->show();
+      }
+      player->show();
+      sc->Flip();
+    }
   };
 };
 
@@ -125,6 +143,7 @@ void * routine(void * arg){
     if(e[JUMP]){ c->proto.move("jump");}
     SDL_Delay(50);
     c->sc->clean();
+    c->affiche();
   }
   delete c->sc;
   c->proto.quit();

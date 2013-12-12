@@ -31,7 +31,7 @@ namespace Teelol {
     Form * f;
     session_on_server(socket & io): session(io) {
       state = STARTING;
-      f = new Form(10,400,300,10);
+      f = new Form(10,30,10,300);
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
       proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
       proto.quit.sig_recv.connect(EZMETHOD(this, do_quit));
@@ -62,7 +62,10 @@ namespace Teelol {
 					y++;
 				}
 			}
+			x = boost::lexical_cast<int>(x);
+			y = boost::lexical_cast<int>(y);
 			proto.moveOk(x, y);
+		
     	}
     }
 
@@ -70,20 +73,20 @@ namespace Teelol {
 
       if(mv == "right") {
 	m_player->move_right();
-	cout << nick << " move right" << endl;
+
       } else if(mv == "left") {
 	m_player->move_left();
-	cout << nick << " move left" << endl;
+
       } else if(mv == "jump") {
 	m_player->jump();
-	cout << nick << " jump" << endl;
+
       } else if(mv == "stopx") {
 	m_player->stop_x();
-	cout << nick << " stop x" << endl;
+
       }
       m_player->pass_row();
 
-      cout<<m_player->get_x()<<" "<<m_player->get_y()<<endl;
+     
       
       int x = boost::lexical_cast<int>(m_player->get_x());
       int y = boost::lexical_cast<int>(m_player->get_y());
@@ -96,7 +99,7 @@ namespace Teelol {
     			it->second->proto.moved(x, y, nick);
     		}
     	}
-	cout << "TEST" << endl;
+
     }
 
     void do_nick(string _nick) {
@@ -113,7 +116,7 @@ namespace Teelol {
 			Player *new_player = new Player(_nick, 10, 10, 10, 10, NULL);
 			m_player = new_player;
 			//temporaire
-			m_player->add_obstacle(*f);
+
 			players[new_player] = this;
 			nick = _nick;
 			proto.ok();
@@ -126,6 +129,13 @@ namespace Teelol {
 		} else {
 			proto.err("Nick already use !");
 		}
+		//temporaire
+		m_player->add_obstacle(*f);
+		int f_x = boost::lexical_cast<int>(f->get_x());
+		int f_y = boost::lexical_cast<int>(f->get_y());
+		int f_h = boost::lexical_cast<int>(f->get_h());
+		int f_l = boost::lexical_cast<int>(f->get_l());
+		proto.addObstacle(f_x,f_y,f_h,f_l);
     }
 	
 	void player_joined() {
