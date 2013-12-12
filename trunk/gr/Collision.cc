@@ -1,10 +1,10 @@
 #include "Collision.hh"
 
-Collision::Collision(Form * f, vector <Form> tab){
+Collision::Collision(Form * f, vector <Form*> tab){
   m_direction.col_x = NONE;
   m_direction.col_y = NONE;
    for(int i = 0 ; i < tab.size() ; i++){
-      direction_t t = is_inside(f, &tab[i]);
+      direction_t t = is_inside(f, tab[i]);
       if(t.col_y != NONE) {
         m_direction.col_y = t.col_y;  
       }

@@ -17,7 +17,7 @@ struct direction_t {
 
 class Collision{
 public:
-  Collision(Form * f, vector<Form> tab);
+  Collision(Form * f, vector<Form*> tab);
   Collision(Form * f, Form * t);
   direction_t get_direction();
 

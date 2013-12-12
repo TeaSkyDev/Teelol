@@ -135,12 +135,16 @@ namespace Teelol {
 	  proto.err("Nick already use !");
 	}
 	//temporaire
-	m_player->add_obstacle(*f);
+	m_player->add_obstacle(f);
 	int f_x = boost::lexical_cast<int>(f->get_x());
 	int f_y = boost::lexical_cast<int>(f->get_y());
 	int f_h = boost::lexical_cast<int>(f->get_h());
 	int f_l = boost::lexical_cast<int>(f->get_l());
 	proto.addObstacle(f_x,f_y,f_h,f_l);
+
+	for(it = players.begin(); it != players.end(); it++) {
+		m_player->add_obstacle(it->first);
+	}
 
     }
     
@@ -151,6 +155,7 @@ namespace Teelol {
 			if(it->first->get_nick() != nick) {
 				it->second->proto.joined(nick);
 				proto.joined(it->first->get_nick());
+				it->first->add_obstacle(m_player);
 			}
 		}
 	}

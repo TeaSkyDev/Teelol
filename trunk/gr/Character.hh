@@ -31,7 +31,7 @@
     void radical_move(int,int);
     void pass_row();
     void set_over_ground();
-    void add_obstacle(Form f);
+    void add_obstacle(Form *f);
 
     direction_t collide();
 
@@ -43,7 +43,7 @@
     bool m_wrong_img;
     bool m_ground; // vrai si le perso est sur le sol
     bool m_saut;
-    vector <Form> m_obstacle;
+    vector <Form*> m_obstacle;
   };
 
 #endif
