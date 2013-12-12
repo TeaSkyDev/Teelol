@@ -15,6 +15,7 @@ namespace Teelol {
   using namespace netez;
   using namespace std;
 
+  ezmutex ez_mutex;
   struct session_on_server;
   map<Player*, session_on_server*> players;
   vector<Player*> players_to_delete;
@@ -41,106 +42,111 @@ namespace Teelol {
   	
 
     void on_begin() {
-    	int x = 0;
-    	int y = 0;
+      int x = 0;
+      int y = 0;
 
-    	//Si il y a au moins un joueur, on incrémente les coord jusqu'à avoir quelque chose de cool
-    	if(players.size() != 0) {
-			bool ok = false;
-			while(!ok) {
-				ok = true;
-				auto it = players.begin();
+      //Si il y a au moins un joueur, on incrémente les coord jusqu'à avoir quelque chose de cool
+      if(players.size() != 0) {
+	bool ok = false;
+	while(!ok) {
+	  ok = true;
+	  auto it = players.begin();
 
-				for(it = players.begin(); it != players.end(); it++) {
-					if(it->first->get_x() == x && it->first->get_y() == y) {
-						ok = false;
-					}
-				}
+	  for(it = players.begin(); it != players.end(); it++) {
+	    if(it->first->get_x() == x && it->first->get_y() == y) {
+	      ok = false;
+	    }
+	  }
 
-				if(!ok) {
-					x++;
-					y++;
-				}
-			}
-			x = boost::lexical_cast<int>(x);
-			y = boost::lexical_cast<int>(y);
-			proto.moveOk(x, y);
+	  if(!ok) {
+	    x++;
+	    y++;
+	  }
+	}
+	x = boost::lexical_cast<int>(x);
+	y = boost::lexical_cast<int>(y);
+	proto.moveOk(x, y);
 		
-    	}
+      }
     }
 
     void do_move(string mv) {
+      {
+	ezlock hold(ez_mutex);
 
-      if(mv == "right") {
-	m_player->move_right();
-
-      } else if(mv == "left") {
-	m_player->move_left();
-
-      } else if(mv == "jump") {
-	m_player->jump();
-
-      } else if(mv == "stopx") {
-	m_player->stop_x();
-
+	if(mv == "right") {
+	  m_player->move_right();
+	  
+	} else if(mv == "left") {
+	  m_player->move_left();
+	  
+	} else if(mv == "jump") {
+	  m_player->jump();
+	  
+	} else if(mv == "stopx") {
+	  m_player->stop_x();
+	  
+	}
+	
+	
+	m_player->pass_row();	
+	int x = boost::lexical_cast<int>(m_player->get_x());
+	int y = boost::lexical_cast<int>(m_player->get_y());	
+	proto.moveOk(x, y);
+	
+	auto it = players.begin();
+	
+	for(; it != players.end(); it++) {
+	  if(it->first != m_player) {
+	  
+	    it->second->proto.moved(x, y, nick);
+	  }
+	  }
       }
-      m_player->pass_row();
-
-     
-      
-      int x = boost::lexical_cast<int>(m_player->get_x());
-      int y = boost::lexical_cast<int>(m_player->get_y());
-      
-      proto.moveOk(x, y);
-
-    	auto it = players.begin();
-    	for(it = players.begin(); it != players.end(); it++) {
-    		if(it->first != m_player) {
-    			it->second->proto.moved(x, y, nick);
-    		}
-    	}
-
     }
 
     void do_nick(string _nick) {
     	bool nick_ok = true;
     	auto it = players.begin();
-
+	cout<<"avant la verif du nick"<<endl;
       	for(it = players.begin(); it != players.end(); it++) {
 			if(it->first->get_nick() == _nick) {
 	  			nick_ok = false;
 	  		}
 		}
-
-		if(nick_ok) {
-			Player *new_player = new Player(_nick, 10, 10, 10, 10, NULL);
-			m_player = new_player;
-			//temporaire
-
-			players[new_player] = this;
-			nick = _nick;
-			proto.ok();
-			
-			cout << _nick << " a changé son pseudo" << endl;
-
-			//Préviens tout le monde que le joueur s'est connecté
-			player_joined();
-			proto.okNick(_nick);
-		} else {
-			proto.err("Nick already use !");
-		}
-		//temporaire
-		m_player->add_obstacle(*f);
-		int f_x = boost::lexical_cast<int>(f->get_x());
-		int f_y = boost::lexical_cast<int>(f->get_y());
-		int f_h = boost::lexical_cast<int>(f->get_h());
-		int f_l = boost::lexical_cast<int>(f->get_l());
-		proto.addObstacle(f_x,f_y,f_h,f_l);
-    }
 	
+	if(nick_ok) {
+	  cout<<"nick accepte"<<endl;
+	  Player *new_player = new Player(_nick, 10, 10, 10, 10, NULL);
+	  m_player = new_player;
+	  //temporaire
+	  cout<<"avant le map"<<endl;
+	  players[new_player] = this;
+	  nick = _nick;
+	  proto.ok();
+	  
+	  cout << _nick << " a changé son pseudo" << endl;
+	  
+	  //Préviens tout le monde que le joueur s'est connecté
+	  player_joined();
+	  proto.okNick(_nick);
+	  cout<<"signaux envoyer"<<endl;
+		} else {
+	  proto.err("Nick already use !");
+	}
+	//temporaire
+	m_player->add_obstacle(*f);
+	int f_x = boost::lexical_cast<int>(f->get_x());
+	int f_y = boost::lexical_cast<int>(f->get_y());
+	int f_h = boost::lexical_cast<int>(f->get_h());
+	int f_l = boost::lexical_cast<int>(f->get_l());
+	proto.addObstacle(f_x,f_y,f_h,f_l);
+
+    }
+    
 	void player_joined() {
 		auto it = players.begin();
-		
+		cout<<"avant player_joined"<<endl;
 		for(it = players.begin(); it != players.end(); it++) {
 			if(it->first->get_nick() != nick) {
 				it->second->proto.joined(nick);

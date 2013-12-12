@@ -20,8 +20,8 @@ speed_t Form::get_speed(){return m_speed;}
     rect.h = m_h;
     rect.w = m_l;
     m_e->put(m_surf,rect);
-    cout<<m_y;
-    cout<<rect.y;
+    
+   
     
   }
 

@@ -60,7 +60,7 @@ void Character::take_life(){
 }
 
 void Character::pass_row(){
-  cout<<"ici :"<<m_x<<" "<<m_y<<" "<<m_speed.m_x<<" "<< m_speed.m_y<<endl;
+ 
   /*
     if(m_wait > 0)
     m_wait--;
@@ -81,7 +81,7 @@ void Character::pass_row(){
   } else {
     for(int i = 0; i < m_speed.m_y; i++) {
       direction_t col = collide();
-      cout << "col y = " << col.col_y << endl;
+     
       if(col.col_y != SOUTH) {
         m_y++;
       }

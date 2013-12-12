@@ -86,7 +86,7 @@ namespace Teelol {
     }
 
     void do_joined(string nick) {
-      players.push_back(new Player(nick, 0, 0, 0, 0, NULL));
+      players.push_back(new Player(nick, 0, 0, 10, 10, sc));
     }
 
     void do_left(string nick) {
@@ -114,7 +114,7 @@ namespace Teelol {
       }
       for(int i = 0 ; i < players.size() ; i++){
 	players[i]->show();
-      }
+	}
       player->show();
       sc->Flip();
     }
@@ -128,7 +128,9 @@ void * routine(void * arg){
   
   Event e;
   Teelol::session_on_client * c = (Teelol::session_on_client*)arg;
-  c->proto.nick("emile");
+  string pseudo;
+  cin>>pseudo;
+  c->proto.nick(pseudo);
   while(!e[QUIT]){
     e.UpdateEvent();
     if(e[LEFT]){
