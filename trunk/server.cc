@@ -108,7 +108,7 @@ namespace Teelol {
     void do_nick(string _nick) {
     	bool nick_ok = true;
     	auto it = players.begin();
-	cout<<"avant la verif du nick"<<endl;
+	
       	for(it = players.begin(); it != players.end(); it++) {
 			if(it->first->get_nick() == _nick) {
 	  			nick_ok = false;
@@ -150,6 +150,7 @@ namespace Teelol {
 		for(it = players.begin(); it != players.end(); it++) {
 			if(it->first->get_nick() != nick) {
 				it->second->proto.joined(nick);
+				proto.joined(it->first->get_nick());
 			}
 		}
 	}
