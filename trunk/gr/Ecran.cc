@@ -21,7 +21,9 @@
   }
 
   void Ecran::put(SDL_Surface *s, SDL_Rect r){
-    SDL_BlitSurface(s,NULL,ecran, &r);
+    SDL_Surface * s2 = SDL_CreateRGBSurface(SDL_HWSURFACE, r.w, r.h, 32,0,0,0,0);
+    SDL_FillRect(s2, NULL, SDL_MapRGB(ecran->format, 255,255,255));
+    SDL_BlitSurface(s2,NULL,ecran, &r);
   }
 
   void Ecran::clean(){
