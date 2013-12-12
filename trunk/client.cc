@@ -25,7 +25,7 @@ namespace Teelol {
 
     session_on_client(socket &io): session<my_proto>(io){
       sc = new Ecran(400,400);
-      player = new Player("nameless", 0, 0, 10, 10, sc);
+      player = new Player("nameless", "../gr/img/tee.png", 0, 0, 10, 10, sc);
       state  = STARTING;
 
       proto.moveOk.sig_recv.connect(EZMETHOD(this, do_moveOk));
@@ -86,7 +86,7 @@ namespace Teelol {
     }
 
     void do_joined(string nick) {
-      players.push_back(new Player(nick, 0, 0, 10, 10, sc));
+      players.push_back(new Player(nick, "../gr/img/otherTee.png", 0, 0, 10, 10, sc));
     }
 
     void do_left(string nick) {

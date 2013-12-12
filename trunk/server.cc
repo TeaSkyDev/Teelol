@@ -117,7 +117,7 @@ namespace Teelol {
 	
 	if(nick_ok) {
 	  cout<<"nick accepte"<<endl;
-	  Player *new_player = new Player(_nick, 10, 10, 10, 10, NULL);
+	  Player *new_player = new Player(_nick, "", 10, 10, 10, 10, NULL);
 	  m_player = new_player;
 	  //temporaire
 	  cout<<"avant le map"<<endl;
