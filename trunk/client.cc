@@ -19,12 +19,12 @@ namespace Teelol {
   
     vector<Player*> players;
     Player * player;
-
+    Ecran  *sc;
     state_t state;
 
     session_on_client(socket &io): session<my_proto>(io){
-
-      player = new Player("nameless", 0, 0, 0, 0, NULL);
+      sc = new Ecran(400,400);
+      player = new Player("nameless", 0, 0, 10, 10, sc);
       state  = STARTING;
 
       proto.moveOk.sig_recv.connect(EZMETHOD(this, do_moveOk));
@@ -35,25 +35,28 @@ namespace Teelol {
       proto.left.sig_recv.connect(EZMETHOD(this, do_left));
       proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
 
-      sig_begin.connect(EZMETHOD(this,on_begin));
+      //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
     }
 
-    void on_begin() {
+    /* void on_begin() {
       string n;
       cout << "nick : ";
       cin >> n;
 
       proto.nick(n);
 
-    }
+      }*/
 
     void on_end() {
       proto.quit();
     }
     
     void do_moveOk(int x ,int y){
+      cout<<x<<","<<y<<endl;
       player->set_position(x, y);
+      player->show();
+      sc->Flip();
     }
 
     void do_moved(int x, int y, string nick) {
@@ -104,18 +107,27 @@ namespace Teelol {
 
 
 void * routine(void * arg){
-  Ecran sc(400,400);
+  
   Event e;
   Teelol::session_on_client * c = (Teelol::session_on_client*)arg;
+  c->proto.nick("emile");
   while(!e[QUIT]){
     e.UpdateEvent();
-    if(e[LEFT])
+    if(e[LEFT]){
       c->proto.move("left");
-    else if(e[RIGHT])
+    }
+    if(e[RIGHT]){
       c->proto.move("right");
-    else c->proto.move("stop_x");
-    if(e[JUMP]) c->proto.move("jump");
+    }
+    if(!e[RIGHT] && !e[LEFT]){
+      c->proto.move("stopx");
+    }
+    if(e[JUMP]){ c->proto.move("jump");}
+    SDL_Delay(50);
+    c->sc->clean();
   }
+  delete c->sc;
+  c->proto.quit();
 }
 
 

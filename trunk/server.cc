@@ -1,6 +1,7 @@
 #include <map>
 #include <vector>
 #include <pthread.h>
+#include <boost/lexical_cast.hpp>
 
 #include "proto.hh"
 #include "player.hh"
@@ -27,10 +28,10 @@ namespace Teelol {
     state_t state;
     string  nick;
     Player * m_player;
-
+    Form * f;
     session_on_server(socket & io): session(io) {
       state = STARTING;
-
+      f = new Form(10,400,300,10);
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
       proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
       proto.quit.sig_recv.connect(EZMETHOD(this, do_quit));
@@ -67,26 +68,32 @@ namespace Teelol {
 
     void do_move(string mv) {
 
-		if(mv == "right") {
-			m_player->move_right();
-			cout << nick << " move right" << endl;
-    	} else if(mv == "left") {
-    		m_player->move_left();
-    		cout << nick << " move left" << endl;
-    	} else if(mv == "jump") {
-    		m_player->jump();
-    		cout << nick << " jump" << endl;
-    	} else if(mv == "stop_x") {
-    		m_player->stop_x();
-    		cout << nick << " stop x" << endl;
-    	}
+      if(mv == "right") {
+	m_player->move_right();
+	cout << nick << " move right" << endl;
+      } else if(mv == "left") {
+	m_player->move_left();
+	cout << nick << " move left" << endl;
+      } else if(mv == "jump") {
+	m_player->jump();
+	cout << nick << " jump" << endl;
+      } else if(mv == "stopx") {
+	m_player->stop_x();
+	cout << nick << " stop x" << endl;
+      }
+      m_player->pass_row();
 
-    	proto.moveOk(m_player->get_x(), m_player->get_y());
+      cout<<m_player->get_x()<<" "<<m_player->get_y()<<endl;
+      
+      int x = boost::lexical_cast<int>(m_player->get_x());
+      int y = boost::lexical_cast<int>(m_player->get_y());
+      
+      proto.moveOk(x, y);
 
     	auto it = players.begin();
     	for(it = players.begin(); it != players.end(); it++) {
     		if(it->first != m_player) {
-    			it->second->proto.moved(m_player->get_x(), m_player->get_y(), nick);
+    			it->second->proto.moved(x, y, nick);
     		}
     	}
 	cout << "TEST" << endl;
@@ -103,8 +110,10 @@ namespace Teelol {
 		}
 
 		if(nick_ok) {
-			Player *new_player = new Player(_nick, 0, 0, 0, 0, NULL);
+			Player *new_player = new Player(_nick, 10, 10, 10, 10, NULL);
 			m_player = new_player;
+			//temporaire
+			m_player->add_obstacle(*f);
 			players[new_player] = this;
 			nick = _nick;
 			proto.ok();
