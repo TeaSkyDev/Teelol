@@ -20,12 +20,14 @@ namespace Teelol{
     message <7, void(string)>           left;          //Informe les joueurs d'un départ
     message <8, void()>                 quit;          //Signal au serveur de la déconnexion du client
     message <9, void(string)>           okNick;        //réponse positive à la demande de pseudo d'un joueur
+    message <10, void(int, int)>        showMissile;   //indique la position la position d'un missile
+    message <11, void(int)>             shoot;         //client indique qu'il a tiré
 
     message<10, void(int, int ,int, int)> addObstacle;
 
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),
-			  joined(this),   left(this), moved(this), quit(this), okNick(this), addObstacle(this)
+			  joined(this),   left(this), moved(this), quit(this), okNick(this), addObstacle(this), showMissile(this), shoot(this)
     {}
     
 
