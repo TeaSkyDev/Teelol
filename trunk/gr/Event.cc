@@ -39,6 +39,6 @@ void Event::reset_pressed(Mapp m){
 }
 
 
-bool Event::operator[](Mapp m){
-  return key_pressed(m);
+char& Event::operator[](Mapp m){
+  return m_in.m_key[m_mapping[m]];
 }

@@ -21,7 +21,7 @@ public:
   void UpdateEvent();
   bool key_pressed(Mapp m);
   void reset_pressed(Mapp m);
-  bool operator[](Mapp m);
+  char& operator[](Mapp m);
 
 private:
   Input m_in;
