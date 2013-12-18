@@ -5,6 +5,8 @@ Event::Event(){
   m_mapping[RIGHT] = SDLK_RIGHT;
   m_mapping[JUMP] = SDLK_SPACE;
   m_mapping[QUIT] = SDLK_ESCAPE;
+  m_mouse_mapping[LEFT_CL] = SDL_BUTTON_LEFT;
+  m_mouse_mapping[RIGHT_CL] = SDL_BUTTON_RIGHT;
   m_in.m_key[m_mapping[JUMP]] = 0;
   m_in.m_key[m_mapping[LEFT]] = 0;
   m_in.m_key[m_mapping[RIGHT]] = 0;
@@ -26,6 +28,18 @@ void Event::UpdateEvent(){
     if(m_event.type == SDL_KEYUP){
       m_in.m_key[m_event.key.keysym.sym] = 0;
     }  
+    if(m_event.type == SDL_MOUSEMOTION){
+      m_in.m_mouse_x = m_event.motion.x;
+      m_in.m_mouse_y = m_event.motion.y;
+      m_in.m_mouse_xrel = m_event.motion.yrel;
+      m_in.m_mouse_yrel = m_event.motion.xrel;
+    }
+    if(m_event.type == SDL_MOUSEBUTTONDOWN){
+      m_in.m_mousebuttons[m_event.button.button] = 1;
+    }
+    if(m_event.type == SDL_MOUSEBUTTONUP){
+      m_in.m_mousebuttons[m_event.button.button] = 0;
+    }
   }
 }
 
@@ -40,5 +54,12 @@ void Event::reset_pressed(Mapp m){
 
 
 char& Event::operator[](Mapp m){
-  return m_in.m_key[m_mapping[m]];
+  if(m <= QUIT)
+    return m_in.m_key[m_mapping[m]];
+  else
+    return m_in.m_mousebuttons[m_mouse_mapping[m]];
+}
+
+position_t Event::operator()(){
+  return {m_in.m_mouse_x, m_in.m_mouse_y};
 }

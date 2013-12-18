@@ -5,10 +5,18 @@
 
 struct Input{
   char m_key[SDLK_LAST];
+  int m_mouse_x, m_mouse_y;
+  int m_mouse_xrel, m_mouse_yrel;
+  char m_mousebuttons[8];
 };
 
+
 enum Mapp{
-  LEFT, RIGHT, JUMP, QUIT , MAP_LAST
+  LEFT, RIGHT, JUMP, QUIT , MAP_INTER, LEFT_CL , RIGHT_CL,  MAP_LAST
+};
+
+struct position_t{
+  int m_x, m_y;
 };
 
 
@@ -22,10 +30,12 @@ public:
   bool key_pressed(Mapp m);
   void reset_pressed(Mapp m);
   char& operator[](Mapp m);
+  position_t operator()();
 
 private:
   Input m_in;
-  SDLKey m_mapping[MAP_LAST];
+  SDLKey m_mapping[MAP_INTER];
+  int m_mouse_mapping[MAP_LAST];
   SDL_Event m_event;
   
 };

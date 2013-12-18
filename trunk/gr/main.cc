@@ -1,7 +1,7 @@
 #include "Ecran.hh"
 #include "Event.hh"
 #include "Character.hh"
-
+#include "Bullet.hh"
 
 void routine(){
 
@@ -9,7 +9,7 @@ void routine(){
   Event e;
   Character r("../img/tee.png",50,20,10,10,&sc);
   Character f ("../img/Mur.png", 20,200,300,10, &sc);
-  r.add_obstacle(f);
+  r.add_obstacle(&f);
   while(!e[QUIT]){
     e.UpdateEvent();
     if(e[LEFT])
@@ -21,6 +21,7 @@ void routine(){
       r.jump();
       e.reset_pressed(JUMP);
     }
+    cout<<e().m_x<< " " << e().m_y<<endl;
     sc.clean();
     r.show();
     r.pass_row();
