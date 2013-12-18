@@ -1,6 +1,6 @@
 #include "Form.hh"
 
-Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {}
+Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {m_angle = 0;}
 
   void Form::set_image(string img){
     m_surf = IMG_Load(img.c_str());
@@ -14,6 +14,12 @@ int Form::get_x(){ return m_x;}
 int Form::get_y(){ return m_y;}
 void Form::set_x(int x){ m_x = x;}
 void Form::set_y(int y) {m_y = y;}
+void Form::set_angle(double angle){
+  if( angle > 0)
+    m_angle = angle;
+  else 
+    m_angle = angle+360;
+}
 
 int Form::x_to_sig(){ return boost::lexical_cast<int>(m_x);}
 int Form::y_to_sig(){ return boost::lexical_cast<int>(m_y);}
@@ -42,6 +48,20 @@ void Form::rotate(double angle, int x, int y, int dist){
   m_surf = s;
   m_x = x + dist * cos(m_angle*M_PI/180);
   m_y = y + dist * sin(m_angle*M_PI/180);
+  cout<<m_angle<<endl;
+  if ((90 < m_angle) && (m_angle <= 180))
+        m_x -= m_surf->w;
+    else
+        if ((180 < m_angle) && (m_angle <= 270))
+        {
+            m_x -= m_surf->w;
+            m_y -= m_surf->h;
+        }
+        else
+            if ((270 < m_angle) && (m_angle <= 360))
+               m_y -= m_surf->h;
+ 
+
 }
 
 void Form::rotate_to(double angle, int x, int y, int dist){
@@ -50,6 +70,7 @@ void Form::rotate_to(double angle, int x, int y, int dist){
   m_surf = s;
   m_x = x + dist * cos(_angle * M_PI/180);
   m_y = y + dist * sin(_angle*M_PI/180);
+
 }
 
 void Form::set_screen(Ecran * e){

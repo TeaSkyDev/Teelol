@@ -52,5 +52,5 @@ direction_t Bullet::collide(){
 
 
 void Bullet::set_speed(int angle){
-  double angle = angle * Math.Pi / 180;
+  double _angle = angle * M_PI / 180;
 }

@@ -35,7 +35,7 @@ using namespace std;
     int l_to_sig();
     void set_x(int x);
     void set_y(int y);
-
+    void set_angle(double angle);
     void rotate(double angle, int x, int y, int dist);
     void rotate_to(double angle, int x, int y, int dist);
     speed_t get_speed();

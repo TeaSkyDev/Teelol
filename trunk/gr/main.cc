@@ -7,13 +7,14 @@
 
 void routine(){
 
-  Ecran sc(400,400);
+  Ecran sc(700,500);
 
   Event e;
   Character r("../img/tee.png",50,20,10,10,&sc);
   Character f ("../img/Mur.png", 20,200,300,10, &sc);
-  Character f2("../img/tee.png", 20,200,10,10,&sc);
+  Character f2("../img/weap.png", 50,10,10,10,&sc);
   r << f;
+
   while(!e[QUIT]){
     e.UpdateEvent();
     if(e[LEFT])
@@ -25,9 +26,10 @@ void routine(){
       r.jump();
       e.reset_pressed(JUMP);
     }
-    
-    cout<<atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI<<endl;
-    f2.rotate_to(atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI, r.get_x(), r.get_y(), 20);
+
+      f2.set_angle(-atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI + 90);
+      f2.rotate(0, r.get_x() + r.get_l()/2, r.get_y() + r.get_h()/2, 5);
+
     sc.clean();
     r.pass_row();
     r.show();
