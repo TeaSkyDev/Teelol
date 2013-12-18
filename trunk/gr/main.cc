@@ -49,8 +49,10 @@ void routine(){
       r.jump();
       e.reset_pressed(JUMP);
     }
-    f.set_x(e().m_x);
-    f.set_y(e().m_y);
+    if(e[LEFT_CL]){
+      f.set_x(e().m_x);
+      f.set_y(e().m_y);
+    }
     r.pass_row();
     SDL_Delay(50);
   }
