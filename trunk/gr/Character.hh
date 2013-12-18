@@ -32,6 +32,7 @@
     void pass_row();
     void set_over_ground();
     void add_obstacle(Form *f);
+    Character operator<<(Form & f);
 
     direction_t collide();
 

@@ -33,7 +33,7 @@ void routine(){
   Event e;
   Character r("../img/tee.png",50,20,10,10,&sc);
   Character f ("../img/Mur.png", 20,200,300,10, &sc);
-  r.add_obstacle(&f);
+  r << f;
   a.ajoute_forme(&f);
   a.ajoute_forme(&r);
   pthread_t th;

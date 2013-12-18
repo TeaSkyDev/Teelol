@@ -81,8 +81,8 @@ void Character::pass_row(){
   } else {
     for(int i = 0; i < m_speed.m_y; i++) {
       direction_t col = collide();
-     
       if(col.col_y != SOUTH) {
+
         m_y++;
       }
       else {
@@ -131,3 +131,9 @@ direction_t Character::collide(){
   return c.get_direction();
 }
 
+
+
+Character Character::operator<<(Form & f){
+  add_obstacle(&f);
+  return *this;
+}
