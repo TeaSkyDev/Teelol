@@ -44,6 +44,13 @@ void Form::rotate(double angle, int x, int y, int dist){
   m_y = y + dist * sin(m_angle*M_PI/180);
 }
 
+void Form::rotate_to(double angle, int x, int y, int dist){
+  double _angle = m_angle - angle;
+  SDL_Surface * s = rotozoomSurface(m_sauv, -_angle, 1.0,1);
+  m_surf = s;
+  m_x = x + dist * cos(_angle * M_PI/180);
+  m_y = y + dist * sin(_angle*M_PI/180);
+}
 
 void Form::set_screen(Ecran * e){
   m_e = e;

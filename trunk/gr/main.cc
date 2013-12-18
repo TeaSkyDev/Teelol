@@ -26,8 +26,8 @@ void routine(){
       e.reset_pressed(JUMP);
     }
     
-    cout<<atan2(e().m_x-r.get_x(), e().m_y-r.get_y())<<endl;
-    f2.rotate(10, r.get_x(), r.get_y(), 20);
+    cout<<atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI<<endl;
+    f2.rotate_to(atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI, r.get_x(), r.get_y(), 20);
     sc.clean();
     r.pass_row();
     r.show();

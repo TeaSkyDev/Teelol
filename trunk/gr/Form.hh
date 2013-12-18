@@ -37,6 +37,7 @@ using namespace std;
     void set_y(int y);
 
     void rotate(double angle, int x, int y, int dist);
+    void rotate_to(double angle, int x, int y, int dist);
     speed_t get_speed();
     void set_screen(Ecran * e);
     void show();
