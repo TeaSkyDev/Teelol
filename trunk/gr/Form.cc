@@ -7,10 +7,12 @@ Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {}
   }
 
 
-  int Form::get_l(){ return m_l;}
-  int Form::get_h(){ return m_h;}
-  int Form::get_x(){ return m_x;}
-  int Form::get_y(){ return m_y;}
+int Form::get_l(){ return m_l;}
+int Form::get_h(){ return m_h;}
+int Form::get_x(){ return m_x;}
+int Form::get_y(){ return m_y;}
+void Form::set_x(int x){ m_x = x;}
+void Form::set_y(int y) {m_y = y;};
 speed_t Form::get_speed(){return m_speed;}
 
   void Form::show(){

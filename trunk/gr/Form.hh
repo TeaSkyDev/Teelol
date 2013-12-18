@@ -27,6 +27,8 @@
     int get_h();
     int get_x();
     int get_y();
+    void set_x(int x);
+    void set_y(int y);
     speed_t get_speed();
     void set_screen(Ecran * e);
     void show();
