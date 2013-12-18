@@ -4,6 +4,7 @@ Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {}
 
   void Form::set_image(string img){
     m_surf = IMG_Load(img.c_str());
+    m_sauv = IMG_Load(img.c_str());
   }
 
 
@@ -34,6 +35,14 @@ speed_t Form::get_speed(){return m_speed;}
     
   }
 
+
+void Form::rotate(double angle, int x, int y, int dist){
+  m_angle += angle;
+  SDL_Surface * s = rotozoomSurface(m_sauv , -m_angle, 1.0, 1);
+  m_surf = s;
+  m_x = x + dist * cos(m_angle*M_PI/180);
+  m_y = y + dist * sin(m_angle*M_PI/180);
+}
 
 
 void Form::set_screen(Ecran * e){

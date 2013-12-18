@@ -5,11 +5,12 @@
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-
+#include <SDL/SDL_rotozoom.h>
 #include <iostream> 
 #include "Ecran.hh"
 #include <boost/lexical_cast.hpp>
-  using namespace std;
+#include <math.h>
+using namespace std;
 
 
   //vitesse de deplacement des objets
@@ -34,6 +35,8 @@
     int l_to_sig();
     void set_x(int x);
     void set_y(int y);
+
+    void rotate(double angle, int x, int y, int dist);
     speed_t get_speed();
     void set_screen(Ecran * e);
     void show();
@@ -41,11 +44,12 @@
 
   protected:
 
-    SDL_Surface * m_surf;
+    SDL_Surface * m_surf, *m_sauv;
     int m_x;
     int m_y;
     int m_h; 
     int m_l;
+    int m_angle;
     Ecran * m_e;
     speed_t m_speed;
   };
