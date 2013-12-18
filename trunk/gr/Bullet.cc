@@ -12,6 +12,7 @@ int Bullet::get_dmg(){
 
 void Bullet::pass_row(){
   bool continuer = true;
+  get_speed();
   for(int i = 0 ; i < abs(m_speed.m_y) ; i++){
     direction_t d = collide();
     if(d.col_y == NORTH || d.col_y == SOUTH){
@@ -36,6 +37,8 @@ void Bullet::pass_row(){
 
 void Bullet::explode(){
   set_image("img/explosion.png");
+  m_speed.m_x = 0;
+  m_speed.m_y = 0;
 }
 
 void Bullet::add_obstacle(Form * f){
@@ -45,4 +48,9 @@ void Bullet::add_obstacle(Form * f){
 direction_t Bullet::collide(){
   Collision c(this, m_obstacle);
   return c.get_direction();
+}
+
+
+void Bullet::set_speed(int angle){
+  double angle = angle * Math.Pi / 180;
 }

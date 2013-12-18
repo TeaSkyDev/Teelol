@@ -14,6 +14,7 @@ public:
   void explode();
   void add_obstacle(Form * f);
   direction_t collide();
+  void set_speed(int angle); //calcule la vitesse a laquelle va devoir aller la balle
 
 private:
   int m_dmg;
