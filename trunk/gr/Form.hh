@@ -8,6 +8,7 @@
 
 #include <iostream> 
 #include "Ecran.hh"
+#include <boost/lexical_cast.hpp>
   using namespace std;
 
 
@@ -27,6 +28,10 @@
     int get_h();
     int get_x();
     int get_y();
+    int x_to_sig();
+    int y_to_sig();
+    int h_to_sig();
+    int l_to_sig();
     void set_x(int x);
     void set_y(int y);
     speed_t get_speed();

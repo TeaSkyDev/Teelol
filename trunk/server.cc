@@ -135,12 +135,8 @@ namespace Teelol {
 	  proto.err("Nick already use !");
 	}
 	//temporaire
-	m_player->add_obstacle(f);
-	int f_x = boost::lexical_cast<int>(f->get_x());
-	int f_y = boost::lexical_cast<int>(f->get_y());
-	int f_h = boost::lexical_cast<int>(f->get_h());
-	int f_l = boost::lexical_cast<int>(f->get_l());
-	proto.addObstacle(f_x,f_y,f_h,f_l);
+	*m_player << *f; 
+	proto.addObstacle(f->x_to_sig(),f->y_to_sig(),f->h_to_sig(),f->l_to_sig());
 
 	for(it = players.begin(); it != players.end(); it++) {
 		m_player->add_obstacle(it->first);

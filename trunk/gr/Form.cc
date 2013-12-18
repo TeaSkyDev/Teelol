@@ -12,7 +12,14 @@ int Form::get_h(){ return m_h;}
 int Form::get_x(){ return m_x;}
 int Form::get_y(){ return m_y;}
 void Form::set_x(int x){ m_x = x;}
-void Form::set_y(int y) {m_y = y;};
+void Form::set_y(int y) {m_y = y;}
+
+int Form::x_to_sig(){ return boost::lexical_cast<int>(m_x);}
+int Form::y_to_sig(){ return boost::lexical_cast<int>(m_y);}
+int Form::h_to_sig(){ return boost::lexical_cast<int>(m_h);}
+int Form::l_to_sig(){ return boost::lexical_cast<int>(m_l);}
+
+
 speed_t Form::get_speed(){return m_speed;}
 
   void Form::show(){
