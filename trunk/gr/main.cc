@@ -28,7 +28,7 @@ void routine(){
     }
 
       f2.set_angle(-atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI + 90);
-      f2.rotate(0, r.get_x() + r.get_l()/2, r.get_y() + r.get_h()/2, 5);
+      f2.rotate(0, r.get_x() + r.get_l()/2, r.get_y() + r.get_h()/2, 0);
 
     sc.clean();
     r.pass_row();

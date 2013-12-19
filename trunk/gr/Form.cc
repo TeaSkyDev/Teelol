@@ -5,6 +5,7 @@ Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {m_angle
   void Form::set_image(string img){
     m_surf = IMG_Load(img.c_str());
     m_sauv = IMG_Load(img.c_str());
+    m_sauv2 = IMG_Load("../img/2weap.png");
   }
 
 
@@ -44,25 +45,47 @@ speed_t Form::get_speed(){return m_speed;}
 
 void Form::rotate(double angle, int x, int y, int dist){
   m_angle += angle;
-  SDL_Surface * s = rotozoomSurface(m_sauv , -m_angle, 1.0, 1);
+  SDL_Surface *s;
+  if((m_angle < 270) && (m_angle >= 90))
+    s = rotozoomSurface(m_sauv2 , -m_angle, 1.0, 1);
+  else 
+    s = rotozoomSurface(m_sauv, -m_angle, 1.0,1);
   m_surf = s;
   m_x = x + dist * cos(m_angle*M_PI/180);
   m_y = y + dist * sin(m_angle*M_PI/180);
-  cout<<m_angle<<endl;
-  if ((90 < m_angle) && (m_angle <= 180))
-        m_x -= m_surf->w;
-    else
-        if ((180 < m_angle) && (m_angle <= 270))
-        {
-            m_x -= m_surf->w;
-            m_y -= m_surf->h;
-        }
-        else
-            if ((270 < m_angle) && (m_angle <= 360))
-               m_y -= m_surf->h;
- 
-
+  recalibrate();
 }
+
+void Form::recalibrate(){
+  if(m_angle > 175 && m_angle < 185){
+    m_x -= m_surf->w;
+    m_y -= m_surf->h/2;
+   
+  }
+  if(m_angle > 265 && m_angle < 275){
+    m_x -= m_surf->w/2;
+    m_y -= m_surf->h;
+  }
+  if((m_angle < 5 && m_angle > 0) || (m_angle > 355 && m_angle < 360)){
+    m_y -= m_surf->h/2;
+  }
+  if(m_angle > 80 && m_angle < 95){
+    m_x -= m_surf->w/2;
+  }
+  if(m_angle >= 95 && m_angle <= 175){
+    m_x -= m_surf->w;
+  }
+  if(m_angle >= 185 && m_angle <= 265){
+    m_x -= m_surf->w;
+    m_y -= m_surf->h;
+  }
+  if(m_angle >= 275 && m_angle <= 355){
+    m_y -= m_surf->h;
+  }
+    
+    
+}
+
 
 void Form::rotate_to(double angle, int x, int y, int dist){
   double _angle = m_angle - angle;
