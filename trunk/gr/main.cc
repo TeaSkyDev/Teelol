@@ -13,7 +13,12 @@ void routine(){
   Character r("../img/tee.png",50,20,10,10,&sc);
   Character f ("../img/Mur.png", 20,200,300,10, &sc);
   Character f2("../img/weap.png", 50,10,10,10,&sc);
+  Bullet b(100, 300, 10, 10, 10, 45, "../img/tee.png");
+  b.set_screen(&sc);
+
+  /* On ajoute le mur et la balle dans la liste de collisions */
   r << f;
+  r << b;
 
   while(!e[QUIT]){
     e.UpdateEvent();
@@ -31,6 +36,9 @@ void routine(){
       f2.rotate(0, r.get_x() + r.get_l()/2, r.get_y() + r.get_h()/2, 0);
 
     sc.clean();
+
+    b.pass_row();
+    b.show();
     r.pass_row();
     r.show();
     f.show();
