@@ -36,7 +36,7 @@ namespace Teelol {
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
       proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
       proto.quit.sig_recv.connect(EZMETHOD(this, do_quit));
-
+      proto.rotate.sig_recv.connect(EZMETHOD(this, do_rotate));
       sig_begin.connect(EZMETHOD(this,on_begin));
     }
   	
@@ -156,6 +156,16 @@ namespace Teelol {
 			}
 		}
 	}
+
+    void do_rotate(int angle){
+	auto it = players.begin();
+	for(; it != players.end(); it++) {
+	  if(it->first != m_player) {  
+	    it->second->proto.rotated( angle, nick);
+	  }
+	}
+    }
+
 
 	void do_quit() {
 		auto it = players.begin();

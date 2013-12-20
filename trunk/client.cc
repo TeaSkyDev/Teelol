@@ -36,7 +36,7 @@ namespace Teelol {
       proto.left.sig_recv.connect(EZMETHOD(this, do_left));
       proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
       proto.addObstacle.sig_recv.connect(EZMETHOD(this, do_addObstacle));
-      
+      proto.rotated.sig_recv.connect(EZMETHOD(this, do_rotated));
       //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
     }
@@ -102,9 +102,20 @@ namespace Teelol {
     void do_addObstacle(int x, int y, int h, int l){
       
       f.push_back(Character("../gr/img/Mur.png",x,y,h,l,sc));
-      
-
     }
+    
+    void do_rotated(int angle, string nick){
+       for(int i = 0; i < players.size(); i++) {
+        if(players[i]->get_nick() == nick) {
+          players[i]->get_weapon()->set_angle(angle);
+	  int x = players[i]->get_x() - players[i]->get_l();
+	  int y = players[i]->get_y() - players[i]->get_h();
+	  players[i]->get_weapon()->rotate(0,x,y,0);
+          break;
+        }
+      } 
+    }
+    
     
     void affiche(){
       sc->clean();
@@ -113,7 +124,8 @@ namespace Teelol {
       }
       for(int i = 0 ; i < players.size() ; i++){
 	players[i]->show();
-	}
+	players[i]->get_weapon()->show();
+      }
       player->show();
       player->get_weapon()->show();
       sc->Flip();
@@ -125,6 +137,7 @@ namespace Teelol {
       int y = player->get_y() + player->get_h()/2; 
       player->get_weapon()->set_angle(angle);
       player->get_weapon()->rotate(0, x, y,0);
+      proto.rotate(angle);
     }
     
 
