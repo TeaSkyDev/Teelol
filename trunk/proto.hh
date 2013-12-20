@@ -23,11 +23,15 @@ namespace Teelol{
     message <10, void(int, int)>        showMissile;   //indique la position la position d'un missile
     message <11, void(int)>             shoot;         //client indique qu'il a tiré
 
-    message<12, void(int, int ,int, int)> addObstacle;
+    message <12, void(int, int ,int, int)> addObstacle;
+    message <13, void(int)>                rotate;
+    message <14 , void(int, string)>               rotated;
 
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),
-			  joined(this),   left(this), moved(this), quit(this), okNick(this), addObstacle(this), showMissile(this), shoot(this)
+			  joined(this),   left(this), moved(this), quit(this), 
+			  okNick(this), addObstacle(this), showMissile(this), 
+			  shoot(this), rotate(this), rotated(this)
     {}
     
 
