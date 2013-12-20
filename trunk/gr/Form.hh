@@ -38,6 +38,7 @@ using namespace std;
     void set_angle(double angle);
     void rotate(double angle, int x, int y, int dist);
     void rotate_to(double angle, int x, int y, int dist);
+    void recalibrate();
     speed_t get_speed();
     void set_screen(Ecran * e);
     void show();
@@ -45,7 +46,7 @@ using namespace std;
 
   protected:
 
-    SDL_Surface * m_surf, *m_sauv;
+    SDL_Surface * m_surf, *m_sauv, *m_sauv2;
     int m_x;
     int m_y;
     int m_h; 
