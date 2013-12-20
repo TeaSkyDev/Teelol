@@ -27,16 +27,16 @@ namespace Teelol {
       sc = new Ecran(400,400);
       player = new Player("nameless", "../gr/img/tee.png", 0, 0, 10, 10, sc);
       state  = STARTING;
-
+      
       proto.moveOk.sig_recv.connect(EZMETHOD(this, do_moveOk));
       proto.moved.sig_recv.connect(EZMETHOD(this, do_moved));
       proto.err.sig_recv.connect(EZMETHOD(this, do_err));
       proto.ok.sig_recv.connect(EZMETHOD(this, do_ok));
       proto.joined.sig_recv.connect(EZMETHOD(this, do_joined));
       proto.left.sig_recv.connect(EZMETHOD(this, do_left));
-      //      proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
+      proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
       proto.addObstacle.sig_recv.connect(EZMETHOD(this, do_addObstacle));
-
+      
       //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
     }
@@ -55,7 +55,6 @@ namespace Teelol {
     }
     
     void do_moveOk(int x ,int y){
-  
       player->set_position(x, y);
     }
 
@@ -110,15 +109,25 @@ namespace Teelol {
     void affiche(){
       sc->clean();
       for(int i = 0 ; i < f.size() ; i++){
-
 	f[i].show();
       }
       for(int i = 0 ; i < players.size() ; i++){
 	players[i]->show();
 	}
       player->show();
+      player->get_weapon()->show();
       sc->Flip();
     }
+    
+    void rotationArme(int _x, int _y){
+      int angle = -atan2(_x-player->get_x(), _y-player->get_y())*180/M_PI+90;
+      int x = player->get_x()+ player->get_l()/2;;
+      int y = player->get_y() + player->get_h()/2; 
+      player->get_weapon()->set_angle(angle);
+      player->get_weapon()->rotate(0, x, y,0);
+    }
+    
+
   };
 };
 
@@ -144,6 +153,7 @@ void * routine(void * arg){
       c->proto.move("stopx");
     }
     if(e[JUMP]){ c->proto.move("jump"); e[JUMP] = 0;}
+     c->rotationArme(e().m_x, e().m_y);
     SDL_Delay(50);
     c->sc->clean();
     c->affiche();

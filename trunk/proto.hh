@@ -23,7 +23,7 @@ namespace Teelol{
     message <10, void(int, int)>        showMissile;   //indique la position la position d'un missile
     message <11, void(int)>             shoot;         //client indique qu'il a tiré
 
-    message<10, void(int, int ,int, int)> addObstacle;
+    message<12, void(int, int ,int, int)> addObstacle;
 
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),

@@ -90,6 +90,7 @@ namespace Teelol {
 	
 	
 	m_player->pass_row();	
+       
 	int x = m_player->x_to_sig();
 	int y = m_player->y_to_sig();
 	proto.moveOk(x, y);
