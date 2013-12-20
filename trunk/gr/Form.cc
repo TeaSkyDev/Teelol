@@ -5,7 +5,7 @@ Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {m_angle
   void Form::set_image(string img){
     m_surf = IMG_Load(img.c_str());
     m_sauv = IMG_Load(img.c_str());
-    m_sauv2 = IMG_Load("../img/2weap.png");
+    m_sauv2 = IMG_Load("../img/2weap.png");    
   }
 
 
@@ -57,6 +57,7 @@ void Form::rotate(double angle, int x, int y, int dist){
 }
 
 void Form::recalibrate(){
+
   if(m_angle > 175 && m_angle < 185){
     m_x -= m_surf->w;
     m_y -= m_surf->h/2;

@@ -4,6 +4,7 @@
 
 #include "Form.hh"
 #include "Collision.hh"
+
   /*
    *  attention a differencie la classe player de la classe Character 
    *  la classe character est la classe uniquement d'affichage alors que la classe player permet de calculer la vie
@@ -35,8 +36,10 @@
     Character operator<<(Form & f);
 
     direction_t collide();
+    Form * get_weapon();
 
-  private:
+
+  protected:
  
 
     string m_img;
@@ -45,6 +48,7 @@
     bool m_ground; // vrai si le perso est sur le sol
     bool m_saut;
     vector <Form*> m_obstacle;
+    Form * m_weapon;
   };
 
 #endif

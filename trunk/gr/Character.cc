@@ -14,6 +14,9 @@ Character::Character(string img, int x, int y, int l, int h, Ecran * e) : Form(x
   m_speed.m_x = 0;
   m_speed.m_y = 0;
   m_saut = false;
+  m_weapon = new Form(x+1, y+1,10,25);
+  m_weapon->set_image("../img/weap.png");
+  m_weapon->set_screen(e);
 }
 
 
@@ -131,6 +134,11 @@ direction_t Character::collide(){
   return c.get_direction();
 }
 
+
+
+Form * Character::get_weapon(){
+  return m_weapon;
+}
 
 
 Character Character::operator<<(Form & f){
