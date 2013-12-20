@@ -108,8 +108,8 @@ namespace Teelol {
        for(int i = 0; i < players.size(); i++) {
         if(players[i]->get_nick() == nick) {
           players[i]->get_weapon()->set_angle(angle);
-	  int x = players[i]->get_x() - players[i]->get_l();
-	  int y = players[i]->get_y() - players[i]->get_h();
+	  int x = players[i]->get_x() + players[i]->get_l()/2;
+	  int y = players[i]->get_y() + players[i]->get_h()/2;
 	  players[i]->get_weapon()->rotate(0,x,y,0);
           break;
         }
