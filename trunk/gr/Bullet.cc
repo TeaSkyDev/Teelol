@@ -8,6 +8,7 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, double angle, string img):Fo
   m_speed_init = 2;
   m_temps = 1;
   m_angle = angle;
+  cout<<" "<<m_angle<<endl;
   m_vy  = cos(m_angle)*m_speed_init;
   m_vx  = sin(m_angle)*m_speed_init;
   m_x_init = x;

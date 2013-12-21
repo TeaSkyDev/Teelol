@@ -1,8 +1,8 @@
 #include "Event.hh"
 
 Event::Event(){
-  m_mapping[LEFT] = SDLK_LEFT;
-  m_mapping[RIGHT] = SDLK_RIGHT;
+  m_mapping[LEFT] = SDLK_q;
+  m_mapping[RIGHT] = SDLK_d;
   m_mapping[JUMP] = SDLK_SPACE;
   m_mapping[QUIT] = SDLK_ESCAPE;
   m_mouse_mapping[LEFT_CL] = SDL_BUTTON_LEFT;

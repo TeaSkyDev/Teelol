@@ -10,15 +10,11 @@ void routine(){
   Ecran sc(700,500);
 
   Event e;
-  Character r("../img/tee.png",50,20,10,10,&sc);
+  Character r("../img/otherTee.png",50,20,10,10,&sc);
   Character f ("../img/Mur.png", 20,200,300,10, &sc);
-  Character f2("../img/weap.png", 50,10,10,10,&sc);
-  Bullet b(100, 300, 10, 10, 10, 45, "../img/tee.png");
-  b.set_screen(&sc);
-
+  vector<Bullet> b;
   /* On ajoute le mur et la balle dans la liste de collisions */
   r << f;
-  r << b;
 
   while(!e[QUIT]){
     e.UpdateEvent();
@@ -32,17 +28,25 @@ void routine(){
       e.reset_pressed(JUMP);
     }
 
-      f2.set_angle(-atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI + 90);
-      f2.rotate(0, r.get_x() + r.get_l()/2, r.get_y() + r.get_h()/2, 0);
+    r.get_weapon()->set_angle(-atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI + 90);
+    r.get_weapon()->rotate(0, r.get_x() + r.get_l()/2, r.get_y() + r.get_h()/2, 0);
+    if(e[LEFT_CL]){
+      cout<<r.get_weapon()->get_angle();
+      b.push_back(Bullet(r.get_weapon()->get_xb(), r.get_weapon()->get_yb(), 10,10,5,r.get_weapon()->get_angle(), "../img/otherTee.png"));
+      b[b.size()-1].set_screen(&sc);
 
+    }
+    
     sc.clean();
-
-    b.pass_row();
-    b.show();
+    for(int i  = 0 ; i < b.size() ; i++){
+      b[i].pass_row();
+      b[i].show();
+    }
     r.pass_row();
     r.show();
+    r.get_weapon()->show();
     f.show();
-    f2.show();
+
     sc.Flip();
     SDL_Delay(50);
   }

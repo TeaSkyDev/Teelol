@@ -13,8 +13,11 @@ int Form::get_l(){ return m_l;}
 int Form::get_h(){ return m_h;}
 int Form::get_x(){ return m_x;}
 int Form::get_y(){ return m_y;}
+
 void Form::set_x(int x){ m_x = x;}
 void Form::set_y(int y) {m_y = y;}
+double Form::get_angle(){ return m_angle;}
+
 void Form::set_angle(double angle){
   if( angle > 0)
     m_angle = angle;
@@ -85,6 +88,64 @@ void Form::recalibrate(){
   }
     
     
+}
+
+
+int Form::get_xb(){
+  cout<<m_angle<<endl;
+  if(m_angle > 175 && m_angle < 185){
+    return m_x;
+  }
+  if(m_angle > 265 && m_angle < 275){
+    return  m_x;
+  }
+  if((m_angle < 5 && m_angle > 0) || (m_angle > 355 && m_angle < 360)){
+    return m_x;
+  }
+  if(m_angle > 80 && m_angle < 95){
+    return m_x + m_surf->w/2;
+  }
+  if(m_angle >= 95 && m_angle <= 175){
+    return m_x;
+  }
+  if(m_angle >= 185 && m_angle <= 265){
+    return m_x;
+
+  }
+  if(m_angle >= 275 && m_angle <= 355){
+    return m_x+m_surf->w;
+  }
+  return m_x+m_surf->w;
+
+
+}
+
+int Form::get_yb(){
+  
+  if(m_angle > 175 && m_angle < 185){
+    return m_y + m_surf->h/2;
+  }
+  if(m_angle > 265 && m_angle < 275){
+    return  m_y;
+  }
+  if((m_angle < 5 && m_angle > 0) || (m_angle > 355 && m_angle < 360)){
+    return m_y + m_surf->h/2;
+  }
+  if(m_angle > 80 && m_angle < 95){
+    return m_y + m_surf->h;
+  }
+  if(m_angle >= 95 && m_angle <= 175){
+    return m_y+m_surf->h;
+  }
+  if(m_angle >= 185 && m_angle <= 265){
+    return  m_y;
+  }
+  if(m_angle >= 275 && m_angle <= 355){
+    return m_y;
+  }
+  return m_y + m_surf->h;
+  
+
 }
 
 
