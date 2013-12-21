@@ -8,7 +8,7 @@
 
 class Bullet: public Form{
 public:
-  Bullet(int x, int y, int h, int l, int dmg, double angle, string img);
+  Bullet(int x, int y, int h, int l, int dmg, int , int, string img);
   int get_dmg();
   void pass_row();
   void explode();

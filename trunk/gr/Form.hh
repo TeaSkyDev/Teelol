@@ -31,6 +31,8 @@ using namespace std;
     int get_y();
     int get_xb();
     int get_yb();
+    int get_xba();
+    int get_yba();
     double get_angle();
     int x_to_sig();
     int y_to_sig();

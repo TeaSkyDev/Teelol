@@ -31,9 +31,11 @@ void routine(){
     r.get_weapon()->set_angle(-atan2(e().m_x-r.get_x(), e().m_y-r.get_y())*180/M_PI + 90);
     r.get_weapon()->rotate(0, r.get_x() + r.get_l()/2, r.get_y() + r.get_h()/2, 0);
     if(e[LEFT_CL]){
-      cout<<r.get_weapon()->get_angle();
-      b.push_back(Bullet(r.get_weapon()->get_xb(), r.get_weapon()->get_yb(), 10,10,5,r.get_weapon()->get_angle(), "../img/otherTee.png"));
+
+      int current_angle = r.get_weapon()->get_angle();
+      b.push_back(Bullet(r.get_weapon()->get_xb(), r.get_weapon()->get_yb(), 10,10,5,r.get_weapon()->get_xba(), r.get_weapon()->get_yba(), "../img/otherTee.png"));
       b[b.size()-1].set_screen(&sc);
+      
 
     }
     

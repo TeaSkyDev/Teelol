@@ -1,18 +1,22 @@
 #include "Bullet.hh"
 
 
-Bullet::Bullet(int x, int y, int h, int l, int dmg, double angle, string img):Form(x,y,h,l), m_dmg(dmg) {
+Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, string img):Form(x,y,h,l), m_dmg(dmg) {
   set_image(img); 
   //m_surf = SDL_CreateRGBSurface(SDL_HWSURFACE, h, l, 32, 0, 0, 0, 0);
+ 
+  m_vy  = 0;
+  m_vx  = 0;
+  m_x_init = x_s;
+  m_y_init = y_s;
+  int o = m_x_init - m_x;
+  int p = m_y_init - m_y;
+  m_angle = atan2(p,o);
+  int speed_init = sqrt(o*o+p*p) * 2;
 
-  m_speed_init = 2;
-  m_temps = 1;
-  m_angle = angle;
-  cout<<" "<<m_angle<<endl;
-  m_vy  = cos(m_angle)*m_speed_init;
-  m_vx  = sin(m_angle)*m_speed_init;
-  m_x_init = x;
-  m_y_init = y;
+  m_vx = speed_init*cos(m_angle);
+  m_vy = speed_init*sin(m_angle);
+
 }
 
 
@@ -23,16 +27,12 @@ int Bullet::get_dmg(){
 void Bullet::pass_row(){
   
   double g  = 9.81;
-  double pi = 3.14;
+  m_vy+=0.5;
 
-  m_x = m_x_init;
-  m_y = m_y_init;
-
-  int m_xRel = (int)(m_vx*m_temps);
-  int m_yRel = (int)((m_vy*m_temps) - ((g*m_temps*m_temps)/900));
-
-  m_x += m_xRel;
-  m_y -= m_yRel;
+  //m_x = m_x_init;
+  //m_y = m_y_init;
+  m_y += m_vy;
+  m_x += m_vx;
 
   m_temps += 8;
 
