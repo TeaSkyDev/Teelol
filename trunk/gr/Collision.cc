@@ -3,13 +3,16 @@
 Collision::Collision(Form * f, vector <Form*> tab){
   m_direction.col_x = NONE;
   m_direction.col_y = NONE;
+ 
    for(int i = 0 ; i < tab.size() ; i++){
       direction_t t = is_inside(f, tab[i]);
       if(t.col_y != NONE && m_direction.col_y != SOUTH) {
         m_direction.col_y = t.col_y;  
+        m_type = tab[i]->get_type();
       }
       if(t.col_x != NONE) {
         m_direction.col_x = t.col_x;  
+        m_type = tab[i]->get_type();
       }
       
     }
@@ -20,12 +23,6 @@ Collision::Collision(Form * f, Form * t){
 }
 
 bool Collision::is_inside(int x,int y, Form *t){
-
-  //cout << "x = " << x << ", get_x = " << t->get_x() << endl;
-  // cout << "y = " << y << ", get_y = " << t->get_y() << endl;
-
-
-
   return (x >= t->get_x() 
 	  && x < t->get_x() + t->get_l()
 	  && y >= t->get_y()
@@ -75,5 +72,12 @@ bool Collision::col(Form * f, Form * t) {
 
 direction_t Collision::get_direction(){
   return m_direction; 
+}
+
+collision_t Collision::get_collision() {
+  collision_t col;
+  col.dir  = m_direction;
+  col.type = m_type;
+  return col;
 }
 
