@@ -12,9 +12,12 @@ void routine(){
   Event e;
   Character r("../img/otherTee.png",50,20,10,10,&sc);
   Character f ("../img/Mur.png", 20,200,300,10, &sc);
+  
+  //Character mur("img/Mur2.png", 300, 200, 10, 300, &sc);
   vector<Bullet> b;
   /* On ajoute le mur et la balle dans la liste de collisions */
   r << f;
+  //r << mur;
 
   while(!e[QUIT]){
     e.UpdateEvent();
@@ -46,6 +49,7 @@ void routine(){
     }
     r.pass_row();
     r.show();
+    //mur.show();
     r.get_weapon()->show();
     f.show();
 
