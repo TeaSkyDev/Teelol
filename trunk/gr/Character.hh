@@ -35,7 +35,7 @@
     void add_obstacle(Form *f);
     Character operator<<(Form & f);
 
-    direction_t collide();
+    collision_t collide();
     Form * get_weapon();
     type_t get_type();
 

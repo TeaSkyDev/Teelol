@@ -72,10 +72,10 @@ void Character::pass_row(){
     m_wrong_img = false;
     }*/
   
-  direction_t d = collide();
+  collision_t d = collide();
 
-  if((d.col_x == EAST && m_speed.m_x > 0) || (d.col_x == WEST && m_speed.m_x < 0)) {
-    m_speed.m_x = 0;
+  if((d.dir.col_x == EAST && m_speed.m_x > 0) || (d.dir.col_x == WEST && m_speed.m_x < 0)) {
+    m_speed.m_x *= -1;
   }
 
   bool iter = true;
@@ -83,8 +83,8 @@ void Character::pass_row(){
     m_y += m_speed.m_y;
   } else {
     for(int i = 0; i < m_speed.m_y; i++) {
-      direction_t col = collide();
-      if(col.col_y != SOUTH) {
+      collision_t col = collide();
+      if(col.dir.col_y != SOUTH) {
 
         m_y++;
       }
@@ -129,9 +129,9 @@ void Character::add_obstacle(Form *f){
 
 
 
-direction_t Character::collide(){
+collision_t Character::collide(){
   Collision c(this, m_obstacle);
-  return c.get_direction();
+  return c.get_collision();
 }
 
 
