@@ -42,26 +42,28 @@ void Bullet::pass_row(){
 
   bool continuer = true;
 
-  for(int i = 0 ; i < abs(m_speed.m_y) ; i++){
+  /*for(int i = 0 ; i < abs(m_speed.m_y) ; i++){
     direction_t d = collide();
     if(d.col_y == NORTH || d.col_y == SOUTH){
       explode();
       continuer = false;
-    }
-   /* if(m_speed.m_y > 0)
+    }*/
+   
+  /* if(m_speed.m_y > 0)
       m_y += m_speed.m_y * m_temps;
     else m_y -= m_speed.m_y * m_temps;*/
-  }
+  /*}
   for(int i = 0 ; i < abs(m_speed.m_x) && continuer; i++){
     direction_t d = collide();
     if(d.col_x == EAST || d.col_x == WEST){
       explode();
-    }
+    }*/
+
    /* if(m_speed.m_x > 0)
       m_x += m_speed.m_x * m_temps;
     else
       m_x -= m_speed.m_y * m_temps;*/
-  }
+  //}
 }
 
 void Bullet::explode(){
