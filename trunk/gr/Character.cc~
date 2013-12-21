@@ -140,9 +140,6 @@ Form * Character::get_weapon(){
   return m_weapon;
 }
 
-type_t Character::get_type() {
-  return CHARACTER;
-}
 
 Character Character::operator<<(Form & f){
   add_obstacle(&f);

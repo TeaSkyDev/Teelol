@@ -24,10 +24,6 @@ int Bullet::get_dmg(){
   return m_dmg;
 }
 
-type_t Bullet::get_type() {
-  return BULLET;
-}
-
 void Bullet::pass_row(){
   
   double g  = 9.81;

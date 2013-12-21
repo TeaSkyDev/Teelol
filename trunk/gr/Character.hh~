@@ -37,7 +37,6 @@
 
     direction_t collide();
     Form * get_weapon();
-    type_t get_type();
 
 
   protected:

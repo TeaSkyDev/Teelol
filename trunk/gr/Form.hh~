@@ -21,7 +21,7 @@ using namespace std;
 
   //représente le type de forme (décor, character, bullet)
   enum type_t {
-    FORM, CHARACTER, BULLET
+    DECOR, CHARACTER, BULLET
   };
 
 

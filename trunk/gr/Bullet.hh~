@@ -10,7 +10,6 @@ class Bullet: public Form{
 public:
   Bullet(int x, int y, int h, int l, int dmg, int , int, string img);
   int get_dmg();
-  type_t get_type();
   void pass_row();
   void explode();
   void add_obstacle(Form * f);
