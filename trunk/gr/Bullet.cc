@@ -2,6 +2,7 @@
 
 
 Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, string img):Form(x,y,h,l), m_dmg(dmg) {
+cout << "[test";
   set_image(img); 
   //m_surf = SDL_CreateRGBSurface(SDL_HWSURFACE, h, l, 32, 0, 0, 0, 0);
  
@@ -16,7 +17,7 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, string img
 
   m_vx = speed_init*cos(m_angle);
   m_vy = speed_init*sin(m_angle);
-
+cout << "test]" << endl;
 }
 
 
@@ -29,7 +30,7 @@ type_t Bullet::get_type() {
 }
 
 void Bullet::pass_row(){
-  
+  cout << "[test2";
   double g  = 9.81;
   m_vy+=0.5;
 
@@ -42,28 +43,31 @@ void Bullet::pass_row(){
 
   bool continuer = true;
 
-  /*for(int i = 0 ; i < abs(m_speed.m_y) ; i++){
+  for(int i = 0 ; i < abs(m_speed.m_y) ; i++){
     direction_t d = collide();
     if(d.col_y == NORTH || d.col_y == SOUTH){
       explode();
       continuer = false;
-    }*/
+        cout << ",test2";
+    }
    
   /* if(m_speed.m_y > 0)
       m_y += m_speed.m_y * m_temps;
     else m_y -= m_speed.m_y * m_temps;*/
-  /*}
+  }
+        cout << ",test2";
   for(int i = 0 ; i < abs(m_speed.m_x) && continuer; i++){
     direction_t d = collide();
     if(d.col_x == EAST || d.col_x == WEST){
       explode();
-    }*/
+    }
 
    /* if(m_speed.m_x > 0)
       m_x += m_speed.m_x * m_temps;
     else
       m_x -= m_speed.m_y * m_temps;*/
-  //}
+  }
+        cout << ",test2]" << endl;
 }
 
 void Bullet::explode(){
@@ -98,33 +102,3 @@ void Bullet::set_speed(int temps){
 
 }
 
-/*
-// conditions initiales
-    double x0 = 0, y0 = 20;
-    double angle = 50 * Math.PI / 180; // 50° en radians
-    double v0 = 26;
-    double vx0 = v0 * Math.Cos(angle), vy0 = - v0 * Math.Sin(angle);
-    double g = 10;
- 
-    // simulation
-    double x = x0, y = y0;
-    double vx = vx0, vy = vy0;
-    double dt = 0.1;
- 
-    do
-    {
-        if(0 <= y && y < Console.WindowHeight * 10)
-        {
-            Console.CursorLeft = (int)x;
-            Console.CursorTop = (int)y;
-            Console.Write("a");
-        }
- 
-        // application des équations du mouvement
-        // (vx est constante)
-        vy += g * dt;
-        x += vx * dt;
-        y += vy * dt;
-    }
-    while(x < Console.WindowWidth);
-*/
