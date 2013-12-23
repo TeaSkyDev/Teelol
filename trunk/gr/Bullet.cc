@@ -34,40 +34,35 @@ void Bullet::pass_row(){
   double g  = 9.81;
   m_vy+=0.5;
 
-  //m_x = m_x_init;
-  //m_y = m_y_init;
-  m_y += m_vy;
-  m_x += m_vx;
-
   m_temps += 8;
 
   bool continuer = true;
-
-  for(int i = 0 ; i < abs(m_speed.m_y) ; i++){
+  cout<<m_vy<<" "<<m_vx<<endl;
+  for(int i = 0 ; i < abs((int)m_vy) ; i++){
     direction_t d = collide();
     if(d.col_y == NORTH || d.col_y == SOUTH){
       explode();
       continuer = false;
-        cout << ",test2";
+      cout << ",test2";
     }
    
-  /* if(m_speed.m_y > 0)
-      m_y += m_speed.m_y * m_temps;
-    else m_y -= m_speed.m_y * m_temps;*/
+    if(m_vy > 0)
+      m_y ++;
+    else m_y --;
   }
-        cout << ",test2";
-  for(int i = 0 ; i < abs(m_speed.m_x) && continuer; i++){
+  cout << ",test2";
+  for(int i = 0 ; i < abs((int)m_vx) && continuer; i++){
     direction_t d = collide();
     if(d.col_x == EAST || d.col_x == WEST){
       explode();
     }
 
-   /* if(m_speed.m_x > 0)
-      m_x += m_speed.m_x * m_temps;
+    if(m_vx > 0)
+      m_x ++;
     else
-      m_x -= m_speed.m_y * m_temps;*/
+      m_x --;
   }
-        cout << ",test2]" << endl;
+  cout << ",test2]" << endl;
 }
 
 void Bullet::explode(){
