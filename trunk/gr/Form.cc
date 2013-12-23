@@ -6,6 +6,8 @@ Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {m_angle
     m_surf = IMG_Load(img.c_str());
     m_sauv = IMG_Load(img.c_str());
     m_sauv2 = IMG_Load("../img/2weap.png");    
+    m_l = m_surf->w;
+    m_h = m_surf->h;
   }
 
 
@@ -57,6 +59,8 @@ void Form::rotate(double angle, int x, int y, int dist){
   m_surf = s;
   m_x = x + dist * cos(m_angle*M_PI/180);
   m_y = y + dist * sin(m_angle*M_PI/180);
+  m_l = m_surf->w;
+  m_h = m_surf->h;
   recalibrate();
 }
 
