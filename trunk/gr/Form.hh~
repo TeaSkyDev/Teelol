@@ -64,6 +64,7 @@ using namespace std;
     int m_h; 
     int m_l;
     int m_angle;
+    int m_life;
     Ecran * m_e;
     speed_t m_speed;
   };
