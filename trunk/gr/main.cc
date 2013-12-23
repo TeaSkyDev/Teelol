@@ -38,6 +38,8 @@ void routine(){
       int current_angle = r.get_weapon()->get_angle();
       b.push_back(Bullet(r.get_weapon()->get_xb(), r.get_weapon()->get_yb(), 10,10,5,r.get_weapon()->get_xba(), r.get_weapon()->get_yba(), "../img/otherTee.png"));
       b[b.size()-1].set_screen(&sc);
+      b[b.size()-1].add_obstacle(&f);
+      
       
 
     }
