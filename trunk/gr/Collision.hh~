@@ -36,7 +36,7 @@ private:
   
   direction_t m_direction; 
   type_t      m_type; //type de la form avec laquelle a lieu l'obstacle
-  Form*       m_element; //form avec laquelle a lieu l'obstacle
+  Form*       m_form; //form avec laquelle a lieu l'obstacle
 
 };
 
