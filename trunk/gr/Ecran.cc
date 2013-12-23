@@ -21,6 +21,7 @@
   }
 
   void Ecran::put(SDL_Surface *s, SDL_Rect r){
+
     SDL_BlitSurface(s,NULL,ecran, &r);
   }
 

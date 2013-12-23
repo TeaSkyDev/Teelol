@@ -59,8 +59,8 @@ void Form::rotate(double angle, int x, int y, int dist){
   m_surf = s;
   m_x = x + dist * cos(m_angle*M_PI/180);
   m_y = y + dist * sin(m_angle*M_PI/180);
-  m_l = m_surf->w;
-  m_h = m_surf->h;
+  /*  m_l = m_surf->w;
+      m_h = m_surf->h;*/
   recalibrate();
 }
 

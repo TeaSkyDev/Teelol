@@ -4,7 +4,7 @@
 
 #include "Form.hh"
 #include "Collision.hh"
-
+#include "Ammo.hh"
   /*
    *  attention a differencie la classe player de la classe Character 
    *  la classe character est la classe uniquement d'affichage alors que la classe player permet de calculer la vie
@@ -34,11 +34,15 @@
     void set_over_ground();
     void add_obstacle(Form *f);
     Character operator<<(Form & f);
-
+    void shoot();
     collision_t collide();
+    void show();
+
     Form * get_weapon();
     type_t get_type();
 
+  private:
+    void init_Weap();
 
   protected:
  
@@ -50,6 +54,8 @@
     bool m_saut;
     vector <Form*> m_obstacle;
     Form * m_weapon;
+    Ammo m_ammo;
+
   };
 
 #endif

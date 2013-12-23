@@ -2,10 +2,6 @@
 #include "Collision.hh"
 
 Character::Character(string img, int x, int y, int l, int h, Ecran * e) : Form(x, y, h, l) {
-  m_x = x;
-  m_y = y; 
-  m_l = l; 
-  m_h = h;
   m_e = e;
   set_image(img);
   m_img = img;
@@ -14,9 +10,15 @@ Character::Character(string img, int x, int y, int l, int h, Ecran * e) : Form(x
   m_speed.m_x = 0;
   m_speed.m_y = 0;
   m_saut = false;
-  m_weapon = new Form(x+1, y+1,10,25);
+  init_Weap();
+  m_ammo.set_nb(10);
+}
+
+void Character::init_Weap(){
+  m_weapon = new Form(m_x+1, m_y+1,10,25);
   m_weapon->set_image("../img/weap.png");
-  m_weapon->set_screen(e);
+  m_weapon->set_screen(m_e);
+  
 }
 
 
@@ -64,14 +66,8 @@ void Character::take_life(){
 
 void Character::pass_row(){
  
-  /*
-    if(m_wait > 0)
-    m_wait--;
-    if(m_wait == 0 and m_wrong_img){
-    set_image(m_img);
-    m_wrong_img = false;
-    }*/
-  
+  m_ammo.pass_row();
+
   collision_t d = collide();
 
   if((d.dir.col_x == EAST && m_speed.m_x > 0) || (d.dir.col_x == WEST && m_speed.m_x < 0)) {
@@ -144,7 +140,28 @@ type_t Character::get_type() {
   return CHARACTER;
 }
 
+
+void Character::shoot(){
+  m_ammo.shoot(m_weapon, m_e);
+}
+
+void Character::show(){
+  m_ammo.show();
+  SDL_Rect rect;
+  rect.x = m_x;
+  rect.y = m_y;
+  rect.h = m_h;
+  rect.w = m_l;
+  m_e->put(m_surf,rect);
+    
+   
+
+}
+
+
 Character Character::operator<<(Form & f){
   add_obstacle(&f);
   return *this;
 }
+
+

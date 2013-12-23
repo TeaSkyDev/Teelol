@@ -5,7 +5,7 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, string img
 cout << "[test";
   set_image(img); 
   //m_surf = SDL_CreateRGBSurface(SDL_HWSURFACE, h, l, 32, 0, 0, 0, 0);
- 
+  exploded = false;
   m_vy  = 0;
   m_vx  = 0;
   m_x_init = x_s;

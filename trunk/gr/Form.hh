@@ -52,7 +52,7 @@ using namespace std;
     void recalibrate();
     speed_t get_speed();
     void set_screen(Ecran * e);
-    void show();
+    virtual void show();
     ~Form();
 
   protected:
