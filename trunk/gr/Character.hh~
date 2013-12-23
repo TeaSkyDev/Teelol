@@ -27,7 +27,6 @@
     void jump();
     void take_dmg();
     void take_life();
-    void loose_life(int);
     void die();
     void spawn(int, int);
     void radical_move(int,int);

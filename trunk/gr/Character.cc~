@@ -62,10 +62,6 @@ void Character::take_life(){
   m_wrong_img = true;
 }
 
-void Character::loose_life(int l) {
-  m_life -= l;
-}
-
 void Character::pass_row(){
  
   /*
