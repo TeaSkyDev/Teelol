@@ -69,6 +69,7 @@ void Bullet::explode(){
   set_image("img/explosion.png");
   m_speed.m_x = 0;
   m_speed.m_y = 0;
+  exploded = true;
 }
 
 void Bullet::add_obstacle(Form * f){
@@ -97,3 +98,8 @@ void Bullet::set_speed(int temps){
 
 }
 
+
+
+bool Bullet::get_exploded(){
+  return exploded;
+}

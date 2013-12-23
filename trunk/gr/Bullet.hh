@@ -17,11 +17,14 @@ public:
   direction_t collide();
   void set_speed(int temps); //calcule la vitesse a laquelle va devoir aller la balle
 
+  bool get_exploded();
+
 private:
   int m_dmg;
   double m_angle;
   int m_speed_init;
   int m_temps;
+  bool exploded;
   vector<Form *> m_obstacle;
 
   /* tmp */
