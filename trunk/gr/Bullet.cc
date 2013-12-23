@@ -2,7 +2,7 @@
 
 
 Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, string img):Form(x,y,h,l), m_dmg(dmg) {
-cout << "[test";
+
   set_image(img); 
   //m_surf = SDL_CreateRGBSurface(SDL_HWSURFACE, h, l, 32, 0, 0, 0, 0);
   exploded = false;
@@ -17,7 +17,7 @@ cout << "[test";
 
   m_vx = speed_init*cos(m_angle);
   m_vy = speed_init*sin(m_angle);
-cout << "test]" << endl;
+
 }
 
 
@@ -30,30 +30,35 @@ type_t Bullet::get_type() {
 }
 
 void Bullet::pass_row(){
-  cout << "[test2";
+
   double g  = 9.81;
   m_vy+=0.5;
 
   m_temps += 8;
 
   bool continuer = true;
-  cout<<m_vy<<" "<<m_vx<<endl;
+
   for(int i = 0 ; i < abs((int)m_vy) ; i++){
-    direction_t d = collide();
-    if(d.col_y == NORTH || d.col_y == SOUTH){
+    collision_t d = collide();
+    if(d.dir.col_y == NORTH || d.dir.col_y == SOUTH){
+      if(d.type == CHARACTER) {
+	d.element->loose_life(1);
+      }
       explode();
       continuer = false;
-      cout << ",test2";
     }
    
     if(m_vy > 0)
       m_y ++;
     else m_y --;
   }
-  cout << ",test2";
+
   for(int i = 0 ; i < abs((int)m_vx) && continuer; i++){
-    direction_t d = collide();
-    if(d.col_x == EAST || d.col_x == WEST){
+    collision_t d = collide();
+    if(d.dir.col_x == EAST || d.dir.col_x == WEST){
+      if(d.type == CHARACTER) {
+	d.element->loose_life(1);
+      }
       explode();
     }
 
@@ -62,7 +67,7 @@ void Bullet::pass_row(){
     else
       m_x --;
   }
-  cout << ",test2]" << endl;
+
 }
 
 void Bullet::explode(){
@@ -76,9 +81,9 @@ void Bullet::add_obstacle(Form * f){
   m_obstacle.push_back(f);
 }
 
-direction_t Bullet::collide(){
+collision_t Bullet::collide(){
   Collision c(this, m_obstacle);
-  return c.get_direction();
+  return c.get_collision();
 }
 
 

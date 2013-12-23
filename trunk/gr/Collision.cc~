@@ -78,9 +78,9 @@ direction_t Collision::get_direction(){
 
 collision_t Collision::get_collision() {
   collision_t col;
-  col.dir     = m_direction;
-  col.type    = m_type;
-  col.element = m_element;
+  col.dir  = m_direction;
+  col.type = m_type;
+  col.form = m_element;
   return col;
 }
 
