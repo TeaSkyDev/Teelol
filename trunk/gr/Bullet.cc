@@ -38,7 +38,7 @@ void Bullet::pass_row(){
 
   bool continuer = true;
 
-  for(int i = 0 ; i < abs((int)m_vy) ; i++){
+   for(int i = 0 ; i < abs((int)m_vy) ; i++){
     collision_t d = collide();
     if(d.dir.col_y == NORTH || d.dir.col_y == SOUTH){
       if(d.type == CHARACTER) {
@@ -67,7 +67,7 @@ void Bullet::pass_row(){
     else
       m_x --;
   }
-
+  
 }
 
 void Bullet::explode(){

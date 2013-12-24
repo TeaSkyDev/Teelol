@@ -1,8 +1,13 @@
 #include "Ammo.hh"
 
-
+Ammo::Ammo(){
+  m_delay = 0;
+  m_num = 10;
+  m_type = GRENADE;
+  m_dmg = 5;
+}
 void Ammo::shoot(Form * f, Ecran * e){
-  if(m_num > 0 || m_num == -1){
+  if((m_num > 0 || m_num == -1) && m_delay == 0){
 
     m_ammo.push_back(Bullet(f->get_xb(), f->get_yb(), 10,10,m_dmg,f->get_xba(), f->get_yba(), "../img/Grenade.png"));
     switch(m_type){
@@ -16,8 +21,9 @@ void Ammo::shoot(Form * f, Ecran * e){
     m_ammo[m_ammo.size()-1].set_screen(e);
     if(m_num != -1)
       m_num --;
+    m_delay = 10;
   }
-  else cout<<"plus de muition"<<endl;
+
 }
 
 void Ammo::pick_up(int nb){
@@ -42,11 +48,11 @@ void Ammo::show(){
 
 void Ammo::set_type(cartridge_t type){
   m_type = type;
- switch(m_type){
+  switch(m_type){
   case GRENADE:
-     m_dmg = 5; break;
+    m_dmg = 5; break;
   case SHOTGUN: 
-     m_dmg = 2; break;
+    m_dmg = 2; break;
   }
 }
 
@@ -60,6 +66,8 @@ void Ammo::pass_row(){
       i--;
     }
   }
+  if(m_delay > 0)
+    m_delay--;
 }
 
 int Ammo::get_dmg(){

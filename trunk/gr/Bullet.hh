@@ -14,7 +14,7 @@ public:
   void pass_row();
   void explode();
   void add_obstacle(Form * f);
-  direction_t collide();
+  collision_t collide();
   void set_speed(int temps); //calcule la vitesse a laquelle va devoir aller la balle
 
   bool get_exploded();

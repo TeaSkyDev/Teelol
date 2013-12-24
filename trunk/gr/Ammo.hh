@@ -12,6 +12,8 @@ enum cartridge_t{
 class Ammo{
 public:
 
+  Ammo();
+
   void shoot(Form * f, Ecran *e);
   void pick_up(int);
   void set_type(cartridge_t);
@@ -30,6 +32,7 @@ private:
   int m_num; // -1 = infini
   vector<Bullet> m_ammo;
   int m_max, m_dmg;
+  int m_delay;
 };
 
 
