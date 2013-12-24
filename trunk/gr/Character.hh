@@ -17,7 +17,7 @@
 
   public:
   
-    Character(string img, int, int , int , int , Ecran *);
+    Character(Image_t img, int, int , int , int , Ecran *);
 
     void set_position(unsigned int x, unsigned int y);
     void move_left();
@@ -48,7 +48,7 @@
   protected:
  
 
-    string m_img;
+    Image_t m_img;
     int m_wait;
     bool m_wrong_img;
     bool m_ground; // vrai si le perso est sur le sol

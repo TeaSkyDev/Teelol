@@ -1,11 +1,17 @@
 #include "Form.hh"
 
-Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l) {m_angle = 0;}
+Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l), c("../const/file") {
+  m_angle = 0;
+  c.load_file();
+}
 
-  void Form::set_image(string img){
-    m_surf = IMG_Load(img.c_str());
-    m_sauv = IMG_Load(img.c_str());
-    m_sauv2 = IMG_Load("../img/2weap.png");    
+  void Form::set_image(Image_t img){
+    m_surf = IMG_Load(c[img].c_str());
+    m_sauv = IMG_Load(c[img].c_str());
+    if(img == 8)
+      m_sauv2 = IMG_Load(c[(Image_t)9].c_str());    
+    if(img == 10)
+      m_sauv2 = IMG_Load(c[(Image_t)11].c_str());    
     m_l = m_surf->w;
     m_h = m_surf->h;
   }

@@ -10,6 +10,8 @@
 #include "Ecran.hh"
 #include <boost/lexical_cast.hpp>
 #include <math.h>
+
+#include "Const.hh"
 using namespace std;
 
 
@@ -29,9 +31,9 @@ class Form{
   public :
   Form(int x, int y, int h, int l);
   //prend en entree un chemin vers une image
-  void set_image(string img);
+  void set_image(Image_t img);
   int get_l();
-    int get_h();
+  int get_h();
   int get_x();
   int get_y();
   int get_xb();
@@ -66,6 +68,7 @@ protected:
   int m_angle;
   Ecran * m_e;
   speed_t m_speed;
+  Const c;
 };
 
 

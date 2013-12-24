@@ -1,7 +1,7 @@
 #include "Bullet.hh"
 
 
-Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, string img):Form(x,y,h,l), m_dmg(dmg) {
+Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t img):Form(x,y,h,l), m_dmg(dmg) {
 
   set_image(img); 
   //m_surf = SDL_CreateRGBSurface(SDL_HWSURFACE, h, l, 32, 0, 0, 0, 0);
@@ -71,7 +71,7 @@ void Bullet::pass_row(){
 }
 
 void Bullet::explode(){
-  set_image("img/explosion.png");
+  set_image(I_CART_EX);
   m_speed.m_x = 0;
   m_speed.m_y = 0;
   exploded = true;

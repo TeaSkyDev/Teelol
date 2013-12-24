@@ -1,7 +1,7 @@
 #include "Character.hh"
 #include "Collision.hh"
 
-Character::Character(string img, int x, int y, int l, int h, Ecran * e) : Form(x, y, h, l) {
+Character::Character(Image_t img, int x, int y, int l, int h, Ecran * e) : Form(x, y, h, l) {
   m_e = e;
   set_image(img);
   m_img = img;
@@ -16,7 +16,7 @@ Character::Character(string img, int x, int y, int l, int h, Ecran * e) : Form(x
 
 void Character::init_Weap(){
   m_weapon = new Form(m_x+1, m_y+1,10,25);
-  m_weapon->set_image("../img/weap.png");
+  m_weapon->set_image(I_GRENADE);
   m_weapon->set_screen(m_e);
   
 }
@@ -53,13 +53,13 @@ void Character::jump(){
 }
 
 void Character::take_dmg(){
-  set_image("Dmg"+m_img);
+  set_image(I_TEE_DMG);
   m_wait = 10;//attend 10 tour avant de remettre l'image à la base 
   m_wrong_img = true;
 }
 
 void Character::take_life(){
-  set_image("Health"+m_img);
+  set_image(I_TEE_HEALTH);
   m_wait = 10;
   m_wrong_img = true;
 }
@@ -101,7 +101,7 @@ void Character::pass_row(){
 }
 
 void Character::die(){
-  set_image("Die"+m_img);
+  set_image(I_TEE_DIE);
 }
 
 void Character::spawn(int x, int y){
@@ -112,7 +112,7 @@ void Character::spawn(int x, int y){
 
 
 void Character::radical_move(int x, int y){
-  set_image("Spew"+m_img);
+  set_image(I_TEE_SPEW);
   m_wait = 10;
   m_wrong_img = true;
 } 

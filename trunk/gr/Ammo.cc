@@ -9,14 +9,14 @@ Ammo::Ammo(){
 void Ammo::shoot(Form * f, Ecran * e){
   if((m_num > 0 || m_num == -1) && m_delay == 0){
 
-    m_ammo.push_back(Bullet(f->get_xb(), f->get_yb(), 10,10,m_dmg,f->get_xba(), f->get_yba(), "../img/Grenade.png"));
+    m_ammo.push_back(Bullet(f->get_xb(), f->get_yb(), 10,10,m_dmg,f->get_xba(), f->get_yba(), I_GRENADE_C));
     switch(m_type){
     case GRENADE:
-      m_ammo[m_ammo.size()-1].set_image("../img/Grenade.png");break;
+      m_ammo[m_ammo.size()-1].set_image(I_GRENADE_C);break;
     case SHOTGUN:
-      m_ammo[m_ammo.size()-1].set_image("../img/ShotGun.png"); break;
+      m_ammo[m_ammo.size()-1].set_image(I_SHOTGUN_C); break;
     default:
-      m_ammo[m_ammo.size()-1].set_image("../img/Grenade.png"); break;
+      m_ammo[m_ammo.size()-1].set_image(I_GRENADE_C); break;
     }
     m_ammo[m_ammo.size()-1].set_screen(e);
     if(m_num != -1)

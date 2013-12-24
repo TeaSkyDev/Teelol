@@ -10,8 +10,8 @@ void routine(){
   Ecran sc(700,500);
 
   Event e;
-  Character r("../img/otherTee.png",50,20,10,10,&sc);
-  Character f ("../img/Mur.png", 20,200,300,10, &sc);
+  Character r(I_TEE_P,50,20,10,10,&sc);
+  Character f (I_MUR, 20,200,300,10, &sc);
   
   //Character mur("img/Mur2.png", 300, 200, 10, 300, &sc);
   vector<Bullet> b;
