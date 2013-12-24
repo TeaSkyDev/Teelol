@@ -19,6 +19,8 @@ void Ammo::shoot(Form * f, Ecran * e){
       m_ammo[m_ammo.size()-1].set_image(I_GRENADE_C); break;
     }
     m_ammo[m_ammo.size()-1].set_screen(e);
+    for(int i = 0 ; i < m_obstacle.size() ; i++)
+      m_ammo[m_ammo.size()-1].add_obstacle(m_obstacle[i]);
     if(m_num != -1)
       m_num --;
     m_delay = 10;
@@ -81,4 +83,8 @@ int Ammo::get_NbAmmo(){
 
 cartridge_t Ammo::get_type(){
   return m_type;
+}
+
+void Ammo::add_obstacle(Form &f){
+  m_obstacle.push_back(&f);
 }

@@ -125,6 +125,7 @@ void Character::set_over_ground(){
 
 void Character::add_obstacle(Form *f){
   m_obstacle.push_back(f);
+  m_ammo.add_obstacle(*f);
 }
 
 

@@ -11,13 +11,14 @@ void routine(){
 
   Event e;
   Character r(I_TEE_P,50,20,10,10,&sc);
-  Character f (I_MUR, 20,200,300,10, &sc);
-  
-  //Character mur("img/Mur2.png", 300, 200, 10, 300, &sc);
-  vector<Bullet> b;
+  Form f (20,200,300,10);
+  f.set_screen(&sc);
+  f.set_image(I_MUR);
+
+
   /* On ajoute le mur et la balle dans la liste de collisions */
   r << f;
-  //r << mur;
+
 
   while(!e[QUIT]){
     e.UpdateEvent();

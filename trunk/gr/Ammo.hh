@@ -24,7 +24,7 @@ public:
   int get_dmg();
   int get_NbAmmo();
   cartridge_t get_type();
-
+  void add_obstacle(Form &);
 
 
 private:
@@ -33,6 +33,7 @@ private:
   vector<Bullet> m_ammo;
   int m_max, m_dmg;
   int m_delay;
+  vector<Form *> m_obstacle;
 };
 
 
