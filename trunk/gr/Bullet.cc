@@ -67,7 +67,8 @@ void Bullet::pass_row(){
     else
       m_x --;
   }
-  
+  if(m_x > 700 || m_y > 700)
+    explode();
 }
 
 void Bullet::explode(){

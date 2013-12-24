@@ -1,10 +1,11 @@
 #include "Ammo.hh"
 
-Ammo::Ammo(){
+Ammo::Ammo(): c("../const/file"){
   m_delay = 0;
   m_num = 10;
   m_type = GRENADE;
   m_dmg = 5;
+  c.load_file();
 }
 void Ammo::shoot(Form * f, Ecran * e){
   if((m_num > 0 || m_num == -1) && m_delay == 0){
@@ -45,8 +46,26 @@ void Ammo::show(){
   for(int i = 0 ; i < m_ammo.size() ; i++){
     m_ammo[i].show();
   }
+  show_mun();
 }
 
+
+void Ammo::show_mun(){
+  SDL_Rect pos;
+  pos.x = 10;
+  pos.y = 10;
+  SDL_Surface * mun;
+  switch(m_type){
+  case GRENADE:
+    mun = IMG_Load(c[I_GRENADE_C].c_str()); break;
+  case SHOTGUN:
+    mun = IMG_Load(c[I_GRENADE_C].c_str()); break;
+  }
+  for(int i = 0 ; i < m_num ; i++){
+    m_e->put(mun, pos);
+    pos.x += 10+mun->w;
+  }
+}
 
 void Ammo::set_type(cartridge_t type){
   m_type = type;
@@ -87,4 +106,9 @@ cartridge_t Ammo::get_type(){
 
 void Ammo::add_obstacle(Form &f){
   m_obstacle.push_back(&f);
+}
+
+
+void Ammo::set_screen(Ecran *e){
+  m_e = e;
 }

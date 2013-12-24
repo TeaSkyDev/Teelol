@@ -12,6 +12,7 @@ Character::Character(Image_t img, int x, int y, int l, int h, Ecran * e) : Form(
   m_saut = false;
   init_Weap();
   m_ammo.set_nb(10);
+  m_ammo.set_screen(e);
 }
 
 void Character::init_Weap(){
