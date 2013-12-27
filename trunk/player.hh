@@ -11,7 +11,7 @@
 class Player : public Character {
 
 	public:
-		Player(std::string nick, std::string img, int x, int y, int h, int l, Ecran * screen);
+		Player(std::string nick, Image_t img, int x, int y, int h, int l, Ecran * screen);
 
 		void set_nick(std::string _nick);
 		std::string get_nick()const;

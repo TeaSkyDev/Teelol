@@ -16,18 +16,19 @@ namespace Teelol {
   };
 
   struct session_on_client: public session<my_proto>{
-  
+    ezmutex mutex;
     vector<Player*> players;
     vector<Character> f;
+    vector<Bullet> b;
     Player * player;
     Ecran  *sc;
     state_t state;
 
     session_on_client(socket &io): session<my_proto>(io){
       sc = new Ecran(400,400);
-      player = new Player("nameless", "../gr/img/tee.png", 0, 0, 10, 10, sc);
+      player = new Player("nameless" , I_TEE_P, 0, 0, 10, 10, sc);
       state  = STARTING;
-      
+      cout<<"ici"<<endl;
       proto.moveOk.sig_recv.connect(EZMETHOD(this, do_moveOk));
       proto.moved.sig_recv.connect(EZMETHOD(this, do_moved));
       proto.err.sig_recv.connect(EZMETHOD(this, do_err));
@@ -37,6 +38,7 @@ namespace Teelol {
       proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
       proto.addObstacle.sig_recv.connect(EZMETHOD(this, do_addObstacle));
       proto.rotated.sig_recv.connect(EZMETHOD(this, do_rotated));
+      proto.showMissile.sig_recv.connect(EZMETHOD(this, do_showMissile));
       //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
     }
@@ -85,7 +87,7 @@ namespace Teelol {
     }
 
     void do_joined(string nick) {
-      players.push_back(new Player(nick, "../gr/img/otherTee.png", 0, 0, 10, 10, sc));
+      players.push_back(new Player(nick, I_TEE_P, 0, 0, 10, 10, sc));
     }
 
     void do_left(string nick) {
@@ -101,7 +103,7 @@ namespace Teelol {
 
     void do_addObstacle(int x, int y, int h, int l){
       
-      f.push_back(Character("../gr/img/Mur.png",x,y,h,l,sc));
+      f.push_back(Character(I_MUR,x,y,h,l,sc));
     }
     
     void do_rotated(int angle, string nick){
@@ -116,11 +118,22 @@ namespace Teelol {
       } 
     }
     
+    void do_showMissile(int x, int y){
+      ezlock hold(mutex);
+      b.push_back(Bullet(x,y,0,0,0,0,0,I_GRENADE_C));
+      b[b.size() - 1].set_screen(sc);
+    }
+
     
     void affiche(){
+      ezlock hold(mutex);
       sc->clean();
       for(int i = 0 ; i < f.size() ; i++){
 	f[i].show();
+      }
+      for(int i = b.size()-1; i >= 0 ; i--){
+	b[i].show();
+	b.pop_back();
       }
       for(int i = 0 ; i < players.size() ; i++){
 	players[i]->show();
@@ -140,6 +153,14 @@ namespace Teelol {
       proto.rotate(angle);
     }
     
+    void shoot(){
+      int x1 = boost::lexical_cast<int>(player->get_weapon()->get_xb());
+      int y1 = boost::lexical_cast<int>(player->get_weapon()->get_yb());
+      int x2 = boost::lexical_cast<int>(player->get_weapon()->get_xba());
+      int y2 = boost::lexical_cast<int>(player->get_weapon()->get_yba());
+
+      proto.shoot(x1,y1,x2,y2);
+    }
 
   };
 };
@@ -154,6 +175,7 @@ void * routine(void * arg){
   string pseudo;
   cin>>pseudo;
   c->proto.nick(pseudo);
+  cout<<"message envoye"<<endl;
   while(!e[QUIT]){
     e.UpdateEvent();
     if(e[LEFT]){
@@ -166,7 +188,8 @@ void * routine(void * arg){
       c->proto.move("stopx");
     }
     if(e[JUMP]){ c->proto.move("jump"); e[JUMP] = 0;}
-     c->rotationArme(e().m_x, e().m_y);
+    if(e[LEFT_CL]){ c->shoot();}
+    c->rotationArme(e().m_x, e().m_y);
     SDL_Delay(50);
     c->sc->clean();
     c->affiche();
@@ -178,6 +201,7 @@ void * routine(void * arg){
 
 int main(int argc, char ** argv){
   netez::client<Teelol::session_on_client> client(argc,argv);
+  cout<<"ici"<<endl;
   pthread_t th;
   pthread_create(&th, NULL, routine, (void*)&client.session);
   pthread_join(th,NULL);

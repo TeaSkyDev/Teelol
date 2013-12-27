@@ -15,6 +15,7 @@ public:
   Ammo();
 
   void shoot(Form * f, Ecran *e);
+  void shoot(int, int, int, int);
   void pick_up(int);
   void set_type(cartridge_t);
   void pass_row();
@@ -23,11 +24,13 @@ public:
   void set_nb(int);
   void set_screen(Ecran * e);
 
+  Bullet * operator[](int i);
+  
   int get_dmg();
   int get_NbAmmo();
   cartridge_t get_type();
   void add_obstacle(Form &);
-
+  int get_max(){return m_ammo.size();}
 
 private:
   cartridge_t m_type;

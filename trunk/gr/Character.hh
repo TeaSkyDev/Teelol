@@ -41,7 +41,7 @@
 
     Form * get_weapon();
     type_t get_type();
-
+    Ammo * get_ammo();
   private:
     void init_Weap();
 

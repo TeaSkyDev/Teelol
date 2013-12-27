@@ -73,7 +73,7 @@ void Bullet::pass_row(){
 
 void Bullet::explode(){
   set_image(I_CART_EX);
-  show();
+
   m_speed.m_x = 0;
   m_speed.m_y = 0;
   exploded = true;

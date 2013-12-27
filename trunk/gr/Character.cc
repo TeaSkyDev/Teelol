@@ -146,6 +146,10 @@ type_t Character::get_type() {
   return CHARACTER;
 }
 
+Ammo * Character::get_ammo(){
+  return &m_ammo;
+}
+
 
 void Character::shoot(){
   m_ammo.shoot(m_weapon, m_e);

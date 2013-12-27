@@ -3,10 +3,32 @@
 Ammo::Ammo(): c("../const/file"){
   m_delay = 0;
   m_num = 10;
+  m_max = 10;
   m_type = GRENADE;
   m_dmg = 5;
   c.load_file();
 }
+
+void Ammo::shoot(int x1, int x2, int y1, int y2){
+  if((m_num > 0 || m_num == -1) && m_delay == 0){
+    m_ammo.push_back(Bullet(x1,y1, 10,10,m_dmg,x2, y2, I_GRENADE_C));
+    switch(m_type){
+    case GRENADE:
+      m_ammo[m_ammo.size()-1].set_image(I_GRENADE_C);break;
+    case SHOTGUN:
+      m_ammo[m_ammo.size()-1].set_image(I_SHOTGUN_C); break;
+    default:
+      m_ammo[m_ammo.size()-1].set_image(I_GRENADE_C); break;
+    }
+   
+    for(int i = 0 ; i < m_obstacle.size() ; i++)
+      m_ammo[m_ammo.size()-1].add_obstacle(m_obstacle[i]);
+    if(m_num != -1)
+      m_num --;
+    m_delay = 10;
+  }
+}
+
 void Ammo::shoot(Form * f, Ecran * e){
   if((m_num > 0 || m_num == -1) && m_delay == 0){
 
@@ -91,8 +113,17 @@ void Ammo::pass_row(){
     m_delay--;
 }
 
+
+Bullet * Ammo::operator[](int i){
+  if(i < m_ammo.size() && i >= 0){
+    return &m_ammo[i];
+  }
+  else return NULL;
+}
+
+
 int Ammo::get_dmg(){
-  return m_dmg;
+   return m_dmg;
 }
 
 int Ammo::get_NbAmmo(){
