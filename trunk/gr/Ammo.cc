@@ -68,6 +68,9 @@ void Ammo::show(){
   for(int i = 0 ; i < m_ammo.size() ; i++){
     m_ammo[i].show();
   }
+  for(int i = 0 ; i < m_exploded.size() ; i++){
+    m_exploded[i].show();
+  }
   show_mun();
 }
 
@@ -101,9 +104,14 @@ void Ammo::set_type(cartridge_t type){
 
 
 void Ammo::pass_row(){
+  for(int i = m_exploded.size()-1 ; i == 0 ; i--)
+    m_exploded.pop_back();
+
   for(int i = 0 ; i < m_ammo.size() ; i++){
     m_ammo[i].pass_row();
     if(m_ammo[i].get_exploded()){
+      m_exploded.push_back(m_ammo[i]);
+      m_exploded[m_exploded.size()-1].set_image(I_CART_EX);
       m_ammo[i] = m_ammo[m_ammo.size()-1];
       m_ammo.pop_back();
       i--;
@@ -119,6 +127,10 @@ Bullet * Ammo::operator[](int i){
     return &m_ammo[i];
   }
   else return NULL;
+}
+
+Bullet * Ammo::get_exploded(int i){
+  return &m_exploded[i];
 }
 
 

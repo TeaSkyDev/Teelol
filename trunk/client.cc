@@ -39,6 +39,7 @@ namespace Teelol {
       proto.addObstacle.sig_recv.connect(EZMETHOD(this, do_addObstacle));
       proto.rotated.sig_recv.connect(EZMETHOD(this, do_rotated));
       proto.showMissile.sig_recv.connect(EZMETHOD(this, do_showMissile));
+      proto.showExplosion.sig_recv.connect(EZMETHOD(this, do_showExplosion));
       proto.nbAmmo.sig_recv.connect(EZMETHOD(this, do_nbAmmo));
       //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
@@ -125,7 +126,12 @@ namespace Teelol {
       b[b.size() - 1].set_screen(sc);
     }
 
-    
+    void do_showExplosion(int x, int y){
+      ezlock hold(mutex);
+      b.push_back(Bullet(x,y,0,0,0,0,0,I_CART_EX));
+      b[b.size()-1].set_screen(sc);
+    }
+
     void do_nbAmmo(int nb){
       player->get_ammo()->set_nb(nb);
     }
