@@ -109,7 +109,7 @@ namespace Teelol {
 	    int x = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_x());
 	    int y = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_y());
 	    it->second->proto.showMissile(x,y);
-	    cout<<i<<" "<<x<<" "<<y<<endl;
+	   
 	  }
 	}
       }
@@ -178,7 +178,8 @@ namespace Teelol {
 
     void do_shoot(int x1, int y1,int x2, int y2 ){
       m_player->get_ammo()->shoot(x1,x2,y1,y2);
-
+      int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
+      proto.nbAmmo(nb);
     }
 
     void do_quit() {

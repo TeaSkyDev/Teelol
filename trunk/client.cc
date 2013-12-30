@@ -28,7 +28,7 @@ namespace Teelol {
       sc = new Ecran(400,400);
       player = new Player("nameless" , I_TEE_P, 0, 0, 10, 10, sc);
       state  = STARTING;
-      cout<<"ici"<<endl;
+     
       proto.moveOk.sig_recv.connect(EZMETHOD(this, do_moveOk));
       proto.moved.sig_recv.connect(EZMETHOD(this, do_moved));
       proto.err.sig_recv.connect(EZMETHOD(this, do_err));
@@ -39,6 +39,7 @@ namespace Teelol {
       proto.addObstacle.sig_recv.connect(EZMETHOD(this, do_addObstacle));
       proto.rotated.sig_recv.connect(EZMETHOD(this, do_rotated));
       proto.showMissile.sig_recv.connect(EZMETHOD(this, do_showMissile));
+      proto.nbAmmo.sig_recv.connect(EZMETHOD(this, do_nbAmmo));
       //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
     }
@@ -125,6 +126,10 @@ namespace Teelol {
     }
 
     
+    void do_nbAmmo(int nb){
+      player->get_ammo()->set_nb(nb);
+    }
+
     void affiche(){
       ezlock hold(mutex);
       sc->clean();
@@ -141,6 +146,7 @@ namespace Teelol {
       }
       player->show();
       player->get_weapon()->show();
+      player->get_ammo()->show();
       sc->Flip();
     }
     

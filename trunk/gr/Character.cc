@@ -156,7 +156,7 @@ void Character::shoot(){
 }
 
 void Character::show(){
-  m_ammo.show();
+  //  m_ammo.show();
   SDL_Rect rect;
   rect.x = m_x;
   rect.y = m_y;

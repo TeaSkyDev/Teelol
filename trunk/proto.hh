@@ -22,6 +22,7 @@ namespace Teelol{
     message <9, void(string)>                okNick ;        //réponse positive à la demande de pseudo d'un joueur
     message <10, void(int, int)>             showMissile;   //indique la position la position d'un missile
     message <11, void(int, int , int , int)> shoot;         //client indique qu'il a tiré
+    message <15, void(int)>                  nbAmmo;        //serveur envoi le nombre de munition restante au client
 
     message <12, void(int, int ,int, int)>   addObstacle;
     message <13, void(int)>                  rotate;
@@ -31,7 +32,7 @@ namespace Teelol{
 			  nick(this),     err(this),  ok(this),
 			  joined(this),   left(this), moved(this), quit(this), 
 			  okNick(this), addObstacle(this), showMissile(this), 
-			  shoot(this), rotate(this), rotated(this)
+			  shoot(this), rotate(this), rotated(this), nbAmmo(this)
     {}
     
 
