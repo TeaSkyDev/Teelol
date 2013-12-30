@@ -74,7 +74,7 @@ namespace Teelol {
     void do_move(string mv) {
       {
 	ezlock hold(ez_mutex);
-
+	
 	if(mv == "right") {
 	  m_player->move_right();
 	  
@@ -91,7 +91,7 @@ namespace Teelol {
 	
 	
 	m_player->pass_row();	
-       
+	  
 	int x = m_player->x_to_sig();
 	int y = m_player->y_to_sig();
 	proto.moveOk(x, y);
@@ -115,8 +115,9 @@ namespace Teelol {
 	    int y = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_y());
 	    it->second->proto.showExplosion(x,y);
 	  }
-	}
+	  }
       }
+	
     }
 
     void do_nick(string _nick) {
@@ -131,24 +132,20 @@ namespace Teelol {
 	
       if(nick_ok) {
 	cout<<"nick accepte"<<endl;
-	Player *new_player = new Player(_nick, I_TEE_P, 10, 10, 10, 10, NULL);
-	m_player = new_player;
-	//temporaire
-	cout<<"avant le map"<<endl;
-	players[new_player] = this;
+	m_player  = new Player(_nick, I_TEE_P, 10, 10, 10, 10, NULL);
+
+	players[m_player] = this;
 	nick = _nick;
 	proto.ok();
 	  
 	cout << _nick << " a changé son pseudo" << endl;
 	  
-	//Préviens tout le monde que le joueur s'est connecté
 	player_joined();
 	proto.okNick(_nick);
 	cout<<"signaux envoyer"<<endl;
       } else {
 	proto.err("Nick already use !");
       }
-      //temporaire
       *m_player << *f; 
       proto.addObstacle(f->x_to_sig(),f->y_to_sig(),f->h_to_sig(),f->l_to_sig());
 
@@ -168,6 +165,7 @@ namespace Teelol {
 	  it->first->add_obstacle(m_player);
 	}
       }
+			  
     }
 
     void do_rotate(int angle){
@@ -177,6 +175,7 @@ namespace Teelol {
 	    it->second->proto.rotated( angle, nick);
 	  }
 	}
+			      
     }
 
 
@@ -217,7 +216,7 @@ void * boucle_suppr(void * arg) {
 int main(int argc, char ** argv){
   
   pthread_t th_boucle_suppr;
-  pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
+  //pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
 
   netez::server<Teelol::session_on_server> server(argc,argv);
 

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-
+#include <SDL/SDL_ttf.h>
 
 enum Image_t{
   I_TEE_P,
@@ -31,12 +31,12 @@ public:
   Const(std::string);
   void load_file();
   std::string operator[](Image_t);
-  
+  TTF_Font * font();
   
 private:
   std::string m_file;
   std::map<Image_t,std::string> m_path;
-
+  TTF_Font * m_font;
 }; 
 
 

@@ -25,6 +25,7 @@ namespace Teelol {
     state_t state;
 
     session_on_client(socket &io): session<my_proto>(io){
+
       sc = new Ecran(400,400);
       player = new Player("nameless" , I_TEE_P, 0, 0, 10, 10, sc);
       state  = STARTING;
@@ -148,9 +149,11 @@ namespace Teelol {
       }
       for(int i = 0 ; i < players.size() ; i++){
 	players[i]->show();
+	players[i]->show_nick();
 	players[i]->get_weapon()->show();
       }
       player->show();
+
       player->get_weapon()->show();
       player->get_ammo()->show();
       sc->Flip();
@@ -212,6 +215,7 @@ void * routine(void * arg){
 
 
 int main(int argc, char ** argv){
+
   netez::client<Teelol::session_on_client> client(argc,argv);
   cout<<"ici"<<endl;
   pthread_t th;

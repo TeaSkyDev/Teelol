@@ -163,8 +163,6 @@ void Character::show(){
   rect.h = m_h;
   rect.w = m_l;
   m_e->put(m_surf,rect);
-    
-   
 
 }
 
