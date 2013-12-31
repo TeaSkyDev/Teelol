@@ -19,6 +19,7 @@ class Player : public Character {
   
 	private:
 		std::string m_nick;
+  TTF_Font * m_font;
 
 };
 

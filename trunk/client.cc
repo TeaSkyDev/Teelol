@@ -215,7 +215,7 @@ void * routine(void * arg){
 
 
 int main(int argc, char ** argv){
-
+  TTF_Init();
   netez::client<Teelol::session_on_client> client(argc,argv);
   cout<<"ici"<<endl;
   pthread_t th;
