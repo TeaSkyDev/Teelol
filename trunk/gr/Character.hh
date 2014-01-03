@@ -5,6 +5,7 @@
 #include "Form.hh"
 #include "Collision.hh"
 #include "Ammo.hh"
+#include "Rotable.hh"
   /*
    *  attention a differencie la classe player de la classe Character 
    *  la classe character est la classe uniquement d'affichage alors que la classe player permet de calculer la vie
@@ -39,7 +40,7 @@
     collision_t collide();
     void show();
 
-    Form * get_weapon();
+    Rotable * get_weapon();
     type_t get_type();
     Ammo * get_ammo();
   private:
@@ -54,7 +55,7 @@
     bool m_ground; // vrai si le perso est sur le sol
     bool m_saut;
     vector <Form*> m_obstacle;
-    Form * m_weapon;
+    Rotable * m_weapon;
 
     Ammo m_ammo;
 

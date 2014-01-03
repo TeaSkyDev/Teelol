@@ -31,16 +31,11 @@ class Form{
   public :
   Form(int x, int y, int h, int l);
   //prend en entree un chemin vers une image
-  void set_image(Image_t img);
+  virtual void set_image(Image_t img);
   int get_l();
   int get_h();
   int get_x();
   int get_y();
-  int get_xb();
-  int get_yb();
-  int get_xba();
-  int get_yba();
-  double get_angle();
   virtual type_t get_type();
   virtual void loose_life(int);
   int x_to_sig();
@@ -49,10 +44,6 @@ class Form{
   int l_to_sig();
   void set_x(int x);
   void set_y(int y);
-  void set_angle(double angle);
-  void rotate(double angle, int x, int y, int dist);
-  void rotate_to(double angle, int x, int y, int dist);
-  void recalibrate();
   speed_t get_speed();
   void set_screen(Ecran * e);
   virtual void show();
@@ -60,12 +51,11 @@ class Form{
   
 protected:
   
-  SDL_Surface * m_surf, *m_sauv, *m_sauv2;
+  SDL_Surface * m_surf;
   int m_x;
   int m_y;
   int m_h; 
   int m_l;
-  int m_angle;
   Ecran * m_e;
   speed_t m_speed;
   Const c;

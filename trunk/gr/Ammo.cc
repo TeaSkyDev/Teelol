@@ -29,7 +29,7 @@ void Ammo::shoot(int x1, int x2, int y1, int y2){
   }
 }
 
-void Ammo::shoot(Form * f, Ecran * e){
+void Ammo::shoot(Rotable * f, Ecran * e){
   if((m_num > 0 || m_num == -1) && m_delay == 0){
 
     m_ammo.push_back(Bullet(f->get_xb(), f->get_yb(), 10,10,m_dmg,f->get_xba(), f->get_yba(), I_GRENADE_C));
@@ -104,7 +104,7 @@ void Ammo::set_type(cartridge_t type){
 
 
 void Ammo::pass_row(){
-  for(int i = m_exploded.size()-1 ; i == 0 ; i--)
+  for(int i = m_exploded.size() ; i > 0 ; i--)
     m_exploded.pop_back();
 
   for(int i = 0 ; i < m_ammo.size() ; i++){

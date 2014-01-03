@@ -13,7 +13,7 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t im
   int o = m_x_init - m_x;
   int p = m_y_init - m_y;
   m_angle = atan2(p,o);
-  int speed_init = sqrt(o*o+p*p) * 2;
+  int speed_init = sqrt(o*o+p*p);
 
   m_vx = speed_init*cos(m_angle);
   m_vy = speed_init*sin(m_angle);
@@ -57,7 +57,7 @@ void Bullet::pass_row(){
     collision_t d = collide();
     if(d.dir.col_x == EAST || d.dir.col_x == WEST){
       if(d.type == CHARACTER) {
-	d.element->loose_life(1);
+	d.element->loose_life(m_dmg);
       }
       explode();
     }

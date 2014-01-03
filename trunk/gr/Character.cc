@@ -13,13 +13,14 @@ Character::Character(Image_t img, int x, int y, int l, int h, Ecran * e) : Form(
   init_Weap();
   m_ammo.set_nb(10);
   m_ammo.set_screen(e);
+  m_life = 10;
 }
 
 void Character::init_Weap(){
-  m_weapon = new Form(m_x+1, m_y+1,10,25);
+  m_weapon = new Rotable(m_x+1, m_y+1,10,25);
   m_weapon->set_image(I_GRENADE);
   m_weapon->set_screen(m_e);
-  
+ 
 }
 
 
@@ -138,7 +139,7 @@ collision_t Character::collide(){
 
 
 
-Form * Character::get_weapon(){
+Rotable * Character::get_weapon(){
   return m_weapon;
 }
 
@@ -157,6 +158,14 @@ void Character::shoot(){
 
 void Character::show(){
   //  m_ammo.show();
+  SDL_Surface * coeur = IMG_Load(c[I_COEUR].c_str());
+    SDL_Rect rect1;
+    rect1.x = 10;
+    rect1.y = 30;
+  for(int i = 0 ; i < m_life ; i++){
+    m_e->put(coeur, rect1);
+    rect1.x += 10 + coeur->w;
+  }
   SDL_Rect rect;
   rect.x = m_x;
   rect.y = m_y;

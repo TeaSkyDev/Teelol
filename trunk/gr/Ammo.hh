@@ -3,7 +3,7 @@
 
 
 #include "Bullet.hh"
-
+#include "Rotable.hh"
 enum cartridge_t{
   GRENADE,
   SHOTGUN
@@ -14,7 +14,7 @@ public:
 
   Ammo();
 
-  void shoot(Form * f, Ecran *e);
+  void shoot(Rotable * f, Ecran *e);
   void shoot(int, int, int, int);
   void pick_up(int);
   void set_type(cartridge_t);
