@@ -23,6 +23,9 @@ void Rotable::set_image(Image_t img){
 
 
 
+
+
+
 void Rotable::rotate(double angle, int x, int y, int dist){
   m_angle += angle;
   SDL_Surface *s;
@@ -31,11 +34,22 @@ void Rotable::rotate(double angle, int x, int y, int dist){
   else 
     s = rotozoomSurface(m_sauv, -m_angle, 1.0,1);
   m_surf = s;
-  m_x = x + dist * cos(m_angle*M_PI/180);
+  /*  m_x = x + dist * cos(m_angle*M_PI/180);
   m_y = y + dist * sin(m_angle*M_PI/180);
+  */
+  m_dist = dist;
+  O.x = x;
+  O.y = y;
+  get_A();
+  get_B();
+  get_F();
+  get_D();
+  get_E();
+  get_C();
   
-
-    recalibrate();
+  m_x = C.x;
+  m_y = C.y;
+  
 }
 
 
@@ -198,5 +212,63 @@ void Rotable::rotate_to(double angle, int x, int y, int dist){
   m_surf = s;
   m_x = x + dist * cos(_angle * M_PI/180);
   m_y = y + dist * sin(_angle*M_PI/180);
+
+}
+
+
+
+
+void Rotable::get_A(){
+
+  A.x = m_dist*cos(m_angle*M_PI / 180) + O.x;
+  A.y = m_dist*(sin(m_angle*M_PI/180))  + O.y;
+  cout << (-sin(m_angle*M_PI/180))<< endl;
+  cout << cos(m_angle*M_PI / 180) << endl;
+  cout << m_angle << endl;
+
+
+}
+
+void Rotable::get_B(){
+  B.x = A.x + (m_sauv->h/2)*(sin(m_angle*M_PI/180));
+  B.y = A.y -  (m_sauv->h/2)*cos(m_angle*M_PI/180);
+
+}
+
+void Rotable::get_F(){
+  F.x = A.x - (m_sauv->h/2)*sin(m_angle*M_PI/180);
+  F.y = A.y + (m_sauv->h/2)*cos(m_angle*M_PI/180);
+}
+
+void Rotable::get_D(){
+  D.x = B.x + (m_sauv->w)*cos(m_angle*M_PI/180);
+  D.y = B.y + (m_sauv->w)*sin(m_angle*M_PI/180);
+
+}
+
+void Rotable::get_E(){
+  E.x = D.x + (m_sauv->h)*(-sin(m_angle*M_PI/180));
+  E.y = D.y +  (m_sauv->h)*cos(m_angle*M_PI/180);
+
+}
+
+
+void Rotable::get_C(){
+  if(m_angle > 270 && m_angle <=360){
+    C.y = D.y;
+    C.x = B.x;
+  }
+  if(m_angle <= 270 && m_angle > 180){
+    C.x = D.x;
+    C.y = E.y;
+  }
+  if(m_angle <=180 && m_angle > 90){
+    C.x = E.x;
+    C.y = F.y;
+  }
+  if(m_angle > 0 && m_angle <= 90){
+    C.x = F.x;
+    C.y = B.y;
+  }
 
 }

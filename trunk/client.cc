@@ -164,7 +164,7 @@ namespace Teelol {
       int x = player->get_x()+ player->get_l()/2;;
       int y = player->get_y() + player->get_h()/2; 
       player->get_weapon()->set_angle(angle);
-      player->get_weapon()->rotate(0, x, y,0);
+      player->get_weapon()->rotate(0, x, y,10);
       proto.rotate(angle);
     }
     

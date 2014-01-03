@@ -20,10 +20,38 @@ public:
   void zoom(double);
   void recalibrate();
 
+
+
+
 private:
+
+  struct point{
+    int x, y;
+  };
+
+  void get_A();
+  void get_B();
+  void get_F();
+  void get_D();
+  void get_E();
+  void get_C();
 
   SDL_Surface *m_sauv, *m_sauv2;
   int m_angle;
+  point A, B, C, D, E, F, O;
+
+
+  /*
+          CBx-----------xD
+            |           |
+    Ox-----Ax           |
+            |           |
+	   Fx-----------xE
+   */
+
+  int m_dist;
+  
+
 };
 
 

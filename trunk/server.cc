@@ -32,7 +32,7 @@ namespace Teelol {
     Form * f;
     session_on_server(socket & io): session(io) {
       state = STARTING;
-      f = new Form(10,30,10,300);
+      f = new Form(10,300,10,300);
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
       proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
       proto.quit.sig_recv.connect(EZMETHOD(this, do_quit));
