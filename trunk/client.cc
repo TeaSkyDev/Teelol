@@ -18,7 +18,7 @@ namespace Teelol {
   struct session_on_client: public session<my_proto>{
     ezmutex mutex;
     vector<Player*> players;
-    vector<Character> f;
+    vector<Form> obstacle;
     vector<Bullet> b;
     Player * player;
     Ecran  *sc;
@@ -104,9 +104,10 @@ namespace Teelol {
       }
     }
 
-    void do_addObstacle(int x, int y, int h, int l){
-      
-      f.push_back(Character(I_MUR,x,y,h,l,sc));
+    void do_addObstacle(int img, int x, int y, int h, int l){
+      obstacle.push_back(Form(x,y,h,l));
+      obstacle[obstacle.size()-1].set_screen(sc);
+      obstacle[obstacle.size()-1].set_image((Image_t)img);
     }
     
     void do_rotated(int angle, string nick){
@@ -140,8 +141,8 @@ namespace Teelol {
     void affiche(){
       ezlock hold(mutex);
       sc->clean();
-      for(int i = 0 ; i < f.size() ; i++){
-	f[i].show();
+      for(int i = 0 ; i < obstacle.size() ; i++){
+	obstacle[i].show();
       }
       for(int i = b.size()-1; i >= 0 ; i--){
 	b[i].show();

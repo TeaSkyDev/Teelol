@@ -23,7 +23,7 @@ using namespace std;
 
 //représente le type de forme (décor, character, bullet)
 enum type_t {
-  FORM, CHARACTER, BULLET
+  FORM, CHARACTER, BULLET, ROTABLE
 };
 
 
@@ -36,6 +36,7 @@ class Form{
   int get_h();
   int get_x();
   int get_y();
+  Image_t get_img();
   virtual type_t get_type();
   virtual void loose_life(int);
   int x_to_sig();
@@ -50,7 +51,7 @@ class Form{
   ~Form();
   
 protected:
-  
+  Image_t m_img;
   SDL_Surface * m_surf;
   int m_x;
   int m_y;

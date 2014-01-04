@@ -16,9 +16,7 @@ public:
   double get_angle();
   void set_angle(double angle);
   void rotate(double angle, int x, int y, int dist);
-  void rotate_to(double angle, int x, int y, int dist);
-  void zoom(double);
-  void recalibrate();
+
 
 
 
@@ -28,7 +26,7 @@ private:
   struct point{
     int x, y;
   };
-
+  //les fnction suivantes doivent être appelé dans l'ordre
   void get_A();
   void get_B();
   void get_F();

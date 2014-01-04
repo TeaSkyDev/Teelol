@@ -7,6 +7,13 @@ Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l), c("../c
 
 void Form::set_image(Image_t img){
   m_surf = IMG_Load(c[img].c_str());
+  m_img = img;
+  m_h = m_surf->h;
+  m_l = m_surf->w;
+}
+
+Image_t Form::get_img(){
+  return m_img;
 }
 
 

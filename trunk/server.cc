@@ -18,12 +18,30 @@ namespace Teelol {
   ezmutex ez_mutex;
   struct session_on_server;
   map<Player*, session_on_server*> players;
+  vector<Form> obstacle;
   vector<Player*> players_to_delete;
-
+  
   enum state_t {
     STARTING,
     STARTED
   };
+
+  void load_Map(string name){
+    ifstream fichier(name.c_str());
+    int x,y,h,l, img;
+    while(!fichier.eof()){
+      fichier >> x >> y >> h >> l >> img;
+      obstacle.push_back(Form(x,y,h,l));
+      obstacle[obstacle.size()-1].set_image((Image_t)img);
+    }
+    fichier.close();
+  }
+
+
+
+
+
+
 
   struct session_on_server: public session<my_proto>{
     state_t state;
@@ -88,23 +106,19 @@ namespace Teelol {
 	  m_player->stop_x();
 	  
 	}
-	
-	
-	m_player->pass_row();	
-	  
-	int x = m_player->x_to_sig();
-	int y = m_player->y_to_sig();
-	proto.moveOk(x, y);
-	
+	m_player->pass_row();        
+        int x = m_player->x_to_sig();
+        int y = m_player->y_to_sig();
+        proto.moveOk(x, y);
 	auto it = players.begin();
-	
-	for(; it != players.end(); it++) {
+        
+        for(; it != players.end(); it++) {
 	  if(it->first != m_player) {
-	  
+        
 	    it->second->proto.moved(x, y, nick);
 	  }
-	}
-	for(it = players.begin(); it != players.end() ; it++){
+        }
+        for(it = players.begin(); it != players.end() ; it++){
 	  for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
 	    int x = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_x());
 	    int y = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_y());
@@ -115,10 +129,14 @@ namespace Teelol {
 	    int y = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_y());
 	    it->second->proto.showExplosion(x,y);
 	  }
-	  }
+	}
       }
-	
-    }
+      
+    }	         
+
+   
+    
+
 
     void do_nick(string _nick) {
       bool nick_ok = true;
@@ -133,26 +151,40 @@ namespace Teelol {
       if(nick_ok) {
 	cout<<"nick accepte"<<endl;
 	m_player  = new Player(_nick, I_TEE_P, 10, 10, 10, 10, NULL);
-
 	players[m_player] = this;
 	nick = _nick;
 	proto.ok();
-	  
 	cout << _nick << " a changé son pseudo" << endl;
-	  
 	player_joined();
-	proto.okNick(_nick);
+	init_NewPlayer(_nick);
 	cout<<"signaux envoyer"<<endl;
-      } else {
+      }
+      else {
 	proto.err("Nick already use !");
       }
-      *m_player << *f; 
-      proto.addObstacle(f->x_to_sig(),f->y_to_sig(),f->h_to_sig(),f->l_to_sig());
+    }
 
-      for(it = players.begin(); it != players.end(); it++) {
+    void init_NewPlayer(string _nick){
+      proto.okNick(_nick);
+      for(auto it = obstacle.begin() ; it != obstacle.end() ; it++){
+	*m_player << *it;
+	send_Form(it);
+      }
+      for(auto it = players.begin(); it != players.end(); it++) {
 	m_player->add_obstacle(it->first);
       }
-
+      int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
+      proto.nbAmmo(nb);
+    }
+    
+    void send_Form(vector<Form>::iterator it){
+      int x = it->x_to_sig();
+      int y = it->y_to_sig();
+      int h = it->h_to_sig();
+      int l = it->l_to_sig();
+      
+      int img = boost::lexical_cast<int>((int)it->get_img());
+      proto.addObstacle(img,x,y,h,l);
     }
     
     void player_joined() {
@@ -217,7 +249,7 @@ int main(int argc, char ** argv){
   
   pthread_t th_boucle_suppr;
   //pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
-
+  Teelol::load_Map("../const/map.lvl");
   netez::server<Teelol::session_on_server> server(argc,argv);
 
   server.join();

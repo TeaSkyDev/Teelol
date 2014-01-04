@@ -25,7 +25,7 @@ namespace Teelol{
     message <11, void(int, int , int , int)> shoot;         //client indique qu'il a tiré
     message <15, void(int)>                  nbAmmo;        //serveur envoi le nombre de munition restante au client
 
-    message <12, void(int, int ,int, int)>   addObstacle;
+    message <12, void(int, int, int ,int, int)>   addObstacle;
     message <13, void(int)>                  rotate;
     message <14 , void(int, string)>         rotated;
     

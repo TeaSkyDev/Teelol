@@ -75,11 +75,11 @@ void Character::pass_row(){
   m_ammo.pass_row();
 
   collision_t d = collide();
-
+  /*
   if((d.dir.col_x == EAST && m_speed.m_x > 0) || (d.dir.col_x == WEST && m_speed.m_x < 0)) {
     m_speed.m_x *= -1;
   }
-
+  */
   bool iter = true;
   if(m_speed.m_y < 0) {
     m_y += m_speed.m_y;
