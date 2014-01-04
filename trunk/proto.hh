@@ -28,6 +28,7 @@ namespace Teelol{
     message <12, void(int, int, int ,int, int)>   addObstacle;
     message <13, void(int)>                  rotate;
     message <14 , void(int, string)>         rotated;
+
     
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),

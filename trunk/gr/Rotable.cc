@@ -106,43 +106,20 @@ void Rotable::get_C(){
 
 
 int Rotable::get_xb(){
-  if((m_angle > 270 && m_angle <=360) || (m_angle <= 180 && m_angle > 90)){
-    return E.x;
-  }
-  else return D.x;
+  return (E.x + D.x) / 2;
 }
 
 int Rotable:: get_yb(){
- if((m_angle > 270 && m_angle <=360) || (m_angle <= 180 && m_angle > 90)){
-    return D.y;
-  }
- else
-   return E.y;
+  return (E.y + D.y) / 2;
 }
 
 int Rotable::get_xba(){
-  if(m_angle > 270 && m_angle <=360){
-    return E.x + 5;
-  }
-  else if(m_angle <= 180 && m_angle > 90){
-    return E.x - 5;
-  }
-  else if(m_angle <= 270 && m_angle > 180){
-    return D.x - 5;
-  }
-  else return D.x + 5;
+  return D.x + cos((m_angle+45)*M_PI/180)*m_sauv->h;
+
 }
 
 int Rotable::get_yba(){
-if(m_angle > 270 && m_angle <=360){
-    return D.y - 5;
-  }
-  else if(m_angle <= 180 && m_angle > 90){
-    return D.y + 5;
-  }
-  else if(m_angle <= 270 && m_angle > 180){
-    return E.y - 5;
-  }
-  else return E.y + 5;
- 
+  return D.y + sin((m_angle+45)*M_PI/180)*m_sauv->h;
+
+
 }

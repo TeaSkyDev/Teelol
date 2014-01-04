@@ -104,14 +104,22 @@ void Ammo::set_type(cartridge_t type){
 
 
 void Ammo::pass_row(){
-  for(int i = m_exploded.size() ; i > 0 ; i--)
+  for(int i = m_exploded.size() ; i > 0 ; i--){
+    collision_t col = m_exploded[i-1].collide();
+    if(col.type == CHARACTER){
+      col.element->loose_life(m_dmg);
+      cout<<"ici"<<endl;
+    }
     m_exploded.pop_back();
-
+  }
   for(int i = 0 ; i < m_ammo.size() ; i++){
     m_ammo[i].pass_row();
     if(m_ammo[i].get_exploded()){
       m_exploded.push_back(m_ammo[i]);
       m_exploded[m_exploded.size()-1].set_image(I_CART_EX);
+      int y = m_exploded[m_exploded.size()-1].get_y();
+      int h = m_exploded[m_exploded.size()-1].get_h();
+      m_exploded[m_exploded.size()-1].set_y(y - h/2);
       m_ammo[i] = m_ammo[m_ammo.size()-1];
       m_ammo.pop_back();
       i--;

@@ -42,6 +42,7 @@ namespace Teelol {
       proto.showMissile.sig_recv.connect(EZMETHOD(this, do_showMissile));
       proto.showExplosion.sig_recv.connect(EZMETHOD(this, do_showExplosion));
       proto.nbAmmo.sig_recv.connect(EZMETHOD(this, do_nbAmmo));
+
       //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
     }
@@ -141,6 +142,22 @@ namespace Teelol {
     void affiche(){
       ezlock hold(mutex);
       sc->clean();
+      int xb,yb, xba, yba;
+      xb =  player->get_weapon()->get_xb();
+      yb = player->get_weapon()->get_yb();
+      xba = player->get_weapon()->get_xba();
+      yba = player->get_weapon()->get_yba();
+      
+      SDL_Surface * s = SDL_CreateRGBSurface(SDL_HWSURFACE,2,2,32,0,0,0,0);
+      SDL_Surface * s2 = SDL_CreateRGBSurface(SDL_HWSURFACE,2,2,32,0,0,0,0);
+      SDL_FillRect(s, NULL, SDL_MapRGB(s->format,255,255,255));
+      SDL_FillRect(s2, NULL, SDL_MapRGB(s->format,255,255,255));
+      SDL_Rect r, r2;
+      r.x = xb; r.y = yb;
+      r2.x = xba; r2.y = yba;
+      sc->put(s, r);
+      sc->put(s2,r2);
+     
       for(int i = 0 ; i < obstacle.size() ; i++){
 	obstacle[i].show();
       }
@@ -196,6 +213,7 @@ void * routine(void * arg){
     e.UpdateEvent();
     if(e[LEFT]){
       c->proto.move("left");
+
     }
     if(e[RIGHT]){
       c->proto.move("right");
@@ -207,7 +225,7 @@ void * routine(void * arg){
     if(e[LEFT_CL]){ c->shoot();}
     c->rotationArme(e().m_x, e().m_y);
     SDL_Delay(50);
-    c->sc->clean();
+    //    c->sc->clean();
     c->affiche();
   }
   delete c->sc;

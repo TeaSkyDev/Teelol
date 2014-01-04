@@ -20,7 +20,8 @@ namespace Teelol {
   map<Player*, session_on_server*> players;
   vector<Form> obstacle;
   vector<Player*> players_to_delete;
-  
+
+
   enum state_t {
     STARTING,
     STARTED
@@ -29,6 +30,7 @@ namespace Teelol {
   void load_Map(string name){
     ifstream fichier(name.c_str());
     int x,y,h,l, img;
+
     while(!fichier.eof()){
       fichier >> x >> y >> h >> l >> img;
       obstacle.push_back(Form(x,y,h,l));
@@ -165,7 +167,9 @@ namespace Teelol {
     }
 
     void init_NewPlayer(string _nick){
+      
       proto.okNick(_nick);
+
       for(auto it = obstacle.begin() ; it != obstacle.end() ; it++){
 	*m_player << *it;
 	send_Form(it);
