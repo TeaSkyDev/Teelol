@@ -118,7 +118,8 @@ namespace Teelol {
 	  
 	}
 	m_player->pass_row();  
-	cout<<m_player->get_life()<<endl;
+	if(nick == "e")
+	  cout<<m_player->get_life()<<endl;
 	if(m_player->get_life() <= 0)
 	  die();
 	int x = m_player->x_to_sig();

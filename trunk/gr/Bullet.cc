@@ -42,10 +42,12 @@ void Bullet::pass_row(){
     collision_t d = collide();
     if(d.dir.col_y == NORTH || d.dir.col_y == SOUTH){
       if(d.type == CHARACTER) {
-	d.element->loose_life(1);
+	d.element->loose_life(m_dmg);
+	cout<<m_dmg<<endl;
       }
       explode();
       continuer = false;
+      break;
     }
    
     if(m_vy > 0)
@@ -58,8 +60,10 @@ void Bullet::pass_row(){
     if(d.dir.col_x == EAST || d.dir.col_x == WEST){
       if(d.type == CHARACTER) {
 	d.element->loose_life(m_dmg);
+	cout<<m_dmg<<endl;
       }
       explode();
+      break;
     }
 
     if(m_vx > 0)

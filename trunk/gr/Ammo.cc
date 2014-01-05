@@ -96,7 +96,7 @@ void Ammo::set_type(cartridge_t type){
   m_type = type;
   switch(m_type){
   case GRENADE:
-    m_dmg = 5; break;
+    m_dmg = 2; break;
   case SHOTGUN: 
     m_dmg = 2; break;
   }
