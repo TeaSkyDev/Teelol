@@ -27,7 +27,7 @@
     void stop_y();
     void jump();
     void take_dmg();
-    void take_life();
+    void take_life(int);
     void loose_life(int);
     void die();
     void spawn(int, int);
@@ -43,6 +43,7 @@
 
     Rotable * get_weapon();
     type_t get_type();
+    int get_life(){return m_life;}
     bool get_hurt();
     Ammo * get_ammo();
   private:

@@ -60,10 +60,8 @@ void Character::take_dmg(){
   m_wrong_img = true;
 }
 
-void Character::take_life(){
-  set_image(I_TEE_HEALTH);
-  m_wait = 10;
-  m_wrong_img = true;
+void Character::take_life(int l){
+  m_life += l;
 }
 
 void Character::loose_life(int l) {
@@ -116,13 +114,14 @@ void Character::spawn(int x, int y){
   m_x = x;
   m_y = y;
   set_image(m_img);
+  m_ammo.set_nb(10);
+  m_life = 10;
 }
 
 
 void Character::radical_move(int x, int y){
-  set_image(I_TEE_SPEW);
-  m_wait = 10;
-  m_wrong_img = true;
+  m_x = x;
+  m_y = y;
 } 
 
 

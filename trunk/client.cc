@@ -44,7 +44,7 @@ namespace Teelol {
       proto.nbAmmo.sig_recv.connect(EZMETHOD(this, do_nbAmmo));
       proto.hurt.sig_recv.connect(EZMETHOD(this, do_hurt));
       proto.hurted.sig_recv.connect(EZMETHOD(this, do_hurted));
-
+      proto.health.sig_recv.connect(EZMETHOD(this, do_health));
       sig_end.connect(EZMETHOD(this, on_end));
     }
 
@@ -146,7 +146,11 @@ namespace Teelol {
 	}
       }
     }
-      
+
+    void do_health(int h){
+      player->take_life(h);
+    }
+    
     void affiche(){
       ezlock hold(mutex);
       sc->clean();

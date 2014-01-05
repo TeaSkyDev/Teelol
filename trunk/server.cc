@@ -91,6 +91,15 @@ namespace Teelol {
       }
     }
 
+    void die(){
+      int x = boost::lexical_cast<int>(10);
+      int y = boost::lexical_cast<int>(10);
+      m_player->spawn(10,10);
+      proto.nbAmmo(x);
+      proto.health(x);
+    }
+
+
     void do_move(string mv) {
       {
 	ezlock hold(ez_mutex);
@@ -108,17 +117,19 @@ namespace Teelol {
 	  m_player->stop_x();
 	  
 	}
-	m_player->pass_row();        
-        int x = m_player->x_to_sig();
-        int y = m_player->y_to_sig();
+	m_player->pass_row();  
+	cout<<m_player->get_life()<<endl;
+	if(m_player->get_life() <= 0)
+	  die();
+	int x = m_player->x_to_sig();
+	int y = m_player->y_to_sig();
 	int dmg = boost::lexical_cast<int>(m_player->get_hurt());
-        proto.moveOk(x, y);
+	proto.moveOk(x, y);
 	proto.hurt(dmg);
-	
-      auto it = players.begin();
+	auto it = players.begin();
         
-      for(; it != players.end(); it++) {
-	if(it->first != m_player) {
+	for(; it != players.end(); it++) {
+	  if(it->first != m_player) {
         
 	  it->second->proto.moved(x, y, nick);
 	  if(dmg > 0)

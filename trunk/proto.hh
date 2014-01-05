@@ -29,14 +29,14 @@ namespace Teelol{
     message <13, void(int)>                  rotate;
     message <14 , void(int, string)>         rotated;
     message <17, void(int)>                  hurt;
-    message <18, void(string)>                     hurted;
-
+    message <18, void(string)>               hurted;
+    message <19, void(int)>                  health;
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),
 			  joined(this),   left(this), moved(this), quit(this), 
 			  okNick(this), addObstacle(this), showMissile(this), 
 			  shoot(this), rotate(this), rotated(this), nbAmmo(this),
-			  showExplosion(this), hurt(this), hurted(this)
+			  showExplosion(this), hurt(this), hurted(this), health(this)
 			  
     {}
     
