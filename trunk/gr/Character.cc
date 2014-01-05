@@ -67,7 +67,13 @@ void Character::take_life(){
 }
 
 void Character::loose_life(int l) {
-  m_life -= l;
+  if(m_life > 0)
+    m_life -= l;
+
+  set_image(I_TEE_DMG);
+
+  m_wrong_img = true;
+  m_dmg = l;
 }
 
 void Character::pass_row(){
@@ -147,6 +153,14 @@ type_t Character::get_type() {
   return CHARACTER;
 }
 
+bool Character::get_hurt(){
+  if(m_dmg > 0){
+    m_dmg --;
+    return 1;
+  }
+  return 0;
+}
+
 Ammo * Character::get_ammo(){
   return &m_ammo;
 }
@@ -158,14 +172,6 @@ void Character::shoot(){
 
 void Character::show(){
   //  m_ammo.show();
-  SDL_Surface * coeur = IMG_Load(c[I_COEUR].c_str());
-    SDL_Rect rect1;
-    rect1.x = 10;
-    rect1.y = 30;
-  for(int i = 0 ; i < m_life ; i++){
-    m_e->put(coeur, rect1);
-    rect1.x += 10 + coeur->w;
-  }
   SDL_Rect rect;
   rect.x = m_x;
   rect.y = m_y;
@@ -175,7 +181,18 @@ void Character::show(){
 
 }
 
+void Character::show_life(){
+  SDL_Surface * coeur = IMG_Load(c[I_COEUR].c_str());
+  SDL_Rect rect1;
+  rect1.x = 10;
+  rect1.y = 30;
 
+  for(int i = 0 ; i < m_life ; i++){
+    m_e->put(coeur, rect1);
+    rect1.x += 10 + coeur->w;
+  }
+  
+}
 Character Character::operator<<(Form & f){
   add_obstacle(&f);
   return *this;

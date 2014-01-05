@@ -5,7 +5,7 @@ Ammo::Ammo(): c("../const/file"){
   m_num = 10;
   m_max = 10;
   m_type = GRENADE;
-  m_dmg = 5;
+  m_dmg = 2;
   c.load_file();
 }
 

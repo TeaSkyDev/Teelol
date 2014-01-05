@@ -42,19 +42,11 @@ namespace Teelol {
       proto.showMissile.sig_recv.connect(EZMETHOD(this, do_showMissile));
       proto.showExplosion.sig_recv.connect(EZMETHOD(this, do_showExplosion));
       proto.nbAmmo.sig_recv.connect(EZMETHOD(this, do_nbAmmo));
+      proto.hurt.sig_recv.connect(EZMETHOD(this, do_hurt));
+      proto.hurted.sig_recv.connect(EZMETHOD(this, do_hurted));
 
-      //sig_begin.connect(EZMETHOD(this,on_begin));
       sig_end.connect(EZMETHOD(this, on_end));
     }
-
-    /* void on_begin() {
-      string n;
-      cout << "nick : ";
-      cin >> n;
-
-      proto.nick(n);
-
-      }*/
 
     void on_end() {
       proto.quit();
@@ -139,25 +131,25 @@ namespace Teelol {
       player->get_ammo()->set_nb(nb);
     }
 
+    void do_hurt(int dmg){
+      if(dmg > 0)
+	player->loose_life(dmg);
+      else if(player->get_wrong_img())
+	player->set_image(I_TEE_P);
+    }
+
+    
+    void do_hurted(string _nick){
+      for(int i = 0; i < players.size(); i++) {
+	if(players[i]->get_nick() == _nick) {
+	  players[i]->loose_life(0);
+	}
+      }
+    }
+      
     void affiche(){
       ezlock hold(mutex);
       sc->clean();
-      int xb,yb, xba, yba;
-      xb =  player->get_weapon()->get_xb();
-      yb = player->get_weapon()->get_yb();
-      xba = player->get_weapon()->get_xba();
-      yba = player->get_weapon()->get_yba();
-      
-      SDL_Surface * s = SDL_CreateRGBSurface(SDL_HWSURFACE,2,2,32,0,0,0,0);
-      SDL_Surface * s2 = SDL_CreateRGBSurface(SDL_HWSURFACE,2,2,32,0,0,0,0);
-      SDL_FillRect(s, NULL, SDL_MapRGB(s->format,255,255,255));
-      SDL_FillRect(s2, NULL, SDL_MapRGB(s->format,255,255,255));
-      SDL_Rect r, r2;
-      r.x = xb; r.y = yb;
-      r2.x = xba; r2.y = yba;
-      sc->put(s, r);
-      sc->put(s2,r2);
-     
       for(int i = 0 ; i < obstacle.size() ; i++){
 	obstacle[i].show();
       }
@@ -169,12 +161,16 @@ namespace Teelol {
 	players[i]->show();
 	players[i]->show_nick();
 	players[i]->get_weapon()->show();
+	if(players[i]->get_wrong_img())
+	  players[i]->set_image(I_TEE_P);
       }
       player->show();
 
       player->get_weapon()->show();
       player->get_ammo()->show();
+      player->show_life();
       sc->Flip();
+
     }
     
     void rotationArme(int _x, int _y){

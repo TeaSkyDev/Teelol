@@ -111,31 +111,35 @@ namespace Teelol {
 	m_player->pass_row();        
         int x = m_player->x_to_sig();
         int y = m_player->y_to_sig();
+	int dmg = boost::lexical_cast<int>(m_player->get_hurt());
         proto.moveOk(x, y);
-	auto it = players.begin();
+	proto.hurt(dmg);
+	
+      auto it = players.begin();
         
-        for(; it != players.end(); it++) {
-	  if(it->first != m_player) {
+      for(; it != players.end(); it++) {
+	if(it->first != m_player) {
         
-	    it->second->proto.moved(x, y, nick);
-	  }
-        }
-        for(it = players.begin(); it != players.end() ; it++){
-	  for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
-	    int x = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_x());
-	    int y = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_y());
-	    it->second->proto.showMissile(x,y);
-	  }
-	  for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
-	    int x = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_x());
-	    int y = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_y());
-	    it->second->proto.showExplosion(x,y);
-	  }
+	  it->second->proto.moved(x, y, nick);
+	  if(dmg > 0)
+	    it->second->proto.hurted(nick);
 	}
       }
+      for(it = players.begin(); it != players.end() ; it++){
+	for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
+	  int x = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_x());
+	  int y = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_y());
+	  it->second->proto.showMissile(x,y);
+	}
+	for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
+	  int x = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_x());
+	  int y = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_y());
+	  it->second->proto.showExplosion(x,y);
+	}
+      }
+      }
       
-    }	         
-
+    }
    
     
 
@@ -152,7 +156,7 @@ namespace Teelol {
 	
       if(nick_ok) {
 	cout<<"nick accepte"<<endl;
-	m_player  = new Player(_nick, I_TEE_P, 10, 10, 10, 10, NULL);
+	m_player  = new Player(_nick, I_TEE_P, 10, 10, 50, 50, NULL);
 	players[m_player] = this;
 	nick = _nick;
 	proto.ok();

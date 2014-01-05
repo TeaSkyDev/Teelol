@@ -46,12 +46,14 @@ class Form{
   void set_x(int x);
   void set_y(int y);
   speed_t get_speed();
+  bool get_wrong_img(){return m_wrong_img;}
   void set_screen(Ecran * e);
   virtual void show();
   ~Form();
   
 protected:
   Image_t m_img;
+  bool m_wrong_img;
   SDL_Surface * m_surf;
   int m_x;
   int m_y;

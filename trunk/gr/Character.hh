@@ -39,9 +39,11 @@
     void shoot();
     collision_t collide();
     void show();
+    void show_life();
 
     Rotable * get_weapon();
     type_t get_type();
+    bool get_hurt();
     Ammo * get_ammo();
   private:
     void init_Weap();
@@ -50,8 +52,7 @@
  
 
     Image_t m_img;
-    int m_wait;
-    bool m_wrong_img;
+    int m_wait, m_dmg;
     bool m_ground; // vrai si le perso est sur le sol
     bool m_saut;
     vector <Form*> m_obstacle;
