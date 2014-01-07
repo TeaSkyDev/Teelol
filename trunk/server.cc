@@ -40,11 +40,6 @@ namespace Teelol {
   }
 
 
-
-
-
-
-
   struct session_on_server: public session<my_proto>{
     state_t state;
     string  nick;
@@ -160,7 +155,7 @@ namespace Teelol {
       bool nick_ok = true;
       auto it = players.begin();
 	
-      for(it = players.begin(); it != players.end(); it++) {
+      for(; it != players.end(); it++) {
 	if(it->first->get_nick() == _nick) {
 	  nick_ok = false;
 	}
@@ -179,6 +174,7 @@ namespace Teelol {
       }
       else {
 	proto.err("Nick already use !");
+	finish();
       }
     }
 
