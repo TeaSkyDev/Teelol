@@ -22,7 +22,7 @@ namespace Teelol {
   vector<Form> obstacle;
   vector<Item>  tab_item;
   vector<Player*> players_to_delete;
-
+  vector<point> spown_point;
 
   enum state_t {
     STARTING,
