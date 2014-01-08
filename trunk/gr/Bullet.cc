@@ -40,7 +40,7 @@ void Bullet::pass_row(){
 
    for(int i = 0 ; i < abs((int)m_vy) ; i++){
     collision_t d = collide();
-    if(d.dir.col_y == NORTH || d.dir.col_y == SOUTH){
+    if((d.dir.col_y == NORTH || d.dir.col_y == SOUTH) && d.type != ITEM){
       if(d.type == CHARACTER) {
 	d.element->loose_life(m_dmg);
 	cout<<m_dmg<<endl;
@@ -57,7 +57,7 @@ void Bullet::pass_row(){
 
   for(int i = 0 ; i < abs((int)m_vx) && continuer; i++){
     collision_t d = collide();
-    if(d.dir.col_x == EAST || d.dir.col_x == WEST){
+    if((d.dir.col_x == EAST || d.dir.col_x == WEST) && d.type != ITEM){
       if(d.type == CHARACTER) {
 	d.element->loose_life(m_dmg);
 	cout<<m_dmg<<endl;
