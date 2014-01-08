@@ -62,7 +62,8 @@ void Character::take_dmg(){
 }
 
 void Character::take_life(int l){
-  m_life += l;
+  if(l + m_life > 10) m_life = 10;
+  else m_life += l;
 }
 
 void Character::loose_life(int l) {
