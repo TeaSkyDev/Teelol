@@ -62,7 +62,7 @@ void Item::hide(){
 }
 
 bool Item::hidden(){
-  return m_wait <= 1;
+  return m_wait >= 1;
 }
 collision_t Item::collide(){
   Collision col(this, m_obstacle);
