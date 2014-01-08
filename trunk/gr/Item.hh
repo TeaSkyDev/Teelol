@@ -14,11 +14,14 @@ class Item : public Form
 public:
 
   Item(int x, int y, int h, int l, ITEM_T type);
+  type_t get_type();
   ITEM_T get_item_type();
   void pass_row();
   collision_t collide();
   void show();
-
+  void hide();
+  void unhide();
+  bool hidden();
 private:
   ITEM_T m_type;
   vector <Form*> m_obstacle;

@@ -9,8 +9,13 @@ Item::Item(int x, int y, int h, int l, ITEM_T type):Form(x,y,h,l){
   case LIFE:
     set_image(I_COEUR); break;
   }
+  m_wait = 0;
 }
 
+
+type_t Item::get_type(){
+  return ITEM;
+}
 
 ITEM_T Item::get_item_type(){
   return m_type;
@@ -48,6 +53,17 @@ void Item::show(){
   }
 }
 
+void Item::unhide(){
+  m_wait = 0;
+}
+
+void Item::hide(){
+  m_wait = 1;
+}
+
+bool Item::hidden(){
+  return m_wait <= 1;
+}
 collision_t Item::collide(){
   Collision col(this, m_obstacle);
   return col.get_collision();

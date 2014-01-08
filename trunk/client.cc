@@ -4,6 +4,7 @@
 #include "player.hh"
 #include "gr/Event.hh"
 #include "gr/Ecran.hh"
+#include "gr/Item.hh"
 
 bool tentative_connexion = true;
 
@@ -22,6 +23,7 @@ namespace Teelol {
     vector<Player*> players;
     vector<Form> obstacle;
     vector<Bullet> b;
+    map<int, Item*> map_item;
     Player * player;
     Ecran  *sc;
     state_t state;    
@@ -47,6 +49,9 @@ namespace Teelol {
       proto.hurt.sig_recv.connect(EZMETHOD(this, do_hurt));
       proto.hurted.sig_recv.connect(EZMETHOD(this, do_hurted));
       proto.health.sig_recv.connect(EZMETHOD(this, do_health));
+      proto.addItem.sig_recv.connect(EZMETHOD(this, do_addItem));
+      proto.hideItem.sig_recv.connect(EZMETHOD(this, do_hideItem));
+      proto.showItem.sig_recv.connect(EZMETHOD(this, do_showItem));
       sig_end.connect(EZMETHOD(this, on_end));
     }
 
@@ -157,6 +162,26 @@ namespace Teelol {
       player->take_life(h);
     }
     
+    void do_addItem(int x, int y, int img, int id){
+      ezlock hold(mutex);
+      map_item[id] = new Item(x,y,0,0,(ITEM_T)0);
+      auto it = map_item.find(id);
+      it->second->set_image((Image_t)img);
+      it->second->set_screen(sc);
+    }
+
+    void do_hideItem(int i){
+      ezlock hold(mutex);
+      auto it = map_item.find(i);
+      it->second->hide();
+    }
+    
+    void do_showItem(int i){
+      ezlock hold(mutex);
+      auto it = map_item.find(i);
+      it->second->unhide();
+    }
+
     void affiche(){
       ezlock hold(mutex);
       sc->clean();
@@ -174,6 +199,10 @@ namespace Teelol {
 	if(players[i]->get_wrong_img())
 	  players[i]->set_image(I_TEE_P);
       }
+      for(auto it = map_item.begin() ; it != map_item.end() ; it++){
+	it->second->show();
+      }
+
       player->show();
 
       player->get_weapon()->show();

@@ -33,6 +33,7 @@ namespace Teelol{
     message <19, void(int)>                  health;
     message <20, void(int, int, int, int)>   addItem;
     message <21, void(int)>                  hideItem;
+    message <22 , void(int)>                 showItem;
 
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),
@@ -40,7 +41,7 @@ namespace Teelol{
 			  okNick(this), addObstacle(this), showMissile(this), 
 			  shoot(this), rotate(this), rotated(this), nbAmmo(this),
 			  showExplosion(this), hurt(this), hurted(this), 
-			  health(this), addItem(this), hideItem(this)
+			  health(this), addItem(this), hideItem(this), showItem(this)
 			  
     {}
     

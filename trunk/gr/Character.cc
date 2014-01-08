@@ -15,6 +15,7 @@ Character::Character(Image_t img, int x, int y, int l, int h, Ecran * e) : Form(
   m_ammo.set_nb(10);
   m_ammo.set_screen(e);
   m_life = 10;
+  m_dmg = 0;
 }
 
 void Character::init_Weap(){
@@ -80,12 +81,17 @@ void Character::pass_row(){
  
   m_ammo.pass_row();
 
-  collision_t d = collide();
-  /*
-  if((d.dir.col_x == EAST && m_speed.m_x > 0) || (d.dir.col_x == WEST && m_speed.m_x < 0)) {
-    m_speed.m_x *= -1;
+  collision_t col = collide();
+  if((col.dir.col_y != NONE || col.dir.col_x != NONE) && col.type == ITEM){
+    Item * i = (Item*)col.element;
+    switch(i->get_item_type()){
+    case AMMO:
+      m_ammo.pick_up(5);break;
+    case LIFE:
+      take_life(5);break;
+    }
+    i->hide();
   }
-  */
   bool iter = true;
 
   if(m_speed.m_y < 0) {
@@ -93,11 +99,11 @@ void Character::pass_row(){
   } else {
     for(int i = 0; i < m_speed.m_y; i++) {
       collision_t col = collide();
-      if(col.dir.col_y != SOUTH) {
+      if(col.dir.col_y != SOUTH || (col.dir.col_y == SOUTH && col.type == ITEM)) {
 	m_tomb = true;
         m_y++;
       }
-      else {
+      else if(col.dir.col_y == SOUTH && col.type != ITEM){
 	if(!m_tomb)
 	  m_y--;
 	else {
