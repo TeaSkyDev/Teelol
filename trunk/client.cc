@@ -5,6 +5,8 @@
 #include "gr/Event.hh"
 #include "gr/Ecran.hh"
 
+bool tentative_connexion = true;
+
 namespace Teelol {
 
   using namespace std;
@@ -22,7 +24,7 @@ namespace Teelol {
     vector<Bullet> b;
     Player * player;
     Ecran  *sc;
-    state_t state;
+    state_t state;    
 
     session_on_client(socket &io): session<my_proto>(io){
 
@@ -66,16 +68,20 @@ namespace Teelol {
     }
 
     void do_err(string err) {
-      cout << "System : " << err << endl;
+      if(state == STARTING) {
+	tentative_connexion = false;
+      }
+      cout << "System : " << err << endl;	
     }
     
     void do_okNick(string n) {
       if(state == STARTING) {
-
+        cout << "System : nick changed !" << endl;
         state = STARTED;
+	tentative_connexion = false;
       }
       player->set_nick(n);
-      cout << "System : nick changed !" << endl;
+      
     }
     
     void do_ok() {
@@ -194,8 +200,8 @@ namespace Teelol {
 
       proto.shoot(x1,y1,x2,y2);
     }
-
-  };
+    
+   };
 };
 
 
@@ -205,10 +211,19 @@ void * routine(void * arg){
   
   Event e;
   Teelol::session_on_client * c = (Teelol::session_on_client*)arg;
+
   string pseudo;
-  cin>>pseudo;
-  c->proto.nick(pseudo);
-  cout<<"message envoye"<<endl;
+  while(c->state == Teelol::STARTING) {
+    cout << c->state << "Pseudo : ";
+    cin>>pseudo;
+    c->proto.nick(pseudo);
+    cout<<"message envoye"<<endl;
+
+    while(tentative_connexion) {}
+    tentative_connexion = true;
+  }
+  
+  if(c->state == Teelol::STARTED) {
   while(!e[QUIT]){
     e.UpdateEvent();
     if(e[LEFT]){
@@ -228,6 +243,8 @@ void * routine(void * arg){
     //    c->sc->clean();
     c->affiche();
   }
+  }
+
   delete c->sc;
   c->proto.quit();
 }
