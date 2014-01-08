@@ -212,4 +212,15 @@ Character Character::operator<<(Form & f){
   return *this;
 }
 
+void Character::delete_obstacle(Form * f) {
+  for(int i = 0; i < m_obstacle.size(); i++) {
+    if(m_obstacle[i] == f) {
+      Form * tmp = m_obstacle[i];
+      m_obstacle[i] = m_obstacle[m_obstacle.size()-1];
+      m_obstacle.pop_back();
+      delete tmp;
+      break;
+    }
+  }
+}
 
