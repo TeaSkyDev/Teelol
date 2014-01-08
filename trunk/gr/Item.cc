@@ -12,20 +12,23 @@ Item::Item(int x, int y, int h, int l, ITEM_T type):Form(x,y,h,l){
 }
 
 
-ITEM_T Item::get_type(){
+ITEM_T Item::get_item_type(){
   return m_type;
 }
 
-void pass_row(){
+void Item::pass_row(){
   collision_t col = collide();
   if(m_wait == 0){
     if(col.dir.col_y != NONE || col.dir.col_x != NONE){
       if(col.type == CHARACTER){
+	Character * c = (Character*)col.element;
 	switch(m_type){
-	case AMMO:
-	  col.element->get_ammo()->pick_up(5);break;
+	case AMMO:	  
+	  c->get_ammo()->pick_up(5);
+	  break;
 	case LIFE:
-	  col.element->take_life(5);break;
+	  c->take_life(5);
+	  break;
 	}
 	m_wait = 150;
       }
@@ -47,5 +50,5 @@ void Item::show(){
 
 collision_t Item::collide(){
   Collision col(this, m_obstacle);
-  return c.get_collision();
+  return col.get_collision();
 }

@@ -12,6 +12,7 @@
 #include <math.h>
 
 #include "Const.hh"
+
 using namespace std;
 
 
@@ -32,6 +33,8 @@ class Form{
   Form(int x, int y, int h, int l);
   //prend en entree un chemin vers une image
   virtual void set_image(Image_t img);
+
+
   int get_l();
   int get_h();
   int get_x();

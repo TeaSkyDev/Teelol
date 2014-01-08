@@ -13,6 +13,8 @@ void Form::set_image(Image_t img){
   m_l = m_surf->w;
 }
 
+
+
 Image_t Form::get_img(){
   return m_img;
 }
