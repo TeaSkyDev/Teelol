@@ -33,6 +33,7 @@ namespace Teelol {
     ifstream fichier(name.c_str());
     int type,x,y,h,l, img;
 
+
     while(!fichier.eof()){
       fichier >> type >> x >> y >> h >> l >> img;
       switch(type){
@@ -56,8 +57,10 @@ namespace Teelol {
     string  nick;
     Player * m_player;
     Form * f;
+    int last_ammo_size;
     session_on_server(socket & io): session(io) {
       state = STARTING;
+      last_ammo_size = 10;
       f = new Form(10,300,10,300);
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
       proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
@@ -132,9 +135,19 @@ namespace Teelol {
 	int y = m_player->y_to_sig();
 	int dmg = boost::lexical_cast<int>(m_player->get_hurt());
 	proto.moveOk(x, y);
+	
 	proto.hurt(dmg);
+	if(last_ammo_size != m_player->get_ammo()->get_NbAmmo()){
+	  int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
+	  proto.nbAmmo(nb);
+	}
+        for(int i = 0 ; i < tab_item.size() ; i++){
+	  if(tab_item[i].hidden()){
+	    proto.hideItem(i);
+	  }
+	  else proto.showItem(i);
+	}
 	auto it = players.begin();
-        
 	for(; it != players.end(); it++) {
 	  if(it->first != m_player) {
         
@@ -253,6 +266,7 @@ namespace Teelol {
     void do_shoot(int x1, int y1,int x2, int y2 ){
       m_player->get_ammo()->shoot(x1,x2,y1,y2);
       int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
+      last_ammo_size = m_player->get_ammo()->get_NbAmmo();
       proto.nbAmmo(nb);
     }
 

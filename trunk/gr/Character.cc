@@ -83,14 +83,18 @@ void Character::pass_row(){
 
   collision_t col = collide();
   if((col.dir.col_y != NONE || col.dir.col_x != NONE) && col.type == ITEM){
+    cout<<"item"<<endl;
     Item * i = (Item*)col.element;
-    switch(i->get_item_type()){
-    case AMMO:
-      m_ammo.pick_up(5);break;
-    case LIFE:
-      take_life(5);break;
+    cout<<i->get_item_type()<<endl;
+    if(!i->hidden()){
+      switch(i->get_item_type()){
+      case AMMO:
+	m_ammo.pick_up(5);break;
+      case LIFE:
+	take_life(5);break;
+      }
+      i->hide();
     }
-    i->hide();
   }
   bool iter = true;
 
