@@ -91,9 +91,10 @@ namespace Teelol {
     }
 
     void die(){
-      int x = boost::lexical_cast<int>(10);
-      int y = boost::lexical_cast<int>(10);
-      m_player->spawn(10,10);
+      int o_x = rand()%screen_s.l;
+      int x = boost::lexical_cast<int>(-10);
+      int y = boost::lexical_cast<int>(o_x);
+      m_player->spawn(o_x,-10);
       proto.nbAmmo(x);
       proto.health(x);
     }
@@ -177,7 +178,7 @@ namespace Teelol {
 	
       if(nick_ok) {
 	cout<<"nick accepte"<<endl;
-	m_player  = new Player(_nick, I_TEE_P, 10, 10, 50, 50, NULL);
+	m_player  = new Player(_nick, I_TEE_P,rand()%screen_s.l , -10, 50, 50, NULL);
 	players[m_player] = this;
 	nick = _nick;
 	proto.ok();
