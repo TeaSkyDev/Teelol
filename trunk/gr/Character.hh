@@ -58,7 +58,7 @@
     bool m_saut;
     vector <Form*> m_obstacle;
     Rotable * m_weapon;
-
+    bool m_tomb;
     Ammo m_ammo;
 
 

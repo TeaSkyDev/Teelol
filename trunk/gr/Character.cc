@@ -4,6 +4,7 @@
 Character::Character(Image_t img, int x, int y, int l, int h, Ecran * e) : Form(x, y, h, l) {
   m_e = e;
   set_image(img);
+  m_tomb = false;
   m_img = img;
   m_wrong_img = false;
   m_ground = true;
@@ -61,7 +62,8 @@ void Character::take_dmg(){
 }
 
 void Character::take_life(int l){
-  m_life += l;
+  if(l + m_life > 10) m_life = 10;
+  else m_life += l;
 }
 
 void Character::loose_life(int l) {
@@ -85,18 +87,25 @@ void Character::pass_row(){
   }
   */
   bool iter = true;
+
   if(m_speed.m_y < 0) {
     m_y += m_speed.m_y;
   } else {
     for(int i = 0; i < m_speed.m_y; i++) {
       collision_t col = collide();
       if(col.dir.col_y != SOUTH) {
-
+	m_tomb = true;
         m_y++;
       }
       else {
-	m_speed.m_y = 0;
-	iter = false;}
+	if(!m_tomb)
+	  m_y--;
+	else {
+	  m_speed.m_y = 0;
+	  iter = false;
+	  m_tomb = false;
+	}
+      }
     }
   }
   
