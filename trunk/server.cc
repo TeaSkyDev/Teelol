@@ -7,6 +7,7 @@
 #include "player.hh"
 
 #include "gr/Character.hh"
+#include "gr/Item.hh"
 
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -19,6 +20,7 @@ namespace Teelol {
   struct session_on_server;
   map<Player*, session_on_server*> players;
   vector<Form> obstacle;
+  vector<Item>  tab_item;
   vector<Player*> players_to_delete;
 
 
@@ -29,12 +31,21 @@ namespace Teelol {
 
   void load_Map(string name){
     ifstream fichier(name.c_str());
-    int x,y,h,l, img;
+    int type,x,y,h,l, img;
 
     while(!fichier.eof()){
-      fichier >> x >> y >> h >> l >> img;
-      obstacle.push_back(Form(x,y,h,l));
-      obstacle[obstacle.size()-1].set_image((Image_t)img);
+      fichier >> type >> x >> y >> h >> l >> img;
+      switch(type){
+      case 1:
+	obstacle.push_back(Form(x,y,h,l));
+	obstacle[obstacle.size()-1].set_image((Image_t)img);
+	break;
+      case 2:
+	fichier >> type;
+	tab_item.push_back(Item(x,y,h,l,(ITEM_T)type));
+	tab_item[tab_item.size()-1].set_image((Image_t)img);
+	break;		   
+      }
     }
     fichier.close();
   }
@@ -188,6 +199,11 @@ namespace Teelol {
       for(auto it = players.begin(); it != players.end(); it++) {
 	m_player->add_obstacle(it->first);
       }
+      for(int i = 0 ; i < tab_item.size() ; i++){
+	*m_player << tab_item[i];
+	send_Item(&tab_item[i],i);
+      }
+      
       int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
       proto.nbAmmo(nb);
     }
@@ -200,6 +216,14 @@ namespace Teelol {
       
       int img = boost::lexical_cast<int>((int)it->get_img());
       proto.addObstacle(img,x,y,h,l);
+    }
+
+    void send_Item(Item *it, int i){
+      int x = it->x_to_sig();
+      int y = it->y_to_sig();
+      i = boost::lexical_cast<int>(i);
+      int img = boost::lexical_cast<int>((int)it->get_img());
+      proto.addItem(x,y,img,i);
     }
     
     void player_joined() {
