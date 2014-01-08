@@ -16,13 +16,18 @@ namespace Teelol {
   using namespace netez;
   using namespace std;
 
+  struct screen_size {
+    int l;
+    int h;
+  };
+
   ezmutex ez_mutex;
   struct session_on_server;
   map<Player*, session_on_server*> players;
   vector<Form> obstacle;
   vector<Item>  tab_item;
   vector<Player*> players_to_delete;
-  vector<point> spown_point;
+  screen_size screen_s;
 
   enum state_t {
     STARTING,
@@ -32,6 +37,9 @@ namespace Teelol {
   void load_Map(string name){
     ifstream fichier(name.c_str());
     int type,x,y,h,l, img;
+
+    fichier >> screen_s.l >> screen_s.h;
+    cout << "l = " << screen_s.l << ", h =" << screen_s.h << endl;
 
     while(!fichier.eof()){
       fichier >> type >> x >> y >> h >> l >> img;
@@ -69,32 +77,15 @@ namespace Teelol {
   	
 
     void on_begin() {
-      int x = 0;
-      int y = 0;
+      
+      int y = -10;
+      int x = rand()%screen_s.l;
+      cout << "rand = " << x << ", screen_s.l = " << screen_s.l << endl;
 
-      //Si il y a au moins un joueur, on incrémente les coord jusqu'à avoir quelque chose de cool
-      if(players.size() != 0) {
-	bool ok = false;
-	while(!ok) {
-	  ok = true;
-	  auto it = players.begin();
-
-	  for(it = players.begin(); it != players.end(); it++) {
-	    if(it->first->get_x() == x && it->first->get_y() == y) {
-	      ok = false;
-	    }
-	  }
-
-	  if(!ok) {
-	    x++;
-	    y++;
-	  }
-	}
-	x = boost::lexical_cast<int>(x);
-	y = boost::lexical_cast<int>(y);
-	proto.moveOk(x, y);
-		
-      }
+      x = boost::lexical_cast<int>(x);
+      y = boost::lexical_cast<int>(y);
+      proto.moveOk(x, y);
+      
     }
 
     void die(){
@@ -293,6 +284,8 @@ void * boucle_suppr(void * arg) {
 
 int main(int argc, char ** argv){
   
+  srand(time(NULL));
+
   pthread_t th_boucle_suppr;
   pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
   Teelol::load_Map("../const/map.lvl");
