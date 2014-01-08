@@ -46,8 +46,10 @@
     int get_life(){return m_life;}
     bool get_hurt();
     Ammo * get_ammo();
+    void delete_obstacle(Form * f);
   private:
     void init_Weap();
+
 
   protected:
  
