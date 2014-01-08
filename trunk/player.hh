@@ -10,15 +10,18 @@
 
 class Player : public Character {
 
-	public:
+public:
   Player(std::string nick, Image_t img, int x, int y, int h, int l, Ecran * screen);
   
   void set_nick(std::string _nick);
+  void set_points(int p);
   void show_nick();
   std::string get_nick()const;
+  int get_points()const;
   
-	private:
-		std::string m_nick;
+private:
+  std::string m_nick;
+  int m_points;
   TTF_Font * m_font;
 
 };
