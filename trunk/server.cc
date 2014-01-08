@@ -255,6 +255,13 @@ void * boucle_suppr(void * arg) {
       auto it = Teelol::players.find(Teelol::players_to_delete[Teelol::players_to_delete.size() - 1]);
       Teelol::players.erase(it);
       Teelol::players_to_delete.pop_back();
+
+      /* Pour chaque player, on supprime la collision avec le player supprimé */
+      auto itp = Teelol::players.begin();
+      for(; itp != Teelol::players.end(); itp++) {
+	itp->first->delete_obstacle(it->first);
+      }
+
       pthread_mutex_unlock(&mutex);
     }
   }
@@ -263,7 +270,7 @@ void * boucle_suppr(void * arg) {
 int main(int argc, char ** argv){
   
   pthread_t th_boucle_suppr;
-  //pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
+  pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
   Teelol::load_Map("../const/map.lvl");
   netez::server<Teelol::session_on_server> server(argc,argv);
 
