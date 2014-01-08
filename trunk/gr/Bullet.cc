@@ -43,7 +43,7 @@ void Bullet::pass_row(){
     if((d.dir.col_y == NORTH || d.dir.col_y == SOUTH) && d.type != ITEM){
       if(d.type == CHARACTER) {
 	d.element->loose_life(m_dmg);
-	cout<<m_dmg<<endl;
+
       }
       explode();
       continuer = false;
@@ -60,7 +60,7 @@ void Bullet::pass_row(){
     if((d.dir.col_x == EAST || d.dir.col_x == WEST) && d.type != ITEM){
       if(d.type == CHARACTER) {
 	d.element->loose_life(m_dmg);
-	cout<<m_dmg<<endl;
+
       }
       explode();
       break;

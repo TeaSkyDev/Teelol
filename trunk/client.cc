@@ -52,6 +52,7 @@ namespace Teelol {
       proto.addItem.sig_recv.connect(EZMETHOD(this, do_addItem));
       proto.hideItem.sig_recv.connect(EZMETHOD(this, do_hideItem));
       proto.showItem.sig_recv.connect(EZMETHOD(this, do_showItem));
+
       sig_end.connect(EZMETHOD(this, on_end));
     }
 

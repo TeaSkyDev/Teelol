@@ -83,9 +83,9 @@ void Character::pass_row(){
 
   collision_t col = collide();
   if((col.dir.col_y != NONE || col.dir.col_x != NONE) && col.type == ITEM){
-    cout<<"item"<<endl;
+
     Item * i = (Item*)col.element;
-    cout<<i->get_item_type()<<endl;
+
     if(!i->hidden()){
       switch(i->get_item_type()){
       case AMMO:
