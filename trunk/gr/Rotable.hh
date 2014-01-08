@@ -23,9 +23,7 @@ public:
 
 private:
 
-  struct point{
-    int x, y;
-  };
+  
   //les fnction suivantes doivent être appelé dans l'ordre
   void get_A();
   void get_B();
