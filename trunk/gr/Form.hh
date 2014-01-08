@@ -16,11 +16,15 @@
 using namespace std;
 
 
-  //vitesse de deplacement des objets
-  struct speed_t{
-    int m_x;
-    int m_y;
-  };
+//vitesse de deplacement des objets
+struct speed_t{
+  int m_x;
+  int m_y;
+};
+
+struct point{
+    int x, y;
+};
 
 //représente le type de forme (décor, character, bullet)
 enum type_t {
