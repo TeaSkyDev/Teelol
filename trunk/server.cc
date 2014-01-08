@@ -174,7 +174,6 @@ namespace Teelol {
       }
       else {
 	proto.err("Nick already use !");
-	finish();
       }
     }
 
