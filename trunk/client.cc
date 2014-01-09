@@ -52,6 +52,8 @@ namespace Teelol {
       proto.addItem.sig_recv.connect(EZMETHOD(this, do_addItem));
       proto.hideItem.sig_recv.connect(EZMETHOD(this, do_hideItem));
       proto.showItem.sig_recv.connect(EZMETHOD(this, do_showItem));
+      proto.winPoint.sig_recv.connect(EZMETHOD(this, do_winPoint));
+      proto.loosePoint.sig_recv.connect(EZMETHOD(this, do_loosePoint));
 
       sig_end.connect(EZMETHOD(this, on_end));
     }
@@ -231,6 +233,16 @@ namespace Teelol {
       proto.shoot(x1,y1,x2,y2);
     }
     
+    void do_winPoint() {
+      player->win_point();
+      cout << "Points : " << player->get_points() << endl;
+    }
+    
+    void do_loosePoint() {
+      player->loose_point();
+      cout << "Points : " << player->get_points() << endl;
+    }
+
    };
 };
 

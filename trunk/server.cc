@@ -164,6 +164,20 @@ namespace Teelol {
 	  int x = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_x());
 	  int y = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_y());
 	  it->second->proto.showExplosion(x,y);
+
+	  if(m_player->get_ammo()->get_exploded(i)->get_killed() != NULL) {
+	    Character* player_killed = (Character*)(m_player->get_ammo()->get_exploded(i)->get_killed());
+	    m_player->get_ammo()->get_exploded(i)->set_killed(NULL);
+	    if(player_killed->get_life() == 0) {
+	      if(player_killed == m_player) {
+		m_player->loose_point();
+		proto.loosePoint();
+	      } else {
+		m_player->win_point();
+		proto.winPoint();
+	      }
+	    }
+	  }
 	}
       }
       }
