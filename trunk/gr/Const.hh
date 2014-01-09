@@ -24,7 +24,9 @@ enum Image_t{
   I_CART_EX,
   I_MUR,
   I_COEUR,
-  I_EYES
+  I_EYES,
+  I_CADRE,
+  I_TEE_A_DMG
 };
 
 
