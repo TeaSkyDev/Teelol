@@ -24,6 +24,7 @@
     void set_position(unsigned int x, unsigned int y);
     void move_left();
     void move_right();
+
     void stop_x();
     void stop_y();
     void jump();
@@ -50,8 +51,8 @@
     void delete_obstacle(Form * f);
   private:
     void init_Weap();
-
-
+    void init_eyes();
+    void move_eyes();
   protected:
  
 
@@ -60,10 +61,10 @@
     bool m_ground; // vrai si le perso est sur le sol
     bool m_saut;
     vector <Form*> m_obstacle;
-    Rotable * m_weapon;
+    Rotable * m_weapon, *m_eyes;
     bool m_tomb;
     Ammo m_ammo;
-
+    
 
     int m_life;
 
