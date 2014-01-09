@@ -18,6 +18,9 @@ public:
   void show_nick();
   std::string get_nick()const;
   int get_points()const;
+
+  void win_point();  //Ajoute un point
+  void loose_point();//Retire un point
   
 private:
   std::string m_nick;

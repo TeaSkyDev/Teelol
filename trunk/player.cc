@@ -28,6 +28,14 @@ int Player::get_points() const {
   return m_points;
 }
 
+void Player::win_point() {
+  m_points++;
+}
+
+void Player::loose_point() {
+  m_points--;
+}
+
 void Player::show_nick(){
   SDL_Color couleur = {255,255,255};
   SDL_Surface * Name = TTF_RenderText_Blended(m_font,m_nick.c_str(), couleur);
