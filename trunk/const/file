@@ -5,7 +5,7 @@
 4 ../img/tee.png
 5 ../img/tee.png
 6 ../img/otheTee.png
-7 ../img/otherTee.png
+7 ../img/otherTeeHurt.png
 8 ../img/weap.png
 9 ../img/2weap.png
 10 ../img/weap.png
@@ -16,3 +16,5 @@
 15 ../img/Mur.png
 16 ../img/Coeur.png
 17 ../img/eyes.png
+18 ../img/cadre.png
+19 ../img/otherTeeHurt.png
