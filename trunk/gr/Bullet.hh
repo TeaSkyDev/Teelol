@@ -18,6 +18,8 @@ public:
   void set_speed(int temps); //calcule la vitesse a laquelle va devoir aller la balle
 
   bool get_exploded();
+  Form* get_killed(); //Renvoie un pointeur sur le joueur tué
+  void set_killed(Form *);
 
 private:
   int m_dmg;
@@ -25,6 +27,7 @@ private:
   int m_speed_init;
   int m_temps;
   bool exploded;
+  Form* m_killed; //contient le joueur tué, sinon NULL
   vector<Form *> m_obstacle;
 
   /* tmp */

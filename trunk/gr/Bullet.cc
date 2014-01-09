@@ -6,6 +6,7 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t im
   set_image(img); 
   //m_surf = SDL_CreateRGBSurface(SDL_HWSURFACE, h, l, 32, 0, 0, 0, 0);
   exploded = false;
+  m_killed = NULL;
   m_vy  = 0;
   m_vx  = 0;
   m_x_init = x_s;
@@ -38,12 +39,13 @@ void Bullet::pass_row(){
 
   bool continuer = true;
 
-   for(int i = 0 ; i < abs((int)m_vy) ; i++){
+  for(int i = 0 ; i < abs((int)m_vy) ; i++){
     collision_t d = collide();
     if((d.dir.col_y == NORTH || d.dir.col_y == SOUTH) && d.type != ITEM){
       if(d.type == CHARACTER) {
 	d.element->loose_life(m_dmg);
-
+	m_killed = d.element;
+       
       }
       explode();
       continuer = false;
@@ -60,7 +62,7 @@ void Bullet::pass_row(){
     if((d.dir.col_x == EAST || d.dir.col_x == WEST) && d.type != ITEM){
       if(d.type == CHARACTER) {
 	d.element->loose_life(m_dmg);
-
+	m_killed = d.element;
       }
       explode();
       break;
@@ -113,4 +115,12 @@ void Bullet::set_speed(int temps){
 
 bool Bullet::get_exploded(){
   return exploded;
+}
+
+Form* Bullet::get_killed() {
+  return m_killed;
+}
+
+void Bullet::set_killed(Form * f) {
+  m_killed = f;
 }
