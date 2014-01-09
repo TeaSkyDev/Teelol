@@ -29,6 +29,9 @@ void Rotable::rotate_invacuo(double angle){
     s = rotozoomSurface(m_sauv2 , -angle, 1.0, 1);
   else 
     s = rotozoomSurface(m_sauv, -angle, 1.0,1);
+  if(m_surf){
+    SDL_FreeSurface(m_surf);
+  }
   m_surf = s;
 }
 
@@ -39,10 +42,10 @@ void Rotable::rotate(double angle, int x, int y, int dist){
     s = rotozoomSurface(m_sauv2 , -m_angle, 1.0, 1);
   else 
     s = rotozoomSurface(m_sauv, -m_angle, 1.0,1);
+    if(m_surf){
+    SDL_FreeSurface(m_surf);
+  }
   m_surf = s;
-  /*  m_x = x + dist * cos(m_angle*M_PI/180);
-  m_y = y + dist * sin(m_angle*M_PI/180);
-  */
   m_dist = dist;
   O.x = x;
   O.y = y;
@@ -130,4 +133,15 @@ int Rotable::get_yba(){
   return D.y + sin((m_angle+45)*M_PI/180)*m_sauv->h;
 
 
+}
+
+Rotable::~Rotable(){
+  if(m_sauv){
+    SDL_FreeSurface(m_sauv);
+    m_sauv = NULL;
+  }
+  if(m_sauv2){
+    SDL_FreeSurface(m_sauv2);
+    m_sauv2 = NULL;
+  }
 }

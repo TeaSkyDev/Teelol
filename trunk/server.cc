@@ -163,6 +163,7 @@ namespace Teelol {
 	for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
 	  int x = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_x());
 	  int y = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_y());
+
 	  it->second->proto.showExplosion(x,y);
 
 	  if(m_player->get_ammo()->get_exploded(i)->get_killed() != NULL) {

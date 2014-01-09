@@ -1,7 +1,7 @@
 #include "Form.hh"
 
 Form::Form(int x, int y, int h, int l) : m_x(x), m_y(y), m_h(h), m_l(l), c("../const/file") {
-
+  m_surf = NULL;
   c.load_file();
 }
 
@@ -54,7 +54,7 @@ void Form::set_screen(Ecran * e){
   m_e = e;
 }
 
-  Form::~Form(){
-    //  SDL_FreeSurface(m_surf);
-  }
+Form::~Form(){
+ 
+}
 
