@@ -225,10 +225,10 @@ namespace Teelol {
     }
     
     void shoot(){
-      int x1 = boost::lexical_cast<int>(player->get_weapon()->get_xb());
-      int y1 = boost::lexical_cast<int>(player->get_weapon()->get_yb());
-      int x2 = boost::lexical_cast<int>(player->get_weapon()->get_xba());
-      int y2 = boost::lexical_cast<int>(player->get_weapon()->get_yba());
+      int x1 = player->get_weapon()->get_xb();
+      int y1 = player->get_weapon()->get_yb();
+      int x2 = player->get_weapon()->get_xba();
+      int y2 = player->get_weapon()->get_yba();
 
       proto.shoot(x1,y1,x2,y2);
     }

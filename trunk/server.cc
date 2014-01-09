@@ -84,19 +84,15 @@ namespace Teelol {
       int x = rand()%screen_s.l;
       cout << "rand = " << x << ", screen_s.l = " << screen_s.l << endl;
 
-      x = boost::lexical_cast<int>(x);
-      y = boost::lexical_cast<int>(y);
       proto.moveOk(x, y);
       
     }
 
     void die(){
       int o_x = rand()%screen_s.l;
-      int x = boost::lexical_cast<int>(-10);
-      int y = boost::lexical_cast<int>(o_x);
       m_player->spawn(o_x,-10);
-      proto.nbAmmo(x);
-      proto.health(x);
+      proto.nbAmmo(10);
+      proto.health(10);
     }
 
 
@@ -123,19 +119,19 @@ namespace Teelol {
 	  cout<<m_player->get_life()<<endl;
 	if(m_player->get_life() <= 0)
 	  die();
-	int x = m_player->x_to_sig();
-	int y = m_player->y_to_sig();
-	int dmg = boost::lexical_cast<int>(m_player->get_hurt());
+	int x = m_player->get_x();
+	int y = m_player->get_y();
+	int dmg = m_player->get_hurt();
 
 	proto.moveOk(x, y);
 	
 	proto.hurt(dmg);
 	if(last_ammo_size != m_player->get_ammo()->get_NbAmmo()){
-	  int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
+	  int nb = m_player->get_ammo()->get_NbAmmo();
 	  proto.nbAmmo(nb);
 	}
 	if(last_life_size != m_player->get_life() && last_life_size < m_player->get_life()){
-	  int _health = boost::lexical_cast<int>(m_player->get_life() - last_life_size);
+	  int _health = m_player->get_life() - last_life_size;
 	  proto.health(_health);
 	}
 	
@@ -156,13 +152,13 @@ namespace Teelol {
       }
       for(it = players.begin(); it != players.end() ; it++){
 	for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
-	  int x = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_x());
-	  int y = boost::lexical_cast<int>((*m_player->get_ammo())[i]->get_y());
+	  int x = (*m_player->get_ammo())[i]->get_x();
+	  int y = (*m_player->get_ammo())[i]->get_y();
 	  it->second->proto.showMissile(x,y);
 	}
 	for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
-	  int x = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_x());
-	  int y = boost::lexical_cast<int>(m_player->get_ammo()->get_exploded(i)->get_y());
+	  int x = m_player->get_ammo()->get_exploded(i)->get_x();
+	  int y = m_player->get_ammo()->get_exploded(i)->get_y();
 
 	  it->second->proto.showExplosion(x,y);
 
@@ -232,25 +228,24 @@ namespace Teelol {
 	send_Item(&tab_item[i],i);
       }
       
-      int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
+      int nb = m_player->get_ammo()->get_NbAmmo();
       proto.nbAmmo(nb);
     }
     
     void send_Form(vector<Form>::iterator it){
-      int x = it->x_to_sig();
-      int y = it->y_to_sig();
-      int h = it->h_to_sig();
-      int l = it->l_to_sig();
+      int x = it->get_x();
+      int y = it->get_y();
+      int h = it->get_h();
+      int l = it->get_l();
       
-      int img = boost::lexical_cast<int>((int)it->get_img());
+      int img = (int)it->get_img();
       proto.addObstacle(img,x,y,h,l);
     }
 
     void send_Item(Item *it, int i){
-      int x = it->x_to_sig();
-      int y = it->y_to_sig();
-      i = boost::lexical_cast<int>(i);
-      int img = boost::lexical_cast<int>((int)it->get_img());
+      int x = it->get_x();
+      int y = it->get_y();
+      int img = (int)it->get_img();
       proto.addItem(x,y,img,i);
     }
     
@@ -280,7 +275,7 @@ namespace Teelol {
 
     void do_shoot(int x1, int y1,int x2, int y2 ){
       m_player->get_ammo()->shoot(x1,x2,y1,y2);
-      int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
+      int nb = m_player->get_ammo()->get_NbAmmo();
       last_ammo_size = m_player->get_ammo()->get_NbAmmo();
       proto.nbAmmo(nb);
     }

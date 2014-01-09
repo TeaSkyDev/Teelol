@@ -46,10 +46,6 @@ class Form{
   Image_t get_img();
   virtual type_t get_type();
   virtual void loose_life(int);
-  int x_to_sig();
-  int y_to_sig();
-  int h_to_sig();
-  int l_to_sig();
   void set_x(int x);
   void set_y(int y);
   speed_t get_speed();

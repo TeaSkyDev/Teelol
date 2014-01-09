@@ -32,10 +32,6 @@ void Form::loose_life(int l) {}
 void Form::set_x(int x) {m_x = x;}
 void Form::set_y(int y) {m_y = y;}
 
-int Form::x_to_sig(){ return boost::lexical_cast<int>(m_x);}
-int Form::y_to_sig(){ return boost::lexical_cast<int>(m_y);}
-int Form::h_to_sig(){ return boost::lexical_cast<int>(m_h);}
-int Form::l_to_sig(){ return boost::lexical_cast<int>(m_l);}
 
 
 
