@@ -89,9 +89,7 @@ void Character::pass_row(){
 
   collision_t col = collide();
   if((col.dir.col_y != NONE || col.dir.col_x != NONE) && col.type == ITEM){
-
     Item * i = (Item*)col.element;
-
     if(!i->hidden()){
       switch(i->get_item_type()){
       case AMMO:
@@ -102,6 +100,7 @@ void Character::pass_row(){
       i->hide();
     }
   }
+
   bool iter = true;
 
   if(m_speed.m_y < 0) {
@@ -113,6 +112,7 @@ void Character::pass_row(){
         m_y++;
       }
       else if(col.dir.col_y == SOUTH && col.type != ITEM){
+
 	if(!m_tomb)
 	  m_y--;
 	else {

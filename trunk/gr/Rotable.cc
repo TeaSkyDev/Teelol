@@ -125,12 +125,12 @@ int Rotable:: get_yb(){
 }
 
 int Rotable::get_xba(){
-  return D.x + cos((m_angle+45)*M_PI/180)*m_sauv->h;
+  return D.x + cos((m_angle+35)*M_PI/180)*m_sauv->h;
 
 }
 
 int Rotable::get_yba(){
-  return D.y + sin((m_angle+45)*M_PI/180)*m_sauv->h;
+  return D.y + sin((m_angle+35)*M_PI/180)*m_sauv->h;
 
 
 }

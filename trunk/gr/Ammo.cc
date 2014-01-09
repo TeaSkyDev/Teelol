@@ -87,7 +87,7 @@ void Ammo::show_mun(){
   case SHOTGUN:
     mun = IMG_Load(c[I_GRENADE_C].c_str()); break;
   }
-  for(int i = 0 ; i <= m_num ; i++){
+  for(int i = 0 ; i < m_num ; i++){
     m_e->put(mun, pos);
     pos.x += 10+mun->w;
   }

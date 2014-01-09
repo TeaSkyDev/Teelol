@@ -22,6 +22,7 @@ public:
   void hide();
   void unhide();
   bool hidden();
+
 private:
   ITEM_T m_type;
   vector <Form*> m_obstacle;

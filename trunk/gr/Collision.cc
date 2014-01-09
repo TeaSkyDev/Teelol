@@ -12,8 +12,8 @@ Collision::Collision(Form * f, vector <Form*> tab){
 	m_element = tab[i];
       }
       if(t.col_x != NONE) {
-        m_direction.col_x = t.col_x;  
 	if(m_type != CHARACTER){
+	  m_direction.col_x = t.col_x;  
 	  m_type    = tab[i]->get_type();
 	  m_element = tab[i];
 	}
