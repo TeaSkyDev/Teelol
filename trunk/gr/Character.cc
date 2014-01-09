@@ -124,14 +124,15 @@ void Character::pass_row(){
 	  m_tomb = false;
 	}
       }
-      else if((col.dir.col_x == WEST || col.dir.col_x == EAST) && col.type != ITEM) {
-	if(col.dir.col_x == WEST && m_speed.m_x < 0) {
-	  m_speed.m_x = 0;
-	} else if(col.dir.col_x == EAST && m_speed.m_x > 0) {
-	  m_speed.m_x = 0;
-	}
+    }
+    if((col.dir.col_x == WEST || col.dir.col_x == EAST) && col.type != ITEM) {
+      if(col.dir.col_x == WEST && m_speed.m_x < 0) {
+	m_speed.m_x = 0;
+      } else if(col.dir.col_x == EAST && m_speed.m_x > 0) {
+	m_speed.m_x = 0;
       }
     }
+    
   }
   
   m_x += m_speed.m_x;

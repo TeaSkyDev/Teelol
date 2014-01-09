@@ -50,6 +50,7 @@
     Ammo * get_ammo();
     void delete_obstacle(Form * f);
   private:
+    void verif_Item();
     void init_Weap();
     void init_eyes();
     void move_eyes();
