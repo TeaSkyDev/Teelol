@@ -16,6 +16,7 @@ public:
   void set_nick(std::string _nick);
   void set_points(int p);
   void show_nick();
+  void show_points();
   std::string get_nick()const;
   int get_points()const;
 

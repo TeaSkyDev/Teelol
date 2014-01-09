@@ -214,6 +214,7 @@ namespace Teelol {
       player->get_weapon()->show();
       player->get_ammo()->show();
       player->show_life();
+      player->show_points();
       sc->Flip();
 
     }

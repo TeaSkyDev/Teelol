@@ -38,9 +38,29 @@ void Player::loose_point() {
 
 void Player::show_nick(){
   SDL_Color couleur = {255,255,255};
+
   SDL_Surface * Name = TTF_RenderText_Blended(m_font,m_nick.c_str(), couleur);
   SDL_Rect rect;
   rect.x = m_x - Name->w/2;
   rect.y = m_y - Name->h - Name->h/2;
   m_e->put(Name, rect);
+
+
+}
+
+
+void Player::show_points(){
+  SDL_Surface * cadre = IMG_Load(c[I_CADRE].c_str());
+  SDL_Rect rect;
+  rect.x = m_e->get_l() - cadre->w - 2;
+  rect.y = m_e->get_h() - cadre->h - 2;
+  m_e->put(cadre, rect);
+  SDL_Color couleur = {255,255,255};
+  stringstream ss;
+  ss<<m_points;
+  SDL_Surface * point = TTF_RenderText_Blended(m_font,(ss.str()).c_str(), couleur);
+
+  rect.x = rect.x + cadre->w/2 - point->w/2;
+  rect.y =  rect.y + cadre->h/2 - point->h/2;
+  m_e->put(point, rect);
 }
