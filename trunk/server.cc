@@ -186,12 +186,14 @@ namespace Teelol {
       if(nick_ok) {
 	cout<<"nick accepte"<<endl;
 	m_player  = new Player(_nick, I_TEE_P,rand()%screen_s.l , -10, 50, 50, NULL);
-	players[m_player] = this;
+
 	nick = _nick;
 	proto.ok();
 	cout << _nick << " a changé son pseudo" << endl;
 	player_joined();
+
 	init_NewPlayer(_nick);
+	players[m_player] = this;
 	cout<<"signaux envoyer"<<endl;
       }
       else {
