@@ -15,7 +15,8 @@
     void Flip();
     void put(SDL_Surface * s, SDL_Rect r); 
     void clean();
-
+    int get_h();
+    int get_l();
     ~Ecran();
   private:
   

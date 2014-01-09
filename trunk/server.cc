@@ -96,6 +96,19 @@ namespace Teelol {
     }
 
 
+    void verif_repop(){
+      int x = m_player->get_x();
+      int y = m_player->get_y();
+      int l = m_player->get_l();
+      if(y > screen_s.h)
+	m_player->set_y(-10);
+      if(x > screen_s.l)
+	m_player->set_x(0);
+      if(x + l< 0)
+	m_player->set_x(screen_s.l - l);
+    }
+
+
     void do_move(string mv) {
       {
 	ezlock hold(ez_mutex);
@@ -115,6 +128,7 @@ namespace Teelol {
 	}
 	last_life_size = m_player->get_life();
 	m_player->pass_row();  
+	verif_repop();
 	if(m_player->get_life() <= 0)
 	  die();
 	int x = m_player->get_x();

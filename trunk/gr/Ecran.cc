@@ -37,6 +37,14 @@
     width = largeur;
     ecran = SDL_SetVideoMode(height, width, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
   }
+
+int Ecran::get_l(){
+  return ecran->w;
+}
+
+int Ecran::get_h(){
+  return ecran->h;
+}
   
   Ecran::~Ecran(){
     SDL_FreeSurface(ecran);

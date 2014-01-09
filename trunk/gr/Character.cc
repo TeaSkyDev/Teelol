@@ -93,11 +93,19 @@ void Character::pass_row(){
     if(!i->hidden()){
       switch(i->get_item_type()){
       case AMMO:
-	m_ammo.pick_up(5);break;
+	if(m_ammo.get_NbAmmo() != m_ammo.get_max() && m_ammo.get_NbAmmo() != -1){
+	  m_ammo.pick_up(5);
+	  i->hide();
+	}
+	break;
       case LIFE:
-	take_life(5);break;
+	if(m_life < 10){
+	  take_life(5);
+	  i->hide();
+	}
+	break;
       }
-      i->hide();
+
     }
   }
 
