@@ -9,7 +9,7 @@ using namespace std;
 
 Player::Player(string nick, Image_t img, int x, int y, int h, int l, Ecran * screen) : m_nick(nick), Character(img, x, y , h , l , screen) {
   m_font = TTF_OpenFont("../const/Font.ttf",15);
-  points = 0;
+  m_points = 0;
 }
 
 void Player::set_nick(string _nick) {
