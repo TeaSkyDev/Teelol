@@ -64,10 +64,10 @@ namespace Teelol {
     string  nick;
     Player * m_player;
     Form * f;
-    int last_ammo_size;
+    int last_ammo_size, last_life_size;
     session_on_server(socket & io): session(io) {
       state = STARTING;
-      last_ammo_size = 10;
+      last_ammo_size = last_life_size = 10;
       f = new Form(10,300,10,300);
       proto.move.sig_recv.connect(EZMETHOD(this, do_move));
       proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
@@ -117,6 +117,7 @@ namespace Teelol {
 	  m_player->stop_x();
 	  
 	}
+	last_life_size = m_player->get_life();
 	m_player->pass_row();  
 	if(nick == "e")
 	  cout<<m_player->get_life()<<endl;
@@ -125,6 +126,7 @@ namespace Teelol {
 	int x = m_player->x_to_sig();
 	int y = m_player->y_to_sig();
 	int dmg = boost::lexical_cast<int>(m_player->get_hurt());
+
 	proto.moveOk(x, y);
 	
 	proto.hurt(dmg);
@@ -132,6 +134,11 @@ namespace Teelol {
 	  int nb = boost::lexical_cast<int>(m_player->get_ammo()->get_NbAmmo());
 	  proto.nbAmmo(nb);
 	}
+	if(last_life_size != m_player->get_life() && last_life_size < m_player->get_life()){
+	  int _health = boost::lexical_cast<int>(m_player->get_life() - last_life_size);
+	  proto.health(_health);
+	}
+	
         for(int i = 0 ; i < tab_item.size() ; i++){
 	  if(tab_item[i].hidden()){
 	    proto.hideItem(i);
