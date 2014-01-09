@@ -36,7 +36,7 @@ namespace Teelol {
 
   void load_Map(string name){
     ifstream fichier(name.c_str());
-    int type,x,y,h,l, img;
+    int type,x,y,h,l, img,type2;
 
     fichier >> screen_s.l >> screen_s.h;
     cout << "l = " << screen_s.l << ", h =" << screen_s.h << endl;
@@ -49,8 +49,8 @@ namespace Teelol {
 	obstacle[obstacle.size()-1].set_image((Image_t)img);
 	break;
       case 2:
-	fichier >> type;
-	tab_item.push_back(Item(x,y,h,l,(ITEM_T)type));
+	fichier >> type2;
+	tab_item.push_back(Item(x,y,h,l,(ITEM_T)type2));
 	tab_item[tab_item.size()-1].set_image((Image_t)img);
 	break;		   
       }
@@ -115,8 +115,6 @@ namespace Teelol {
 	}
 	last_life_size = m_player->get_life();
 	m_player->pass_row();  
-	if(nick == "e")
-	  cout<<m_player->get_life()<<endl;
 	if(m_player->get_life() <= 0)
 	  die();
 	int x = m_player->get_x();
