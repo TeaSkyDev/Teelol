@@ -14,15 +14,23 @@ void Rotable::set_image(Image_t img){
   m_sauv = IMG_Load(c[img].c_str());
   if(img == 8)
     m_sauv2 = IMG_Load(c[(Image_t)9].c_str());    
-  if(img == 10)
+  else if(img == 10)
     m_sauv2 = IMG_Load(c[(Image_t)11].c_str());    
+  else m_sauv2 = m_sauv;
   m_l = m_surf->w;
   m_h = m_surf->h;
 
 }
 
 
-
+void Rotable::rotate_invacuo(double angle){
+  SDL_Surface *s;
+  if((m_angle < 270) && (m_angle >= 90))
+    s = rotozoomSurface(m_sauv2 , -angle, 1.0, 1);
+  else 
+    s = rotozoomSurface(m_sauv, -angle, 1.0,1);
+  m_surf = s;
+}
 
 void Rotable::rotate(double angle, int x, int y, int dist){
   m_angle += angle;

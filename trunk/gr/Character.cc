@@ -12,10 +12,17 @@ Character::Character(Image_t img, int x, int y, int l, int h, Ecran * e) : Form(
   m_speed.m_y = 0;
   m_saut = false;
   init_Weap();
+  init_eyes();
   m_ammo.set_nb(10);
   m_ammo.set_screen(e);
   m_life = 10;
   m_dmg = 0;
+}
+
+void Character::init_eyes(){
+ m_eyes = new Rotable(m_x+1, m_y+1,10,10);
+  m_eyes->set_image(I_EYES);
+  m_eyes->set_screen(m_e);
 }
 
 void Character::init_Weap(){
@@ -80,6 +87,7 @@ void Character::loose_life(int l) {
 void Character::pass_row(){
  
   m_ammo.pass_row();
+
 
   collision_t col = collide();
   if((col.dir.col_y != NONE || col.dir.col_x != NONE) && col.type == ITEM){
@@ -188,15 +196,25 @@ void Character::shoot(){
   m_ammo.shoot(m_weapon, m_e);
 }
 
+void Character::move_eyes(){
+  m_eyes->set_angle(m_weapon->get_angle());
+
+  m_eyes->rotate(0,m_x + m_l/2, m_y + m_h/2,-5);
+  //m_eyes->rotate_invacuo(-m_weapon->get_angle());
+}
+
+
 void Character::show(){
   //  m_ammo.show();
+
+  move_eyes();
   SDL_Rect rect;
   rect.x = m_x;
   rect.y = m_y;
   rect.h = m_h;
   rect.w = m_l;
   m_e->put(m_surf,rect);
-
+  m_eyes->show();
 }
 
 void Character::show_life(){

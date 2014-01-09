@@ -16,7 +16,7 @@ public:
   double get_angle();
   void set_angle(double angle);
   void rotate(double angle, int x, int y, int dist);
-
+  void rotate_invacuo(double angle);
 
 
 

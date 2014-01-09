@@ -23,7 +23,8 @@ enum Image_t{
   I_SHOTGUN_C,
   I_CART_EX,
   I_MUR,
-  I_COEUR
+  I_COEUR,
+  I_EYES
 };
 
 
