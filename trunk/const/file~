@@ -1,6 +1,6 @@
 0 ../img/tee.png
 1 ../img/tee.png
-2 ../img/tee.png
+2 ../img/teeHurt.png
 3 ../img/tee.png
 4 ../img/tee.png
 5 ../img/tee.png
@@ -15,3 +15,6 @@
 14 ../img/exp.png
 15 ../img/Mur.png
 16 ../img/Coeur.png
+17 ../img/eyes.png
+18 ../img/cadre.png
+19 ../img/otherTeeHurt.png

@@ -97,7 +97,7 @@ namespace Teelol {
     }
 
     void do_joined(string nick) {
-      players.push_back(new Player(nick, I_TEE_P, 0, 0, 10, 10, sc));
+      players.push_back(new Player(nick, I_TEE_A, 0, 0, 10, 10, sc));
     }
 
     void do_left(string nick) {
@@ -146,8 +146,10 @@ namespace Teelol {
     }
 
     void do_hurt(int dmg){
-      if(dmg > 0)
+      if(dmg > 0){
+	player->set_image(I_TEE_DMG);
 	player->loose_life(dmg);
+      }
       else if(player->get_wrong_img())
 	player->set_image(I_TEE_P);
     }
@@ -156,7 +158,8 @@ namespace Teelol {
     void do_hurted(string _nick){
       for(int i = 0; i < players.size(); i++) {
 	if(players[i]->get_nick() == _nick) {
-	  players[i]->loose_life(0);
+	  players[i]->set_image(I_TEE_A_DMG);
+	  players[i]->loose_life(10);
 	}
       }
     }
@@ -200,7 +203,7 @@ namespace Teelol {
 	players[i]->show_nick();
 	players[i]->get_weapon()->show();
 	if(players[i]->get_wrong_img())
-	  players[i]->set_image(I_TEE_P);
+	  players[i]->set_image(I_TEE_A);
       }
       for(auto it = map_item.begin() ; it != map_item.end() ; it++){
 	it->second->show();

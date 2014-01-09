@@ -78,8 +78,6 @@ void Character::loose_life(int l) {
   if(m_life > 0)
     m_life -= l;
 
-  set_image(I_TEE_DMG);
-
   m_wrong_img = true;
   m_dmg = l;
 }
@@ -229,7 +227,7 @@ void Character::show_life(){
   rect1.x = 10;
   rect1.y = 30;
 
-  for(int i = 0 ; i < m_life ; i++){
+  for(int i = 0 ; i <= m_life ; i++){
     m_e->put(coeur, rect1);
     rect1.x += 10 + coeur->w;
   }
