@@ -142,7 +142,7 @@ void Character::pass_row(){
   }
   
   m_x += m_speed.m_x;
-  if(iter)
+  if(iter && m_speed.m_y < 50)
     m_speed.m_y++;
   
 }
