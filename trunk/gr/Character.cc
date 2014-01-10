@@ -58,9 +58,11 @@ void Character::stop_y(){
 
 void Character::jump(){
   m_ground = false;
-  m_speed.m_y = -5; 
-  m_saut = true;
-  m_y--;
+  if(m_saut < 2){
+    m_speed.m_y = -7; 
+    m_saut++;
+    m_y--;
+  }
 }
 
 void Character::take_dmg(){
@@ -120,7 +122,7 @@ void Character::pass_row(){
         m_y++;
       }
       else if(col.dir.col_y == SOUTH && col.type != ITEM){
-
+	m_saut = 0;
 	if(!m_tomb)
 	  m_y--;
 	else {

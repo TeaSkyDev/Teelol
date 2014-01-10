@@ -60,7 +60,7 @@
     Image_t m_img;
     int m_wait, m_dmg;
     bool m_ground; // vrai si le perso est sur le sol
-    bool m_saut;
+    int m_saut;
     vector <Form*> m_obstacle;
     Rotable * m_weapon, *m_eyes;
     bool m_tomb;
