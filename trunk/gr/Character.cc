@@ -116,10 +116,10 @@ void Character::pass_row(){
   if(m_speed.m_y < 0) {
     m_y += m_speed.m_y;
   } else {
-    for(int i = 0; i < m_speed.m_y; i++) {
+    for(int i = 0; i < m_speed.m_y; i+=3) {
       collision_t col = collide();
       if(col.dir.col_y != SOUTH || (col.dir.col_y == SOUTH && col.type == ITEM)){	m_tomb = true;
-        m_y++;
+        m_y+=3;
       }
       else if(col.dir.col_y == SOUTH && col.type != ITEM){
 	m_saut = 0;
@@ -142,7 +142,7 @@ void Character::pass_row(){
   }
   
   m_x += m_speed.m_x;
-  if(iter && m_speed.m_y < 50)
+  if(iter && m_speed.m_y < 30)
     m_speed.m_y++;
   
 }

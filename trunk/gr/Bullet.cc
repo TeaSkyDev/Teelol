@@ -39,7 +39,7 @@ void Bullet::pass_row(){
 
   bool continuer = true;
 
-  for(int i = 0 ; i < abs((int)m_vy) ; i++){
+  for(int i = 0 ; i < abs((int)m_vy) ; i+=3){
     collision_t d = collide();
     if((d.dir.col_y == NORTH || d.dir.col_y == SOUTH) && d.type != ITEM){
       if(d.type == CHARACTER) {
@@ -53,11 +53,11 @@ void Bullet::pass_row(){
     }
    
     if(m_vy > 0)
-      m_y ++;
-    else m_y --;
+      m_y +=3;
+    else m_y -=3;
   }
 
-  for(int i = 0 ; i < abs((int)m_vx) && continuer; i++){
+  for(int i = 0 ; i < abs((int)m_vx) && continuer; i+=3){
     collision_t d = collide();
     if((d.dir.col_x == EAST || d.dir.col_x == WEST) && d.type != ITEM){
       if(d.type == CHARACTER) {
@@ -69,12 +69,18 @@ void Bullet::pass_row(){
     }
 
     if(m_vx > 0)
-      m_x ++;
+      m_x +=3;
     else
-      m_x --;
+      m_x -=3;
   }
-  if(m_x > 700 || m_y > 700 || m_y < -200 || m_x < -200)
-      explode();
+  if(m_x > 600){
+    m_x = 0;
+  } 
+  if(m_y > 600){
+    m_y = 0;
+  }
+  if(m_x + m_l < 0)
+    m_x = 600;
 }
 
 void Bullet::explode(){
