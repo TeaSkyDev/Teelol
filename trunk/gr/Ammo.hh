@@ -17,6 +17,7 @@ public:
   void shoot(Rotable * f, Ecran *e);
   void shoot(int, int, int, int);
   void pick_up(int);
+  void set_dmg(int);
   void set_type(cartridge_t);
   void pass_row();
   void show();

@@ -28,7 +28,8 @@ namespace Teelol {
   vector<Item>  tab_item;
   vector<Player*> players_to_delete;
   screen_size screen_s;
-
+  int NbAmmo;
+  
   enum state_t {
     STARTING,
     STARTED
@@ -38,7 +39,7 @@ namespace Teelol {
     ifstream fichier(name.c_str());
     int type,x,y,h,l, img,type2;
 
-    fichier >> screen_s.l >> screen_s.h;
+    fichier >> screen_s.l >> screen_s.h >> NbAmmo;
     cout << "l = " << screen_s.l << ", h =" << screen_s.h << endl;
 
     while(!fichier.eof()){
@@ -241,6 +242,7 @@ namespace Teelol {
       }
       
       int nb = m_player->get_ammo()->get_NbAmmo();
+      m_player->get_ammo()->set_dmg(NbAmmo);
       proto.nbAmmo(nb);
     }
     

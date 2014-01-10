@@ -15,7 +15,7 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t im
   int p = m_y_init - m_y;
   m_angle = atan2(p,o);
   int speed_init = sqrt(o*o+p*p);
-
+  m_first = true;
   m_vx = speed_init*cos(m_angle);
   m_vy = speed_init*sin(m_angle);
 
@@ -73,14 +73,19 @@ void Bullet::pass_row(){
     else
       m_x -=3;
   }
-  if(m_x > 600){
-    m_x = 0;
-  } 
-  if(m_y > 600){
-    m_y = 0;
-  }
-  if(m_x + m_l < 0)
-    m_x = 600;
+ 
+    if(m_x + 10> 400){
+      if(m_first) { m_x = 0; m_first = false;}
+      else explode();
+    } 
+    if(m_y + 10> 400){
+      if(m_first) { m_y = 0; m_first = false;}
+      else explode();
+    }
+    if(m_x + m_l + 10 < 0){
+      if(m_first) { m_x = 400; m_first = false;}
+      else explode();
+    }
 }
 
 void Bullet::explode(){

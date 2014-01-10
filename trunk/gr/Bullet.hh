@@ -29,7 +29,7 @@ private:
   bool exploded;
   Form* m_killed; //contient le joueur tué, sinon NULL
   vector<Form *> m_obstacle;
-
+  bool m_first;
   /* tmp */
   double m_vx;
   double m_vy;
