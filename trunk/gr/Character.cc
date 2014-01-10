@@ -116,23 +116,36 @@ void Character::pass_row(){
   if(m_speed.m_y < 0) {
     m_y += m_speed.m_y;
   } else {
-    for(int i = 0; i < m_speed.m_y; i+=3) {
-      collision_t col = collide();
-      if(col.dir.col_y != SOUTH || (col.dir.col_y == SOUTH && col.type == ITEM)){	m_tomb = true;
-        m_y+=3;
-      }
-      else if(col.dir.col_y == SOUTH && col.type != ITEM){
-	m_saut = 0;
-	if(!m_tomb)
-	  m_y--;
-	else {
-	  m_speed.m_y = 0;
-	  iter = false;
-	  m_tomb = false;
-	}
-      }
+    if(col.dir.col_y != SOUTH ||  (col.dir.col_y == SOUTH && col.type == ITEM)){
+      m_tomb = true;
+      m_y+= m_speed.m_y;
     }
-  }  
+    else if(col.dir.col_y == SOUTH && col.type != ITEM){
+      if(!m_tomb)
+	m_y--;
+      else {
+	m_speed.m_y = 0;
+	iter = false;
+	m_tomb = false;
+    }
+  }
+  }
+    // for(int i = 0; i < m_speed.m_y; i+=3) {
+    //   collision_t col = collide();
+    //   if(col.dir.col_y != SOUTH ||{	m_tomb = true;
+    //     m_y+=3;
+    //   }
+    //   else if(col.dir.col_y == SOUTH && col.type != ITEM){
+    // 	m_saut = 0;
+    // 	if(!m_tomb)
+    // 	  m_y--;
+    // 	else {
+    // 	  m_speed.m_y = 0;
+    // 	  iter = false;
+    // 	  m_tomb = false;
+    // 	}
+    //   }
+    // }  
   if((col.dir.col_x == WEST || col.dir.col_x == EAST) && col.type != ITEM) {
     if(col.dir.col_x == WEST && m_speed.m_x < 0) {
       m_speed.m_x = 0;
@@ -146,6 +159,7 @@ void Character::pass_row(){
     m_speed.m_y++;
   
 }
+
 
 void Character::die(){
   set_image(I_TEE_DIE);

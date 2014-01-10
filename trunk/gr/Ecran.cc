@@ -1,8 +1,10 @@
 #include "Ecran.hh"
 
-  Ecran::Ecran(int hauteur, int largeur): height(hauteur), width(largeur){
+Ecran::Ecran(int hauteur, int largeur): height(hauteur), width(largeur), c("../const/file"){
     SDL_Init(SDL_INIT_VIDEO);
     ecran = SDL_SetVideoMode(height, width, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    m_fond = IMG_Load(c[I_FOND].c_str());
+
   }
 
 
@@ -28,6 +30,9 @@
   }
 
   void Ecran::clean(){
+    SDL_Rect rect = {0,0,0,0};
+    //SDL_BlitSurface(m_fond, NULL, ecran, &rect);
+    //SDL_Flip(ecran);
     SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format,0,0,0));
   }
 

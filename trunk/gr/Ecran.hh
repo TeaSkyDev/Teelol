@@ -2,7 +2,8 @@
 #define _Ecran
 
 #include <SDL/SDL.h>
-
+#include <SDL/SDL_image.h>
+#include "Const.hh"
 
 
 
@@ -20,9 +21,10 @@
     ~Ecran();
   private:
   
-    SDL_Surface * ecran;
-    int height, width;
+    SDL_Surface * ecran, *m_fond;
     
+    int height, width;
+    Const c;
   };
 
 #endif

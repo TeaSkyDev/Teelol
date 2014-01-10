@@ -27,7 +27,8 @@ enum Image_t{
   I_EYES,
   I_CADRE,
   I_TEE_A_DMG,
-  I_SOL
+  I_SOL,
+  I_FOND
 };
 
 
