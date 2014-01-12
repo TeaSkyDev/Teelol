@@ -335,8 +335,16 @@ int main(int argc, char ** argv){
 
   pthread_t th_boucle_suppr;
   pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
-  if(argc > 1)
-    Teelol::load_Map(argv[1]);
+  if(argc > 1){
+    if(argc == 2){
+      Teelol::load_Map(argv[1]);
+    }
+    else if(argc == 4){
+      Teelol::load_Map(argv[3]);
+    }
+    else 
+      Teelol::load_Map("../const/map.lvl");
+  }
   else 
     Teelol::load_Map("../const/map.lvl");
   netez::server<Teelol::session_on_server> server(argc,argv);

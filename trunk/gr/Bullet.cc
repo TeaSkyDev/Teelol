@@ -16,8 +16,8 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t im
   m_angle = atan2(p,o);
   int speed_init = sqrt(o*o+p*p);
   m_first = true;
-  m_vx = speed_init*cos(m_angle);
-  m_vy = speed_init*sin(m_angle);
+  m_speed.m_x = speed_init*cos(m_angle);
+  m_speed.m_y = speed_init*sin(m_angle);
 
 }
 
@@ -32,10 +32,10 @@ type_t Bullet::get_type() {
 
 void Bullet::pass_row(){
   double g  = 9.81;
-  m_vy+=0.5;
+  m_speed.m_y += 1;
   m_temps += 8;
   collision_t d = collide();
-  if(d.type != ITEM && d.type != TNONE){
+  if(d.type != ITEM && d.dir.col_y != NONE){
     cout<<d.type<<endl;
     if(d.type == CHARACTER) {
       d.element->loose_life(m_dmg);
@@ -43,16 +43,16 @@ void Bullet::pass_row(){
     }
     explode();
   }
-  m_y += m_vy;
-  if(d.type != ITEM && d.type != TNONE){
-    cout<<d.type<<endl;
+  m_y += m_speed.m_y;
+  if(d.type != ITEM && d.dir.col_x != NONE){
+
     if(d.type == CHARACTER) {
       d.element->loose_life(m_dmg);
       m_killed = d.element;
     }
     explode();
   }    
-  m_x += m_vx;
+  m_x += m_speed.m_x;
   if(m_x + 10> 400){
     if(m_first) { m_x = 0; m_first = false;}
     else explode();
@@ -68,10 +68,10 @@ void Bullet::pass_row(){
 }
 
 void Bullet::explode(){
+  int h = m_h, l = m_l;
   set_image(I_CART_EX);
-
-  m_speed.m_x = 0;
-  m_speed.m_y = 0;
+  m_speed.m_x = 10;
+  m_speed.m_y = 10;
   exploded = true;
 }
 

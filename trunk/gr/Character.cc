@@ -87,12 +87,13 @@ void Character::loose_life(int l) {
 void Character::pass_row(){
   m_ammo.pass_row();
   collision_t col = collide();
-  if(col.type != ITEM){
-    if(col.dir.col_y != NORTH){
-      m_speed.m_y = col.cor.m_y;
-      m_speed.m_x = col.cor.m_x;
-    }
-  }
+  Collision c(this, m_obstacle);
+  Form * f = c.create_coly_Form(this);
+  f->set_screen(m_e);
+  if(m_e)
+    f->show();
+  m_speed.m_y = col.cor.m_y;
+  m_speed.m_x = col.cor.m_x;
   if(col.dir.col_y == SOUTH)
     m_saut = 0;
   if(col.type == ITEM){
@@ -108,7 +109,6 @@ void Character::pass_row(){
 
   m_x += m_speed.m_x;
   m_y += m_speed.m_y;
-
   if(m_speed.m_y < 50)
     m_speed.m_y ++;
 }
@@ -204,7 +204,8 @@ void Character::show_life(){
   SDL_Rect rect1;
   rect1.x = 10;
   rect1.y = 30;
-
+  rect1.w = 10;
+  rect1.h = 10;
   for(int i = 0 ; i <= m_life ; i++){
     m_e->put(coeur, rect1);
     rect1.x += 10 + coeur->w;

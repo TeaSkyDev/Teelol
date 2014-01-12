@@ -7,19 +7,18 @@ Collision::Collision(Form * f, vector <Form*> tab){
   m_direction.dist_x = 1000;
   m_type = TNONE;
   m_cor = f->get_speed();
-
+  system("clear");
   Form * fy = create_coly_Form(f);
   Form * fx = create_colx_Form(f);
   for(int i = 0 ; i < tab.size() ; i++){
     if(col(fy, tab[i])){
       direction_t t = get_coly_dir(f, tab[i]);
       if(m_direction.dist_y > t.dist_y){ 
-
 	m_direction.col_y = t.col_y;  
 	m_direction.dist_y = t.dist_y;
+	m_cor.m_y = m_direction.dist_y;
 	m_type    = tab[i]->get_type();
 	m_element = tab[i];
-	m_cor.m_y = m_direction.dist_y;
       }
     }
     if(col(fx, tab[i])){
@@ -27,9 +26,9 @@ Collision::Collision(Form * f, vector <Form*> tab){
       if(m_direction.dist_x > t.dist_x){
 	m_direction.col_x = t.col_x;  
 	m_direction.dist_x = t.dist_x;
+	m_cor.m_x = m_direction.dist_x;
 	m_type    = tab[i]->get_type();
 	m_element = tab[i];
-	m_cor.m_x = m_direction.dist_x;
       }
       }
     
@@ -65,12 +64,10 @@ direction_t Collision::get_coly_dir(Form * f, Form * t){
   direction_t dir;
   if(speed.m_y <= 0 && f->get_y() + 1 > (t->get_y() + t->get_h())){
      dir.col_y = NORTH;
-    
      dir.dist_y = -(f->get_y() - (t->get_y() + t->get_h()));
   }
   else if(speed.m_y >= 0 && t->get_y() + 1 > (f->get_y() + f->get_h())){
     dir.col_y = SOUTH;
-    
     dir.dist_y = t->get_y() - (f->get_y() + f->get_h());
   }
   else{
@@ -96,13 +93,20 @@ bool Collision::is_inside(int x,int y, Form *t){
 
 void Collision::get_coly_hl(int &h, int &l,int &x, int &y, Form *f){
   speed_t speed = f->get_speed();
+
   if(speed.m_y > 0){
     h = f->get_h() + speed.m_y;
     y = f->get_y();
+    cout<<"h1 "<<h<<endl;
   }
   else if(speed.m_y < 0){
-    h = abs(speed.m_y) + f->get_h();
-    y = f->get_y() - abs(speed.m_y);
+    h = f->get_h() - speed.m_y; 
+    y = f->get_y() + speed.m_y;
+    cout<<"h2 "<<h<<endl;
+  }
+  else if(speed.m_y == 0){
+    h = f->get_h();
+    y = f->get_y();
   }
   x = f->get_x();
   l = f->get_h();
@@ -110,7 +114,9 @@ void Collision::get_coly_hl(int &h, int &l,int &x, int &y, Form *f){
 
 
 void Collision::get_colx_hl(int &h, int &l, int &x, int &y, Form *f){
+
   speed_t speed = f->get_speed();
+ 
   if(speed.m_x > 0){
     l = speed.m_x + f->get_l();
     x = f->get_x();
