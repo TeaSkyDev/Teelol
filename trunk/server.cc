@@ -40,7 +40,7 @@ namespace Teelol {
     int type,x,y,h,l, img,type2;
 
     fichier >> screen_s.l >> screen_s.h >> NbAmmo;
-    cout << "l = " << screen_s.l << ", h =" << screen_s.h << endl;
+
 
     while(!fichier.eof()){
       fichier >> type >> x >> y >> h >> l >> img;
@@ -83,7 +83,7 @@ namespace Teelol {
       
       int y = -10;
       int x = rand()%screen_s.l;
-      cout << "rand = " << x << ", screen_s.l = " << screen_s.l << endl;
+
 
       proto.moveOk(x, y);
       
@@ -218,7 +218,7 @@ namespace Teelol {
 
 	init_NewPlayer(_nick);
 	players[m_player] = this;
-	cout<<"signaux envoyer"<<endl;
+
       }
       else {
 	proto.err("Nick already use !");
@@ -265,7 +265,7 @@ namespace Teelol {
     
     void player_joined() {
       auto it = players.begin();
-      cout<<"avant player_joined"<<endl;
+
       for(it = players.begin(); it != players.end(); it++) {
 	if(it->first->get_nick() != nick) {
 	  it->second->proto.joined(nick);

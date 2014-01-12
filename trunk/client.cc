@@ -239,12 +239,12 @@ namespace Teelol {
     
     void do_winPoint() {
       player->win_point();
-      cout << "Points : " << player->get_points() << endl;
+
     }
     
     void do_loosePoint() {
       player->loose_point();
-      cout << "Points : " << player->get_points() << endl;
+
     }
 
    };
@@ -260,7 +260,7 @@ void * routine(void * arg){
 
   string pseudo;
   while(c->state == Teelol::STARTING) {
-    cout << c->state << "Pseudo : ";
+    cout << "Pseudo : ";
     cin>>pseudo;
     c->proto.nick(pseudo);
     cout<<"message envoye"<<endl;

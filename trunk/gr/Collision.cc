@@ -7,7 +7,7 @@ Collision::Collision(Form * f, vector <Form*> tab){
   m_direction.dist_x = 1000;
   m_type = TNONE;
   m_cor = f->get_speed();
-  system("clear");
+
   Form * fy = create_coly_Form(f);
   Form * fx = create_colx_Form(f);
   for(int i = 0 ; i < tab.size() ; i++){
@@ -97,12 +97,12 @@ void Collision::get_coly_hl(int &h, int &l,int &x, int &y, Form *f){
   if(speed.m_y > 0){
     h = f->get_h() + speed.m_y;
     y = f->get_y();
-    cout<<"h1 "<<h<<endl;
+
   }
   else if(speed.m_y < 0){
     h = f->get_h() - speed.m_y; 
     y = f->get_y() + speed.m_y;
-    cout<<"h2 "<<h<<endl;
+
   }
   else if(speed.m_y == 0){
     h = f->get_h();
