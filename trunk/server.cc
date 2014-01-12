@@ -109,6 +109,35 @@ namespace Teelol {
 	m_player->set_x(screen_s.l - l);
     }
 
+    void verif_lifeAndAmmo(){
+      if(last_ammo_size != m_player->get_ammo()->get_NbAmmo()){
+	int nb = m_player->get_ammo()->get_NbAmmo();
+	proto.nbAmmo(nb);
+      }
+      if(last_life_size != m_player->get_life() && last_life_size < m_player->get_life()){
+	int _health = m_player->get_life() - last_life_size;
+	proto.health(_health);
+      }
+    }
+
+
+    void verif_Points(int i){
+      if(m_player->get_ammo()->get_exploded(i)->get_killed() != NULL) {
+	Character* player_killed = (Character*)(m_player->get_ammo()->get_exploded(i)->get_killed());
+	m_player->get_ammo()->get_exploded(i)->set_killed(NULL);
+	if(player_killed->get_life() == 0) {
+	  if(player_killed == m_player) {
+	    m_player->loose_point();
+	    proto.loosePoint();
+	  } else {
+	    m_player->win_point();
+	    proto.winPoint();
+	  }
+	}
+      }    
+    }
+
+    
 
     void do_move(string mv) {
       {
@@ -129,23 +158,20 @@ namespace Teelol {
 	}
 	last_life_size = m_player->get_life();
 	m_player->pass_row();  
+
 	verif_repop();
+	verif_lifeAndAmmo();
+	
 	if(m_player->get_life() <= 0)
 	  die();
+
 	int x = m_player->get_x();
 	int y = m_player->get_y();
 	int dmg = m_player->get_hurt();
-
-	proto.moveOk(x, y);
 	
-	proto.hurt(dmg);
-	if(last_ammo_size != m_player->get_ammo()->get_NbAmmo()){
-	  int nb = m_player->get_ammo()->get_NbAmmo();
-	  proto.nbAmmo(nb);
-	}
-	if(last_life_size != m_player->get_life() && last_life_size < m_player->get_life()){
-	  int _health = m_player->get_life() - last_life_size;
-	  proto.health(_health);
+	proto.moveOk(x, y);
+	if(dmg > 0){
+	  proto.hurt(NbAmmo);
 	}
 	
         for(int i = 0 ; i < tab_item.size() ; i++){
@@ -163,33 +189,21 @@ namespace Teelol {
 	    it->second->proto.hurted(nick);
 	}
       }
-      for(it = players.begin(); it != players.end() ; it++){
-	for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
-	  int x = (*m_player->get_ammo())[i]->get_x();
-	  int y = (*m_player->get_ammo())[i]->get_y();
-	  it->second->proto.showMissile(x,y);
-	}
-	for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
-	  int x = m_player->get_ammo()->get_exploded(i)->get_x();
-	  int y = m_player->get_ammo()->get_exploded(i)->get_y();
+	for(it = players.begin(); it != players.end() ; it++){
+	  for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
+	    int x = (*m_player->get_ammo())[i]->get_x();
+	    int y = (*m_player->get_ammo())[i]->get_y();
+	    it->second->proto.showMissile(x,y);
+	  }
+	  for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
+	    int x = m_player->get_ammo()->get_exploded(i)->get_x();
+	    int y = m_player->get_ammo()->get_exploded(i)->get_y();
 
-	  it->second->proto.showExplosion(x,y);
+	    it->second->proto.showExplosion(x,y);
+	    verif_Points(i);
 
-	  if(m_player->get_ammo()->get_exploded(i)->get_killed() != NULL) {
-	    Character* player_killed = (Character*)(m_player->get_ammo()->get_exploded(i)->get_killed());
-	    m_player->get_ammo()->get_exploded(i)->set_killed(NULL);
-	    if(player_killed->get_life() == 0) {
-	      if(player_killed == m_player) {
-		m_player->loose_point();
-		proto.loosePoint();
-	      } else {
-		m_player->win_point();
-		proto.winPoint();
-	      }
-	    }
 	  }
 	}
-      }
       }
       
     }

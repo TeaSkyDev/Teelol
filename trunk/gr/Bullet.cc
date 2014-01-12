@@ -35,18 +35,19 @@ void Bullet::pass_row(){
   m_speed.m_y += 1;
   m_temps += 8;
   collision_t d = collide();
+  bool continuer = true;
   if(d.type != ITEM && d.dir.col_y != NONE){
-    cout<<d.type<<endl;
+   
     if(d.type == CHARACTER) {
       d.element->loose_life(m_dmg);
       m_killed = d.element;
+      continuer = false;
     }
     explode();
   }
   m_y += m_speed.m_y;
   if(d.type != ITEM && d.dir.col_x != NONE){
-
-    if(d.type == CHARACTER) {
+    if(d.type == CHARACTER && continuer) {
       d.element->loose_life(m_dmg);
       m_killed = d.element;
     }

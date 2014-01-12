@@ -56,7 +56,7 @@ void Ammo::shoot(Rotable * f, Ecran * e){
 }
 
 void Ammo::pick_up(int nb){
-  cout<<"pick"<<endl;
+ 
   if(m_num >= 0){
     m_num += nb;
   }
@@ -113,7 +113,6 @@ void Ammo::pass_row(){
     collision_t col = m_exploded[i-1].collide();
     if(col.type == CHARACTER){
       col.element->loose_life(m_dmg);
-      cout<<"ici"<<endl;
     }
     m_exploded.pop_back();
   }

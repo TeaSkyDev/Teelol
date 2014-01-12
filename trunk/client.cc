@@ -146,6 +146,7 @@ namespace Teelol {
     }
 
     void do_hurt(int dmg){
+      cout<<dmg<<endl;
       if(dmg > 0){
 	player->set_image(I_TEE_DMG);
 	player->loose_life(dmg);
@@ -159,7 +160,7 @@ namespace Teelol {
       for(int i = 0; i < players.size(); i++) {
 	if(players[i]->get_nick() == _nick) {
 	  players[i]->set_image(I_TEE_A_DMG);
-	  players[i]->loose_life(10);
+	  players[i]->loose_life(1);
 	}
       }
     }
@@ -210,7 +211,8 @@ namespace Teelol {
       }
 
       player->show();
-
+      if(player->get_wrong_img())
+	player->set_image(I_TEE_P);
       player->get_weapon()->show();
       player->get_ammo()->show();
       player->show_life();

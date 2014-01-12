@@ -79,7 +79,7 @@ void Character::take_life(int l){
 void Character::loose_life(int l) {
   if(m_life > 0)
     m_life -= l;
-
+  
   m_wrong_img = true;
   m_dmg = l;
 }
@@ -166,11 +166,10 @@ type_t Character::get_type() {
 }
 
 bool Character::get_hurt(){
-  if(m_dmg > 0){
-    m_dmg --;
-    return 1;
-  }
-  return 0;
+  int dmg = m_dmg;
+  m_dmg = 0;
+  cout<<m_dmg<<" "<<dmg<<endl;
+  return dmg;
 }
 
 Ammo * Character::get_ammo(){
