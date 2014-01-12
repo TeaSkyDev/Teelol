@@ -94,8 +94,13 @@ void Character::pass_row(){
     f->show();
   m_speed.m_y = col.cor.m_y;
   m_speed.m_x = col.cor.m_x;
-  if(col.dir.col_y == SOUTH)
+  m_x += m_speed.m_x;
+  m_y += m_speed.m_y;
+  
+  if(col.dir.col_y == SOUTH){
     m_saut = 0;
+    m_speed.m_y-=4;
+  }
   if(col.type == ITEM){
     Item * it = (Item *)col.element;
     switch(it->get_item_type()){
@@ -107,9 +112,7 @@ void Character::pass_row(){
     }
   }
 
-  m_x += m_speed.m_x;
-  m_y += m_speed.m_y;
-  if(m_speed.m_y < 50)
+   if(m_speed.m_y < 50)
     m_speed.m_y ++;
 }
 
