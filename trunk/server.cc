@@ -35,13 +35,12 @@ namespace Teelol {
     STARTED
   };
 
+  //prend en entree un nom de map (name)
+  //lis le fichier et rempli les tableau en fonction
   void load_Map(string name){
     ifstream fichier(name.c_str());
     int type,x,y,h,l, img,type2;
-
     fichier >> screen_s.l >> screen_s.h >> NbAmmo;
-
-
     while(!fichier.eof()){
       fichier >> type >> x >> y >> h >> l >> img;
       switch(type){
@@ -79,24 +78,21 @@ namespace Teelol {
     }
   	
 
-    void on_begin() {
-      
+    void on_begin() {      
       int y = -10;
       int x = rand()%screen_s.l;
-
-
       proto.moveOk(x, y);
-      
     }
 
+    //lorsque le player meurt on le respawn ailleur avec toute sa vie et toute ses munitions
     void die(){
       int o_x = rand()%screen_s.l;
       m_player->spawn(o_x,-10);
       proto.nbAmmo(10);
       proto.health(10);
     }
-
-
+    
+    //si le player sort de l'ecran on le repop de l'autre cote
     void verif_repop(){
       int x = m_player->get_x();
       int y = m_player->get_y();
@@ -109,6 +105,7 @@ namespace Teelol {
 	m_player->set_x(screen_s.l - l);
     }
 
+    //verifie si le player a pris un item qui donne de la vie
     void verif_lifeAndAmmo(){
       if(last_ammo_size != m_player->get_ammo()->get_NbAmmo()){
 	int nb = m_player->get_ammo()->get_NbAmmo();
@@ -120,7 +117,7 @@ namespace Teelol {
       }
     }
 
-
+    //verifie si le joueur a gagner des points
     void verif_Points(int i){
       if(m_player->get_ammo()->get_exploded(i)->get_killed() != NULL) {
 	Character* player_killed = (Character*)(m_player->get_ammo()->get_exploded(i)->get_killed());
@@ -137,12 +134,38 @@ namespace Teelol {
       }    
     }
 
-    
+    //envoi tout les mouvement perte de vie... aux autres joueur de m_player
+    void send_all_to_other(int x, int y, int dmg){
+     	auto it = players.begin();
+	for(; it != players.end(); it++) {
+	  if(it->first != m_player) {        
+	    it->second->proto.moved(x, y, nick);
+	    if(dmg > 0)
+	      it->second->proto.hurted(nick);
+	  }
+	}
 
+	for(it = players.begin(); it != players.end() ; it++){
+	  for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
+	    int x = (*m_player->get_ammo())[i]->get_x();
+	    int y = (*m_player->get_ammo())[i]->get_y();
+	    it->second->proto.showMissile(x,y);
+	  }
+	  for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
+	    int x = m_player->get_ammo()->get_exploded(i)->get_x();
+	    int y = m_player->get_ammo()->get_exploded(i)->get_y();
+
+	    it->second->proto.showExplosion(x,y);
+	    verif_Points(i);
+
+	  }
+	}
+      
+    }
+
+    //sur la reception d'un event du client
     void do_move(string mv) {
-      {
-	ezlock hold(ez_mutex);
-	
+      ezlock hold(ez_mutex);
 	if(mv == "right") {
 	  m_player->move_right();
 	  
@@ -161,56 +184,22 @@ namespace Teelol {
 
 	verif_repop();
 	verif_lifeAndAmmo();
-	
+	int dmg = m_player->get_hurt();
+	if(dmg > 0){
+	  proto.hurt(NbAmmo);
+	}
 	if(m_player->get_life() <= 0)
 	  die();
 
 	int x = m_player->get_x();
 	int y = m_player->get_y();
-	int dmg = m_player->get_hurt();
-	
 	proto.moveOk(x, y);
-	if(dmg > 0){
-	  proto.hurt(NbAmmo);
-	}
-	
-        for(int i = 0 ; i < tab_item.size() ; i++){
-	  if(tab_item[i].hidden()){
-	    proto.hideItem(i);
-	  }
-	  else proto.showItem(i);
-	}
-	auto it = players.begin();
-	for(; it != players.end(); it++) {
-	  if(it->first != m_player) {
-        
-	  it->second->proto.moved(x, y, nick);
-	  if(dmg > 0)
-	    it->second->proto.hurted(nick);
-	}
-      }
-	for(it = players.begin(); it != players.end() ; it++){
-	  for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
-	    int x = (*m_player->get_ammo())[i]->get_x();
-	    int y = (*m_player->get_ammo())[i]->get_y();
-	    it->second->proto.showMissile(x,y);
-	  }
-	  for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
-	    int x = m_player->get_ammo()->get_exploded(i)->get_x();
-	    int y = m_player->get_ammo()->get_exploded(i)->get_y();
-
-	    it->second->proto.showExplosion(x,y);
-	    verif_Points(i);
-
-	  }
-	}
-      }
+	send_all_to_other(x,y,dmg);
       
     }
    
     
-
-
+    //au debut lorsque le player demande un nom
     void do_nick(string _nick) {
       bool nick_ok = true;
       auto it = players.begin();
@@ -239,6 +228,8 @@ namespace Teelol {
       }
     }
 
+    //initialise le player avec le nom et une position aleatoire
+    //ajoute tout les obstacles necessaire
     void init_NewPlayer(string _nick){
       
       proto.okNick(_nick);
@@ -260,16 +251,17 @@ namespace Teelol {
       proto.nbAmmo(nb);
     }
     
+    //envoi une forme au client
     void send_Form(vector<Form>::iterator it){
       int x = it->get_x();
       int y = it->get_y();
       int h = it->get_h();
       int l = it->get_l();
-      
       int img = (int)it->get_img();
       proto.addObstacle(img,x,y,h,l);
     }
 
+    //envoi un item au client
     void send_Item(Item *it, int i){
       int x = it->get_x();
       int y = it->get_y();
@@ -277,6 +269,7 @@ namespace Teelol {
       proto.addItem(x,y,img,i);
     }
     
+    //envoi a tout les joueur l'arrive d'un nouveau joueur
     void player_joined() {
       auto it = players.begin();
 
@@ -290,6 +283,7 @@ namespace Teelol {
 			  
     }
 
+    //suite a la reception de l'info sur la rotation de l'arme d'un client
     void do_rotate(int angle){
 	auto it = players.begin();
 	for(; it != players.end(); it++) {
@@ -300,7 +294,7 @@ namespace Teelol {
 			      
     }
 
-
+    //suive a l'event de tir du client
     void do_shoot(int x1, int y1,int x2, int y2 ){
       m_player->get_ammo()->shoot(x1,x2,y1,y2);
       int nb = m_player->get_ammo()->get_NbAmmo();
@@ -308,6 +302,7 @@ namespace Teelol {
       proto.nbAmmo(nb);
     }
 
+    //un client envoi qu'il quitte 
     void do_quit() {
       auto it = players.begin();
       for(it = players.begin(); it != players.end(); it++) {
@@ -324,6 +319,8 @@ namespace Teelol {
   };
 };
 
+
+//boucle pour supprimer tout les joueur qui ont quitter la partie
 void * boucle_suppr(void * arg) {
   while(1) {
     if(Teelol::players_to_delete.size() != 0) {

@@ -62,10 +62,12 @@ namespace Teelol {
       proto.quit();
     }
     
+    //le serveur envoi que le joueur est en x,y
     void do_moveOk(int x ,int y){
       player->set_position(x, y);
     }
 
+    //le joueur nick est en x,y
     void do_moved(int x, int y, string nick) {
       for(int i = 0; i < players.size(); i++) {
         if(players[i]->get_nick() == nick) {
@@ -74,7 +76,8 @@ namespace Teelol {
         }
       } 
     }
-
+    
+    //erreur envoyer du serveur
     void do_err(string err) {
       if(state == STARTING) {
 	tentative_connexion = false;
@@ -82,6 +85,7 @@ namespace Teelol {
       cout << "System : " << err << endl;	
     }
     
+    //le nick est accepte
     void do_okNick(string n) {
       if(state == STARTING) {
         cout << "System : nick changed !" << endl;
@@ -92,14 +96,17 @@ namespace Teelol {
       
     }
     
+    //reponse positive du serveur
     void do_ok() {
       cout << "System : success" << endl;
     }
 
+    //un nouveau joueur est present
     void do_joined(string nick) {
       players.push_back(new Player(nick, I_TEE_A, 0, 0, 10, 10, sc));
     }
 
+    //le joueur nick est partis
     void do_left(string nick) {
       for(int i = 0; i < players.size(); i++) {
         if(players[i]->get_nick() == nick) {
@@ -111,12 +118,14 @@ namespace Teelol {
       }
     }
 
+    //reception d'un obstacle depuis le serveur
     void do_addObstacle(int img, int x, int y, int h, int l){
       obstacle.push_back(Form(x,y,h,l));
       obstacle[obstacle.size()-1].set_screen(sc);
       obstacle[obstacle.size()-1].set_image((Image_t)img);
     }
     
+    //le joueur nick a tourner son arme de l'angle angle
     void do_rotated(int angle, string nick){
        for(int i = 0; i < players.size(); i++) {
         if(players[i]->get_nick() == nick) {
@@ -129,22 +138,26 @@ namespace Teelol {
       } 
     }
     
+    //un missile est present en x,y
     void do_showMissile(int x, int y){
       ezlock hold(mutex);
       b.push_back(Bullet(x,y,0,0,0,0,0,I_GRENADE_C));
       b[b.size() - 1].set_screen(sc);
     }
 
+    //une explosion est presente en x,y
     void do_showExplosion(int x, int y){
       ezlock hold(mutex);
       b.push_back(Bullet(x,y,0,0,0,0,0,I_CART_EX));
       b[b.size()-1].set_screen(sc);
     }
 
+    //le client a nb munitions
     void do_nbAmmo(int nb){
       player->get_ammo()->set_nb(nb);
     }
 
+    //le joueur a pris dmg degat
     void do_hurt(int dmg){
       cout<<dmg<<endl;
       if(dmg > 0){
@@ -155,7 +168,7 @@ namespace Teelol {
 	player->set_image(I_TEE_P);
     }
 
-    
+    //le joueur _nick a pris des degat
     void do_hurted(string _nick){
       for(int i = 0; i < players.size(); i++) {
 	if(players[i]->get_nick() == _nick) {
@@ -164,11 +177,13 @@ namespace Teelol {
 	}
       }
     }
-
+    
+    //le client a recuperer h vie
     void do_health(int h){
       player->take_life(h);
     }
     
+    //ajout d'un Item sur la map
     void do_addItem(int x, int y, int img, int id){
       ezlock hold(mutex);
       map_item[id] = new Item(x,y,0,0,(ITEM_T)0);
@@ -177,18 +192,58 @@ namespace Teelol {
       it->second->set_screen(sc);
     }
 
+
+    //l'Item d'id i doit etre cache
     void do_hideItem(int i){
       ezlock hold(mutex);
       auto it = map_item.find(i);
       it->second->hide();
     }
     
+    //l'item d'id i doit etre afficher
     void do_showItem(int i){
       ezlock hold(mutex);
       auto it = map_item.find(i);
       it->second->unhide();
     }
 
+    //le joueur gagne 1 points
+    void do_winPoint() {
+      player->win_point();
+
+    }
+    
+    //le joueur perd 1 points
+    void do_loosePoint() {
+      player->loose_point();
+
+    }
+
+
+    //affiche les autres joueur avec leurs nom sur la tete
+    void show_players(){
+      for(int i = 0 ; i < players.size() ; i++){
+	players[i]->show();
+	players[i]->show_nick();
+	players[i]->get_weapon()->show();
+	if(players[i]->get_wrong_img())
+	  players[i]->set_image(I_TEE_A);
+      }
+    }
+
+    //affiche le joueur
+    void show_m_player(){
+      player->show();
+      if(player->get_wrong_img())
+	player->set_image(I_TEE_P);
+      player->get_weapon()->show();
+      player->get_ammo()->show();
+      player->show_life();
+      player->show_points();
+      
+    }
+
+    //boucle d'affichage
     void affiche(){
       ezlock hold(mutex);
       sc->clean();
@@ -199,28 +254,19 @@ namespace Teelol {
 	b[i].show();
 	b.pop_back();
       }
-      for(int i = 0 ; i < players.size() ; i++){
-	players[i]->show();
-	players[i]->show_nick();
-	players[i]->get_weapon()->show();
-	if(players[i]->get_wrong_img())
-	  players[i]->set_image(I_TEE_A);
-      }
+      show_players();
+     
       for(auto it = map_item.begin() ; it != map_item.end() ; it++){
 	it->second->show();
       }
+      show_m_player();
 
-      player->show();
-      if(player->get_wrong_img())
-	player->set_image(I_TEE_P);
-      player->get_weapon()->show();
-      player->get_ammo()->show();
-      player->show_life();
-      player->show_points();
       sc->Flip();
 
     }
     
+    //fait tourner l'arme du joueur
+    //envoi au serveur que l'arme a été tourne
     void rotationArme(int _x, int _y){
       int angle = -atan2(_x-player->get_x(), _y-player->get_y())*180/M_PI+90;
       int x = player->get_x()+ player->get_l()/2;;
@@ -230,6 +276,7 @@ namespace Teelol {
       proto.rotate(angle);
     }
     
+    //envoi que le client a tire depuis les point envoyer
     void shoot(){
       int x1 = player->get_weapon()->get_xb();
       int y1 = player->get_weapon()->get_yb();
@@ -239,22 +286,13 @@ namespace Teelol {
       proto.shoot(x1,y1,x2,y2);
     }
     
-    void do_winPoint() {
-      player->win_point();
-
-    }
-    
-    void do_loosePoint() {
-      player->loose_point();
-
-    }
 
    };
 };
 
 
 
-
+//boucle de connexion et d'interaction
 void * routine(void * arg){
   
   Event e;
@@ -288,7 +326,6 @@ void * routine(void * arg){
     if(e[LEFT_CL]){ c->shoot();}
     c->rotationArme(e().m_x, e().m_y);
     SDL_Delay(50);
-    //    c->sc->clean();
     c->affiche();
   }
   }

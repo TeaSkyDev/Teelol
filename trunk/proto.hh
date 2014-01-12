@@ -10,32 +10,31 @@ namespace Teelol{
   using namespace netez;
 
   struct my_proto: public protocol<>{
-    message <0, void(string)>                move;          //demande au serveur si un la position désirée est ok
-    message <1, void(int, int)>              moveOk;        //le serveur envoie les cooronnées possibles suite à le demande
-    message <2, void(int, int, string)>      moved;         //indique aux joueurs la nouvelle position de l'un d'entre eux
-    message <3, void(string)>                nick;          //demande de changemenet/nouveau pseudo
-    message <4, void(string)>                err;           //réponse serveur : erreur
-    message <5, void()>                      ok;            //réponse serveur : succès
-    message <6, void(string)>                joined;        //Informe les joueurs d'un arrivant
-    message <7, void(string)>                left;          //Informe les joueurs d'un départ
-    message <8, void()>                      quit;          //Signal au serveur de la déconnexion du client
-    message <9, void(string)>                okNick ;        //réponse positive à la demande de pseudo d'un joueur
-    message <10, void(int, int)>             showMissile;   //indique la position la position d'un missile
-    message <16, void(int, int)>             showExplosion; //indique la position a laquelle le client doit aficher une explosion 
-    message <11, void(int, int , int , int)> shoot;         //client indique qu'il a tiré
-    message <15, void(int)>                  nbAmmo;        //serveur envoi le nombre de munition restante au client
-
-    message <12, void(int, int, int ,int, int)>   addObstacle;
-    message <13, void(int)>                  rotate;
-    message <14 , void(int, string)>         rotated;
-    message <17, void(int)>                  hurt;
-    message <18, void(string)>               hurted;
-    message <19, void(int)>                  health;
-    message <20, void(int, int, int, int)>   addItem;
-    message <21, void(int)>                  hideItem;
-    message <22 , void(int)>                 showItem;
-    message <23, void()>                     winPoint;
-    message <24, void()>                     loosePoint;
+    message <0, void(string)>                     move;          //demande au serveur si un la position désirée est ok
+    message <1, void(int, int)>                   moveOk;        //le serveur envoie les cooronnées possibles suite à le demande
+    message <2, void(int, int, string)>           moved;         //indique aux joueurs la nouvelle position de l'un d'entre eux
+    message <3, void(string)>                     nick;          //demande de changemenet/nouveau pseudo
+    message <4, void(string)>                     err;           //réponse serveur : erreur
+    message <5, void()>                           ok;            //réponse serveur : succès
+    message <6, void(string)>                     joined;        //Informe les joueurs d'un arrivant
+    message <7, void(string)>                     left;          //Informe les joueurs d'un départ
+    message <8, void()>                           quit;          //Signal au serveur de la déconnexion du client
+    message <9, void(string)>                     okNick ;        //réponse positive à la demande de pseudo d'un joueur
+    message <10, void(int, int)>                  showMissile;   //indique la position la position d'un missile
+    message <11, void(int, int , int , int)>      shoot;         //client indique qu'il a tiré
+    message <12, void(int, int, int ,int, int)>   addObstacle; //serveur envoi un obstacle a afficher au client
+    message <13, void(int)>                       rotate;      //le client envoi qu'il tourne son arme
+    message <14 , void(int, string)>              rotated;     //serveur envoi qu'un client a tourne son arme
+    message <15, void(int)>                       nbAmmo;        //serveur envoi le nombre de munition restante au client
+    message <16, void(int, int)>                  showExplosion; //indique la position a laquelle le client doit aficher une explosion 
+    message <17, void(int)>                       hurt;        //serveur envoi au client qu'il s'est fait mal
+    message <18, void(string)>                    hurted;      //serveur envoi qu'un client s'est fait mal
+    message <19, void(int)>                       health;      //serveur envoi au client qu'il a gagne de la vie
+    message <20, void(int, int, int, int)>        addItem;     //serveur envoi au client un item a afficher
+    message <21, void(int)>                       hideItem;    //serveur envoi qu'il faut cacher l'item
+    message <22 , void(int)>                      showItem;    //serveur envoi qu'il faut afficher l'item
+    message <23, void()>                          winPoint;    //serveur envoi au client qu'il a gagner des points
+    message <24, void()>                          loosePoint;  //serveur envoi au client qu'il a perdu des points
 
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),

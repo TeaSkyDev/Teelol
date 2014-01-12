@@ -9,8 +9,8 @@
 #include "Item.hh"
   /*
    *  attention a differencie la classe player de la classe Character 
-   *  la classe character est la classe uniquement d'affichage alors que la classe player permet de calculer la vie
-   *  les degat et autre 
+   *  la classe character est la classe uniquement d'affichage alors que la classe player permet de calculer les point
+   *  et le nom 
    */
 
 

@@ -72,7 +72,7 @@ void Character::take_dmg(){
 }
 
 void Character::take_life(int l){
-  if(l + m_life > 10) m_life = 10;
+  if(l + m_life >= 10) m_life = 10;
   else m_life += l;
 }
 
@@ -105,10 +105,13 @@ void Character::pass_row(){
     Item * it = (Item *)col.element;
     switch(it->get_item_type()){
     case AMMO:
-      m_ammo.pick_up(5);
+      if(m_ammo.get_NbAmmo() != 10)
+	m_ammo.pick_up(5);
       break;
     case LIFE:
-      take_life(5); break;
+      if(m_life != 10)
+	take_life(5);
+      break;
     }
   }
 
@@ -168,7 +171,6 @@ type_t Character::get_type() {
 bool Character::get_hurt(){
   int dmg = m_dmg;
   m_dmg = 0;
-  cout<<m_dmg<<" "<<dmg<<endl;
   return dmg;
 }
 
