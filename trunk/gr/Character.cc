@@ -10,7 +10,7 @@ Character::Character(Image_t img, int x, int y, int l, int h, Ecran * e) : Form(
   m_ground = true;
   m_speed.m_x = 0;
   m_speed.m_y = 0;
-  m_saut = false;
+  m_saut = 2;
   init_Weap();
   init_eyes();
   m_ammo.set_nb(10);
@@ -60,7 +60,7 @@ void Character::jump(){
   m_ground = false;
   if(m_saut < 2){
     m_speed.m_y = -7; 
-    m_saut++;
+    //m_saut++;
     m_y--;
   }
 }
@@ -85,79 +85,32 @@ void Character::loose_life(int l) {
 }
 
 void Character::pass_row(){
- 
   m_ammo.pass_row();
-
-
   collision_t col = collide();
-  if((col.dir.col_y != NONE || col.dir.col_x != NONE) && col.type == ITEM){
-    Item * i = (Item*)col.element;
-    if(!i->hidden()){
-      switch(i->get_item_type()){
-      case AMMO:
-	if(m_ammo.get_NbAmmo() != m_ammo.get_max() && m_ammo.get_NbAmmo() != -1){
-	  m_ammo.pick_up(5);
-	  i->hide();
-	}
-	break;
-      case LIFE:
-	if(m_life < 10){
-	  take_life(5);
-	  i->hide();
-	}
-	break;
-      }
-
+  if(col.type != ITEM){
+    if(col.dir.col_y != NORTH){
+      m_speed.m_y = col.cor.m_y;
+      m_speed.m_x = col.cor.m_x;
+    }
+  }
+  if(col.dir.col_y == SOUTH)
+    m_saut = 0;
+  if(col.type == ITEM){
+    Item * it = (Item *)col.element;
+    switch(it->get_item_type()){
+    case AMMO:
+      m_ammo.pick_up(5);
+      break;
+    case LIFE:
+      take_life(5); break;
     }
   }
 
-  bool iter = true;
-
-  if(m_speed.m_y < 0) {
-    m_y += m_speed.m_y;
-  } else {
-    if(col.dir.col_y != SOUTH ||  (col.dir.col_y == SOUTH && col.type == ITEM)){
-      m_tomb = true;
-      m_y+= m_speed.m_y;
-    }
-    else if(col.dir.col_y == SOUTH && col.type != ITEM){
-      if(!m_tomb)
-	m_y--;
-      else {
-	m_speed.m_y = 0;
-	iter = false;
-	m_tomb = false;
-    }
-  }
-  }
-    // for(int i = 0; i < m_speed.m_y; i+=3) {
-    //   collision_t col = collide();
-    //   if(col.dir.col_y != SOUTH ||{	m_tomb = true;
-    //     m_y+=3;
-    //   }
-    //   else if(col.dir.col_y == SOUTH && col.type != ITEM){
-    // 	m_saut = 0;
-    // 	if(!m_tomb)
-    // 	  m_y--;
-    // 	else {
-    // 	  m_speed.m_y = 0;
-    // 	  iter = false;
-    // 	  m_tomb = false;
-    // 	}
-    //   }
-    // }  
-  if((col.dir.col_x == WEST || col.dir.col_x == EAST) && col.type != ITEM) {
-    if(col.dir.col_x == WEST && m_speed.m_x < 0) {
-      m_speed.m_x = 0;
-    } else if(col.dir.col_x == EAST && m_speed.m_x > 0) {
-      m_speed.m_x = 0;
-    }
-  }
-  
   m_x += m_speed.m_x;
-  if(iter && m_speed.m_y < 30)
-    m_speed.m_y++;
-  
+  m_y += m_speed.m_y;
+
+  if(m_speed.m_y < 50)
+    m_speed.m_y ++;
 }
 
 
@@ -194,6 +147,8 @@ void Character::add_obstacle(Form *f){
 
 collision_t Character::collide(){
   Collision c(this, m_obstacle);
+
+
   return c.get_collision();
 }
 
@@ -234,13 +189,12 @@ void Character::move_eyes(){
 
 void Character::show(){
   //  m_ammo.show();
-
   move_eyes();
   SDL_Rect rect;
   rect.x = m_x;
   rect.y = m_y;
-  rect.h = m_h;
   rect.w = m_l;
+  rect.h = m_h;
   m_e->put(m_surf,rect);
   m_eyes->show();
 }

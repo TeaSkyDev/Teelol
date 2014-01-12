@@ -31,44 +31,28 @@ type_t Bullet::get_type() {
 }
 
 void Bullet::pass_row(){
-
   double g  = 9.81;
   m_vy+=0.5;
-
   m_temps += 8;
-
-  bool continuer = true;
-
-  // for(int i = 0 ; i < abs((int)m_vy) ; i+=3)
-  // for(int i = 0 ; i < abs((int)m_vx) && continuer; i+=3){
-  //   collision_t d = collide();
   collision_t d = collide();
-  if((d.dir.col_y == NORTH || d.dir.col_y == SOUTH) && d.type != ITEM){
+  if(d.type != ITEM && d.type != TNONE){
+    cout<<d.type<<endl;
     if(d.type == CHARACTER) {
       d.element->loose_life(m_dmg);
       m_killed = d.element;
-       
     }
     explode();
-    continuer = false;
-
   }
   m_y += m_vy;
-
-    
-
-  if((d.dir.col_x == EAST || d.dir.col_x == WEST) && d.type != ITEM){
+  if(d.type != ITEM && d.type != TNONE){
+    cout<<d.type<<endl;
     if(d.type == CHARACTER) {
       d.element->loose_life(m_dmg);
       m_killed = d.element;
     }
     explode();
-
   }    
-
   m_x += m_vx;
-      
- 
   if(m_x + 10> 400){
     if(m_first) { m_x = 0; m_first = false;}
     else explode();

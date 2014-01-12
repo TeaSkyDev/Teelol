@@ -28,7 +28,7 @@ struct point{
 
 //représente le type de forme (décor, character, bullet)
 enum type_t {
-  FORM, CHARACTER, BULLET, ROTABLE, ITEM
+  FORM, CHARACTER, BULLET, ROTABLE, ITEM, TNONE
 };
 
 
