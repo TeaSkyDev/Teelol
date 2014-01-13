@@ -371,12 +371,15 @@ int main(int argc, char ** argv){
 
   pthread_t th_boucle_suppr;
   pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
+  string path = "../const/";
   if(argc > 1){
     if(argc == 2){
-      Teelol::load_Map(argv[1]);
+      string nom = argv[1];
+      Teelol::load_Map(path+nom);
     }
     else if(argc == 4){
-      Teelol::load_Map(argv[3]);
+      string nom = argv[3];
+      Teelol::load_Map(path+nom);
     }
     else 
       Teelol::load_Map("../const/map.lvl");
