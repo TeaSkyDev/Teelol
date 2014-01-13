@@ -8,7 +8,8 @@
 
 class Bullet: public Form{
 public:
-  Bullet(int x, int y, int h, int l, int dmg, int , int, Image_t img);
+  
+  Bullet(int x, int y, int h, int l, int dmg, int , int, Image_t img, int &id);
   int get_dmg();
   type_t get_type();
   void pass_row();
@@ -20,6 +21,7 @@ public:
   bool get_exploded();
   Form* get_killed(); //Renvoie un pointeur sur le joueur tué
   void set_killed(Form *);
+  int get_id();
 
 private:
   int m_dmg;
@@ -35,6 +37,7 @@ private:
   double m_vy;
   int m_x_init;
   int m_y_init;
+  int m_id;
 };
 
 

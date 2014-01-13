@@ -14,8 +14,8 @@ public:
 
   Ammo();
 
-  void shoot(Rotable * f, Ecran *e);
-  void shoot(int, int, int, int);
+  void shoot(Rotable * f, Ecran *e, int &);
+  void shoot(int, int, int, int, int &);
   void pick_up(int);
   void set_dmg(int);
   void set_type(cartridge_t);

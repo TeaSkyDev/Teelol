@@ -1,8 +1,11 @@
 #include "Bullet.hh"
 
 
-Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t img):Form(x,y,h,l), m_dmg(dmg) {
-
+Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t img, int & id):Form(x,y,h,l), m_dmg(dmg) {
+  if(id > 40000)
+    id = 0;
+  id ++;
+  m_id = id;
   set_image(img); 
   //m_surf = SDL_CreateRGBSurface(SDL_HWSURFACE, h, l, 32, 0, 0, 0, 0);
   exploded = false;
@@ -114,4 +117,8 @@ Form* Bullet::get_killed() {
 
 void Bullet::set_killed(Form * f) {
   m_killed = f;
+}
+
+int Bullet::get_id(){
+  return m_id;
 }

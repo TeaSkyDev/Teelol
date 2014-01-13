@@ -180,7 +180,8 @@ Ammo * Character::get_ammo(){
 
 
 void Character::shoot(){
-  m_ammo.shoot(m_weapon, m_e);
+  int id = 0;
+  m_ammo.shoot(m_weapon, m_e, id);
 }
 
 void Character::move_eyes(){

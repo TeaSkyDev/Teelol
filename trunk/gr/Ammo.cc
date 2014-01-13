@@ -13,9 +13,9 @@ void Ammo::set_dmg(int dmg){
   m_dmg = dmg;
 }
 
-void Ammo::shoot(int x1, int x2, int y1, int y2){
+void Ammo::shoot(int x1, int x2, int y1, int y2, int & id){
   if((m_num > 0 || m_num == -1) && m_delay == 0){
-    m_ammo.push_back(Bullet(x1,y1, 10,10,m_dmg,x2, y2, I_GRENADE_C));
+    m_ammo.push_back(Bullet(x1,y1, 10,10,m_dmg,x2, y2, I_GRENADE_C, id));
     switch(m_type){
     case GRENADE:
       m_ammo[m_ammo.size()-1].set_image(I_GRENADE_C);break;
@@ -33,10 +33,10 @@ void Ammo::shoot(int x1, int x2, int y1, int y2){
   }
 }
 
-void Ammo::shoot(Rotable * f, Ecran * e){
+void Ammo::shoot(Rotable * f, Ecran * e, int & id){
   if((m_num > 0 || m_num == -1) && m_delay == 0){
 
-    m_ammo.push_back(Bullet(f->get_xb(), f->get_yb(), 10,10,m_dmg,f->get_xba(), f->get_yba(), I_GRENADE_C));
+    m_ammo.push_back(Bullet(f->get_xb(), f->get_yb(), 10,10,m_dmg,f->get_xba(), f->get_yba(), I_GRENADE_C, id));
     switch(m_type){
     case GRENADE:
       m_ammo[m_ammo.size()-1].set_image(I_GRENADE_C);break;
