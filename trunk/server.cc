@@ -317,6 +317,7 @@ namespace Teelol {
 
     //suive a l'event de tir du client
     void do_shoot(int x1, int y1,int x2, int y2 ){
+      ezlock hold (ez_mutex);
       int anc_id = cur_id;
       m_player->get_ammo()->shoot(x1,x2,y1,y2,cur_id);
       if(cur_id != anc_id)

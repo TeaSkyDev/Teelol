@@ -343,11 +343,11 @@ void * routine(void * arg){
     if(e[JUMP]){ c->proto.move("jump"); e[JUMP] = 0;}
     if(e[LEFT_CL]){ c->shoot();}
     c->rotationArme(e().m_x, e().m_y);
-    SDL_Delay(50);
     c->affiche();
+    SDL_Delay(40);
   }
   }
-
+  
   delete c->sc;
   c->proto.quit();
 }
