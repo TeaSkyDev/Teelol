@@ -22,7 +22,8 @@ namespace Teelol {
     ezmutex mutex;
     vector<Player*> players;
     vector<Form> obstacle;
-    vector<Bullet> b;
+    map<string,Bullet*> map_bullet;
+    vector<Bullet> vec_explode;
     map<int, Item*> map_item;
     Player * player;
     Ecran  *sc;
@@ -43,8 +44,8 @@ namespace Teelol {
       proto.okNick.sig_recv.connect(EZMETHOD(this, do_okNick));
       proto.addObstacle.sig_recv.connect(EZMETHOD(this, do_addObstacle));
       proto.rotated.sig_recv.connect(EZMETHOD(this, do_rotated));
-      proto.showMissile.sig_recv.connect(EZMETHOD(this, do_showMissile));
-      proto.showExplosion.sig_recv.connect(EZMETHOD(this, do_showExplosion));
+      proto.addBullet.sig_recv.connect(EZMETHOD(this, do_addBullet));
+      proto.bulletMoved.sig_recv.connect(EZMETHOD(this, do_bulletMoved));
       proto.nbAmmo.sig_recv.connect(EZMETHOD(this, do_nbAmmo));
       proto.hurt.sig_recv.connect(EZMETHOD(this, do_hurt));
       proto.hurted.sig_recv.connect(EZMETHOD(this, do_hurted));
@@ -54,6 +55,7 @@ namespace Teelol {
       proto.showItem.sig_recv.connect(EZMETHOD(this, do_showItem));
       proto.winPoint.sig_recv.connect(EZMETHOD(this, do_winPoint));
       proto.loosePoint.sig_recv.connect(EZMETHOD(this, do_loosePoint));
+      proto.explode.sig_recv.connect(EZMETHOD(this, do_explode));
 
       sig_end.connect(EZMETHOD(this, on_end));
     }
@@ -138,18 +140,28 @@ namespace Teelol {
       } 
     }
     
-    //un missile est present en x,y
-    void do_showMissile(int x, int y){
+    //un missile est tiré en x,y
+    void do_addBullet(string s, int x, int y){
       ezlock hold(mutex);
-      b.push_back(Bullet(x,y,0,0,0,0,0,I_GRENADE_C));
-      b[b.size() - 1].set_screen(sc);
+      int id = 0;
+      map_bullet[s] = new Bullet(x,y,0,0,0,0,0,I_GRENADE_C,id);
+      map_bullet[s]->set_screen(sc);
     }
 
-    //une explosion est presente en x,y
-    void do_showExplosion(int x, int y){
+    //un missile s'est déplacé en x et y
+    void do_bulletMoved(string s, int x, int y){
       ezlock hold(mutex);
-      b.push_back(Bullet(x,y,0,0,0,0,0,I_CART_EX));
-      b[b.size()-1].set_screen(sc);
+      map_bullet[s]->set_x(x);
+      map_bullet[s]->set_y(y);
+    }
+
+    //un missile a explosé
+    void do_explode(string s) {
+      ezlock hold(mutex);
+      int id = 0;
+      vec_explode.push_back(Bullet(map_bullet[s]->get_x(), map_bullet[s]->get_y(), 0, 0, 0, 0, 0, I_CART_EX, id));
+      delete map_bullet[s];
+      map_bullet.erase(s);
     }
 
     //le client a nb munitions
@@ -250,10 +262,15 @@ namespace Teelol {
       for(int i = 0 ; i < obstacle.size() ; i++){
 	obstacle[i].show();
       }
-      for(int i = b.size()-1; i >= 0 ; i--){
-	b[i].show();
-	b.pop_back();
+      auto it = map_bullet.begin();
+      for(; it != map_bullet.end(); it++) {
+	it->second->show();
       }
+      for(int i = vec_explode.size()-1; i >= 0; i--) {
+	vec_explode[i].show();
+	vec_explode.pop_back();
+      }
+     
       show_players();
      
       for(auto it = map_item.begin() ; it != map_item.end() ; it++){
@@ -282,7 +299,7 @@ namespace Teelol {
       int y1 = player->get_weapon()->get_yb();
       int x2 = player->get_weapon()->get_xba();
       int y2 = player->get_weapon()->get_yba();
-
+      
       proto.shoot(x1,y1,x2,y2);
     }
     
