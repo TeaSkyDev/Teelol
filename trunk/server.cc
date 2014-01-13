@@ -303,7 +303,7 @@ namespace Teelol {
     void send_other_new_bullet(){
       auto it = players.begin();
       for(; it != players.end(); it++){
-	int i = m_player->get_ammo()->get_max() - m_player->get_ammo()->get_NbAmmo();
+	int i = m_player->get_ammo()->get_nb()-1;
 	int x = (*m_player->get_ammo())[i]->get_x();
 	int y = (*m_player->get_ammo())[i]->get_y();
 	int id = (*m_player->get_ammo())[i]->get_id();
