@@ -64,8 +64,11 @@ namespace Teelol {
     string  nick;
     Player * m_player;
     Form * f;
+    int cur_id;
+
     int last_ammo_size, last_life_size;
     session_on_server(socket & io): session(io) {
+      cur_id = 0;
       state = STARTING;
       last_ammo_size = last_life_size = 10;
       f = new Form(10,300,10,300);
@@ -149,15 +152,17 @@ namespace Teelol {
 	  for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
 	    int x = (*m_player->get_ammo())[i]->get_x();
 	    int y = (*m_player->get_ammo())[i]->get_y();
-	    it->second->proto.showMissile(x,y);
+	    int id = (*m_player->get_ammo())[i]->get_id();
+	    stringstream ident(nick);
+	    ident << id;
+	    it->second->proto.bulletMoved(ident.str(),x,y);
 	  }
 	  for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
-	    int x = m_player->get_ammo()->get_exploded(i)->get_x();
-	    int y = m_player->get_ammo()->get_exploded(i)->get_y();
-
-	    it->second->proto.showExplosion(x,y);
+	    int id =m_player->get_ammo()->get_exploded(i)->get_id();
+	    stringstream ident(nick);
+	    ident << id;
+	    it->second->proto.explode(ident.str());
 	    verif_Points(i);
-
 	  }
 	}
       
@@ -195,6 +200,7 @@ namespace Teelol {
 	int y = m_player->get_y();
 	proto.moveOk(x, y);
 	send_all_to_other(x,y,dmg);
+	
       
     }
    
@@ -294,9 +300,27 @@ namespace Teelol {
 			      
     }
 
+    void send_other_new_bullet(){
+      auto it = players.begin();
+      for(; it != players.end(); it++){
+	int i = m_player->get_ammo()->get_max() - m_player->get_ammo()->get_NbAmmo();
+	int x = (*m_player->get_ammo())[i]->get_x();
+	int y = (*m_player->get_ammo())[i]->get_y();
+	int id = (*m_player->get_ammo())[i]->get_id();
+	stringstream ss(nick);
+	ss << id;
+	it->second->proto.addBullet(ss.str(), x, y);
+      }
+    }
+
+
+
     //suive a l'event de tir du client
     void do_shoot(int x1, int y1,int x2, int y2 ){
-      m_player->get_ammo()->shoot(x1,x2,y1,y2);
+      int anc_id = cur_id;
+      m_player->get_ammo()->shoot(x1,x2,y1,y2,cur_id);
+      if(cur_id != anc_id)
+	send_other_new_bullet();
       int nb = m_player->get_ammo()->get_NbAmmo();
       last_ammo_size = m_player->get_ammo()->get_NbAmmo();
       proto.nbAmmo(nb);
