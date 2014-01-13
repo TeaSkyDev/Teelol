@@ -60,7 +60,7 @@ void Character::jump(){
   m_ground = false;
   if(m_saut < 2){
     m_speed.m_y = -7; 
-    //m_saut++;
+    m_saut++;
     m_y--;
   }
 }

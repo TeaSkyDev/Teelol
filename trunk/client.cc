@@ -160,6 +160,7 @@ namespace Teelol {
       ezlock hold(mutex);
       int id = 0;
       vec_explode.push_back(Bullet(map_bullet[s]->get_x(), map_bullet[s]->get_y(), 0, 0, 0, 0, 0, I_CART_EX, id));
+      vec_explode[vec_explode.size()-1].set_screen(sc);
       delete map_bullet[s];
       map_bullet.erase(s);
     }

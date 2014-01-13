@@ -26,13 +26,16 @@ void Item::pass_row(){
   if(m_wait == 0){
     if(col.dir.col_y != NONE || col.dir.col_x != NONE){
       if(col.type == CHARACTER){
+	cout << "test" << endl;
 	Character * c = (Character*)col.element;
 	switch(m_type){
 	case AMMO:	  
 	  c->get_ammo()->pick_up(5);
+	  this->hide();
 	  break;
 	case LIFE:
 	  c->take_life(5);
+	  this->hide();
 	  break;
 	}
 	m_wait = 150;
