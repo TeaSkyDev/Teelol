@@ -24,6 +24,7 @@ public:
   void show_mun();
   void set_nb(int);
   void set_screen(Ecran * e);
+  int get_nb();
 
   Bullet * operator[](int i);
   

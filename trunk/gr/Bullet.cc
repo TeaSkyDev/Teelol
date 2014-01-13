@@ -7,11 +7,8 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t im
   id ++;
   m_id = id;
   set_image(img); 
-  //m_surf = SDL_CreateRGBSurface(SDL_HWSURFACE, h, l, 32, 0, 0, 0, 0);
   exploded = false;
   m_killed = NULL;
-  m_vy  = 0;
-  m_vx  = 0;
   m_x_init = x_s;
   m_y_init = y_s;
   int o = m_x_init - m_x;
@@ -21,7 +18,6 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t im
   m_first = true;
   m_speed.m_x = speed_init*cos(m_angle);
   m_speed.m_y = speed_init*sin(m_angle);
-
 }
 
 

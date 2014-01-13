@@ -167,3 +167,7 @@ void Ammo::add_obstacle(Form &f){
 void Ammo::set_screen(Ecran *e){
   m_e = e;
 }
+
+int Ammo::get_nb(){
+  return m_ammo.size();
+}
