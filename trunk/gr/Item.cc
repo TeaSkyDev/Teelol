@@ -10,6 +10,8 @@ Item::Item(int x, int y, int h, int l, ITEM_T type):Form(x,y,h,l){
     set_image(I_COEUR); break;
   }
   m_wait = 0;
+  m_speed.m_x = 0;
+  m_speed.m_y = 0;
 }
 
 
@@ -21,10 +23,13 @@ ITEM_T Item::get_item_type(){
   return m_type;
 }
 
+void Item::add_obstacle(Form &f) {
+  m_obstacle.push_back(&f);
+}
+
 void Item::pass_row(){
   collision_t col = collide();
   if(m_wait == 0){
-    if(col.dir.col_y != NONE || col.dir.col_x != NONE){
       if(col.type == CHARACTER){
 	cout << "test" << endl;
 	Character * c = (Character*)col.element;
@@ -34,13 +39,15 @@ void Item::pass_row(){
 	  this->hide();
 	  break;
 	case LIFE:
+	  cout << "vie1 : " << c->get_life() << endl;
 	  c->take_life(5);
+  	  cout << "vie1 : " << c->get_life() << endl;
 	  this->hide();
 	  break;
 	}
 	m_wait = 150;
       }
-    }
+    
   }
   else m_wait --;
 }

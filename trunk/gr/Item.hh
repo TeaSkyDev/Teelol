@@ -16,6 +16,7 @@ public:
   Item(int x, int y, int h, int l, ITEM_T type);
   type_t get_type();
   ITEM_T get_item_type();
+  void add_obstacle(Form &f);
   void pass_row();
   collision_t collide();
   void show();
