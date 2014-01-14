@@ -140,33 +140,23 @@ namespace Teelol {
 
     //envoi tout les mouvement perte de vie... aux autres joueur de m_player
     void send_all_to_other(int x, int y, int dmg){
-     	auto it = players.begin();
-	for(; it != players.end(); it++) {
-	  if(it->first != m_player) {        
-	    it->second->proto.moved(x, y, nick);
-	    if(dmg > 0)
-	      it->second->proto.hurted(nick);
-	  }
+      auto it = players.begin();
+      for(; it != players.end(); it++) {
+	if(it->first != m_player) {        
+	  it->second->proto.moved(x, y, nick);
+	  if(dmg > 0)
+	    it->second->proto.hurted(nick);
 	}
-
-	for(it = players.begin(); it != players.end() ; it++){
-	  for(int i = 0 ; i < m_player->get_ammo()->get_max() ; i++){
-	    int x = (*m_player->get_ammo())[i]->get_x();
-	    int y = (*m_player->get_ammo())[i]->get_y();
-	    int id = (*m_player->get_ammo())[i]->get_id();
-	    stringstream ident(nick);
-	    ident << id;
-	    it->second->proto.bulletMoved(ident.str(),x,y);
-	  }
-	  for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
-	    int id =m_player->get_ammo()->get_exploded(i)->get_id();
-	    stringstream ident(nick);
-	    ident << id;
-	    it->second->proto.explode(ident.str());
-	    verif_Points(i);
-	  }
+      }
+      for(it = players.begin(); it != players.end() ; it++){
+	for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++){
+	  int id =m_player->get_ammo()->get_exploded(i)->get_id();
+	  stringstream ident(nick);
+	  ident << id;
+	  it->second->proto.explode(ident.str());
+	  verif_Points(i);
 	}
-      
+      }
     }
 
     //sur la reception d'un event du client
@@ -298,7 +288,8 @@ namespace Teelol {
 			      
     }
 
-    void send_other_new_bullet(){
+    void send_other_new_bullet(int x_s, int y_s){
+
       auto it = players.begin();
       for(; it != players.end(); it++){
 	int i = m_player->get_ammo()->get_nb()-1;
@@ -307,7 +298,7 @@ namespace Teelol {
 	int id = (*m_player->get_ammo())[i]->get_id();
 	stringstream ss(nick);
 	ss << id;
-	it->second->proto.addBullet(ss.str(), x, y);
+	it->second->proto.addBullet(ss.str(), x, y, x_s, y_s);
       }
     }
 
@@ -319,7 +310,7 @@ namespace Teelol {
       int anc_id = cur_id;
       m_player->get_ammo()->shoot(x1,x2,y1,y2,cur_id);
       if(cur_id != anc_id)
-	send_other_new_bullet();
+	send_other_new_bullet(x2,y2);
       int nb = m_player->get_ammo()->get_NbAmmo();
       last_ammo_size = m_player->get_ammo()->get_NbAmmo();
       proto.nbAmmo(nb);
@@ -350,6 +341,7 @@ namespace Teelol {
 	tab_item[i].pass_row();
 	bool showed = tab_item[i].get_just_showed();
 	if(tab_item[i].hidden() || showed) {
+
 	  for(auto it = players.begin(); it != players.end(); it++) {
 	    if(showed) {
 	      it->second->proto.showItem(i);

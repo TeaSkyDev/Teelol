@@ -46,7 +46,6 @@ namespace Teelol {
       proto.addObstacle.sig_recv.connect(EZMETHOD(this, do_addObstacle));
       proto.rotated.sig_recv.connect(EZMETHOD(this, do_rotated));
       proto.addBullet.sig_recv.connect(EZMETHOD(this, do_addBullet));
-      proto.bulletMoved.sig_recv.connect(EZMETHOD(this, do_bulletMoved));
       proto.nbAmmo.sig_recv.connect(EZMETHOD(this, do_nbAmmo));
       proto.hurt.sig_recv.connect(EZMETHOD(this, do_hurt));
       proto.hurted.sig_recv.connect(EZMETHOD(this, do_hurted));
@@ -143,18 +142,11 @@ namespace Teelol {
     }
     
     //un missile est tiré en x,y
-    void do_addBullet(string s, int x, int y){
+    void do_addBullet(string s, int x, int y, int x_s, int y_s){
       ezlock hold(mutex);
       int id = 0;
-      map_bullet[s] = new Bullet(x,y,0,0,0,0,0,I_GRENADE_C,id);
+      map_bullet[s] = new Bullet(x,y,0,0,0,x_s,y_s,I_GRENADE_C,id);
       map_bullet[s]->set_screen(sc);
-    }
-
-    //un missile s'est déplacé en x et y
-    void do_bulletMoved(string s, int x, int y){
-      ezlock hold(mutex);
-      map_bullet[s]->set_x(x);
-      map_bullet[s]->set_y(y);
     }
 
     //un missile a explosé
@@ -305,6 +297,14 @@ namespace Teelol {
       
       proto.shoot(x1,y1,x2,y2);
     }
+
+    void map_Bullet_pass_row(){
+      ezlock hold(mutex);
+      auto it = map_bullet.begin();
+      for(; it != map_bullet.end() ; it++){
+	it->second->pass_row();
+      }
+    }
     
 
    };
@@ -346,10 +346,11 @@ void * routine(void * arg){
     if(e[LEFT_CL]){ c->shoot();}
     c->rotationArme(e().m_x, e().m_y);
     c->affiche();
+    c->map_Bullet_pass_row();
     SDL_Delay(40);
   }
   }
-  
+
   delete c->sc;
   c->proto.quit();
 }
