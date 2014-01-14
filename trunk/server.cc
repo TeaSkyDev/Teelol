@@ -365,12 +365,32 @@ void * boucle_suppr(void * arg) {
   }
 }
 
+
+
+void boucle_Inter(int argc,char ** argv){
+  netez::server<Teelol::session_on_server> server(argc,argv);
+  bool quit = false;
+  while(!quit){
+    stringstream ss;
+    cout<<">";
+    char buf[256];
+    cin.get(buf,256);
+    ss << buf;
+    string cmd;
+    ss >> cmd;
+    if(cmd == "quit") quit = true;
+    else cout<<"command not found"<<endl;
+  }
+  for (auto it = Teelol::players.begin() ; it != Teelol::players.end() ; it++){
+    it->second->finish();
+  }
+}
+
+
+
 int main(int argc, char ** argv){
   
   srand(time(NULL));
-
-  pthread_t th_boucle_suppr;
-  pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
   string path = "../const/";
   if(argc > 1){
     if(argc == 2){
@@ -386,10 +406,12 @@ int main(int argc, char ** argv){
   }
   else 
     Teelol::load_Map("../const/map.lvl");
-  netez::server<Teelol::session_on_server> server(argc,argv);
-
-  server.join();
+  pthread_t th_boucle_suppr;
+ 
+  pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
+  boucle_Inter(argc, argv);
   pthread_cancel(th_boucle_suppr);
+  
 
 }
 				
