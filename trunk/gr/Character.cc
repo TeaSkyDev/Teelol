@@ -93,27 +93,16 @@ void Character::pass_row(){
   f->set_screen(m_e);
   if(m_e)
     f->show();
+
   m_speed.m_y = col.cor.m_y;
   m_speed.m_x = col.cor.m_x;
+
   m_x += m_speed.m_x;
   m_y += m_speed.m_y;
   
   if(col.dir.col_y == SOUTH){
     m_saut = 0;
     m_speed.m_y-=4;
-  }
-  if(col.type == ITEM){
-    Item * it = (Item *)col.element;
-    switch(it->get_item_type()){
-    case AMMO:
-      if(m_ammo.get_NbAmmo() != 10)
-	m_ammo.pick_up(5);
-      break;
-    case LIFE:
-      if(m_life != 10)
-	take_life(5);
-      break;
-    }
   }
 
    if(m_speed.m_y < 50)
