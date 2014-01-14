@@ -12,6 +12,7 @@ Item::Item(int x, int y, int h, int l, ITEM_T type):Form(x,y,h,l){
   m_wait = 0;
   m_speed.m_x = 0;
   m_speed.m_y = 0;
+  m_just_showed = false;
 }
 
 
@@ -30,26 +31,33 @@ void Item::add_obstacle(Form &f) {
 void Item::pass_row(){
   collision_t col = collide();
   if(m_wait == 0){
-      if(col.type == CHARACTER){
-	cout << "test" << endl;
-	Character * c = (Character*)col.element;
-	switch(m_type){
-	case AMMO:	  
+    if(col.type == CHARACTER){
+      cout << "test" << endl;
+      Character * c = (Character*)col.element;
+      switch(m_type){
+      case AMMO:	  
+	//if(c->get_ammo()->get_NbAmmo() != c->get_ammo()->get_max()) {
 	  c->get_ammo()->pick_up(5);
 	  this->hide();
-	  break;
-	case LIFE:
-	  cout << "vie1 : " << c->get_life() << endl;
+	  //}
+	break;
+      case LIFE:
+	//	if(c->get_life() != 10) {
 	  c->take_life(5);
-  	  cout << "vie1 : " << c->get_life() << endl;
 	  this->hide();
-	  break;
-	}
-	m_wait = 150;
+	  //}
+	break;
       }
+      m_wait = 150;
+    }
     
   }
-  else m_wait --;
+  else {
+    m_wait --;
+    if(m_wait == 0) {
+      m_just_showed = true;
+    }
+  }
 }
 
 void Item::show(){
@@ -77,4 +85,12 @@ bool Item::hidden(){
 collision_t Item::collide(){
   Collision col(this, m_obstacle);
   return col.get_collision();
+}
+
+bool Item::get_just_showed() {
+  if(m_just_showed) {
+    m_just_showed = false;
+    return true;
+  }
+  return false;
 }
