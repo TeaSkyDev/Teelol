@@ -194,15 +194,12 @@ namespace Teelol {
 	  proto.hurt(NbAmmo);
 	  last_life_size = m_player->get_life();
 	}
-	if(m_player->get_life() <= 0)
-	  die();
-
 	int x = m_player->get_x();
 	int y = m_player->get_y();
 	proto.moveOk(x, y);
 	send_all_to_other(x,y,dmg);
-	
-      
+	if(m_player->get_life() <= 0)
+	  die();
     }
    
     
