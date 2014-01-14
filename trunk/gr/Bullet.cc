@@ -17,7 +17,7 @@ Bullet::Bullet(int x, int y, int h, int l, int dmg, int x_s, int y_s, Image_t im
   int speed_init = sqrt(o*o+p*p);
   m_first = true;
   m_speed.m_x = speed_init*cos(m_angle);
-  m_speed.m_y = speed_init*sin(m_angle)*2;
+  m_speed.m_y = speed_init*sin(m_angle)*1.5;
 }
 
 
