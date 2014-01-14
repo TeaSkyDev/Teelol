@@ -15,7 +15,8 @@ namespace Teelol {
   
   enum state_t {
       STARTING,
-      STARTED
+      STARTED,
+      QUIT
   };
 
   struct session_on_client: public session<my_proto>{
@@ -62,6 +63,7 @@ namespace Teelol {
 
     void on_end() {
       proto.quit();
+      state = QUIT;
     }
     
     //le serveur envoi que le joueur est en x,y
@@ -328,7 +330,7 @@ void * routine(void * arg){
   }
   
   if(c->state == Teelol::STARTED) {
-  while(!e[QUIT]){
+    while(!e[QUIT] && c->state == Teelol::STARTED){
     e.UpdateEvent();
     if(e[LEFT]){
       c->proto.move("left");
