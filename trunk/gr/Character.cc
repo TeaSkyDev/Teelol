@@ -15,6 +15,7 @@ Character::Character(Image_t img, int x, int y, int l, int h, Ecran * e) : Form(
   init_eyes();
   m_ammo.set_nb(10);
   m_ammo.set_screen(e);
+  m_ammo.add_obstacle(*this);
   m_life = 10;
   m_dmg = 0;
 }
