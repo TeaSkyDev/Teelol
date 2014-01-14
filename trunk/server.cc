@@ -35,17 +35,7 @@ namespace Teelol {
     STARTED
   };
 
-  void * master_th(void * args) {
-    while(1) {
-      SDL_Delay(40);
-      ezlock hold(ez_mutex);
-      //on appel pass row de chaque item savoir si ils sont en collision avec un joueur
-      for(int i = 0; i < tab_item.size(); i++) {
-	tab_item[i].pass_row();
-      }
-    }
-  }
-
+ 
   //prend en entree un nom de map (name)
   //lis le fichier et rempli les tableau en fonction
   void load_Map(string name){
@@ -353,6 +343,30 @@ namespace Teelol {
     }
     
   };
+
+   void * master_th(void * args) {
+    while(1) {
+      SDL_Delay(40);
+      ezlock hold(ez_mutex);
+      //on appel pass row de chaque item savoir si ils sont en collision avec un joueur
+      for(int i = 0; i < tab_item.size(); i++) {
+	tab_item[i].pass_row();
+	bool showed = tab_item[i].get_just_showed();
+	if(tab_item[i].hidden() || showed) {
+	  for(auto it = players.begin(); it != players.end(); it++) {
+	    if(showed) {
+	      it->second->proto.showItem(i);
+	    }
+	    if(tab_item[i].hidden()) {
+	      it->second->proto.hideItem(i);
+	    }
+	  }
+	}
+      }
+    }
+  }
+
+
 };
 
 
