@@ -23,11 +23,13 @@ public:
   void hide();
   void unhide();
   bool hidden();
+  bool get_just_showed();
 
 private:
   ITEM_T m_type;
   vector <Form*> m_obstacle;
   int m_wait;
+  bool m_just_showed;
 
 };
 
