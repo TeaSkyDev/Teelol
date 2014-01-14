@@ -35,6 +35,17 @@ namespace Teelol {
     STARTED
   };
 
+  void * master_th(void * args) {
+    while(1) {
+      SDL_Delay(40);
+      ezlock hold(ez_mutex);
+      //on appel pass row de chaque item savoir si ils sont en collision avec un joueur
+      for(int i = 0; i < tab_item.size(); i++) {
+	tab_item[i].pass_row();
+      }
+    }
+  }
+
   //prend en entree un nom de map (name)
   //lis le fichier et rempli les tableau en fonction
   void load_Map(string name){
@@ -184,7 +195,6 @@ namespace Teelol {
 	  m_player->stop_x();
 	  
 	}
-	last_life_size = m_player->get_life();
 	m_player->pass_row();  
 
 	verif_repop();
@@ -192,6 +202,7 @@ namespace Teelol {
 	int dmg = m_player->get_hurt();
 	if(dmg > 0){
 	  proto.hurt(NbAmmo);
+	  last_life_size = m_player->get_life();
 	}
 	if(m_player->get_life() <= 0)
 	  die();
@@ -248,7 +259,7 @@ namespace Teelol {
 	m_player->add_obstacle(it->first);
       }
       for(int i = 0 ; i < tab_item.size() ; i++){
-	*m_player << tab_item[i];
+	tab_item[i].add_obstacle(*m_player);
 	send_Item(&tab_item[i],i);
       }
       
@@ -368,6 +379,8 @@ void * boucle_suppr(void * arg) {
 
 
 void boucle_Inter(int argc,char ** argv){
+  pthread_t thread_master;
+  pthread_create(&thread_master, NULL, Teelol::master_th, (void*)NULL);
   netez::server<Teelol::session_on_server> server(argc,argv);
   bool quit = false;
   while(!quit){
@@ -384,6 +397,7 @@ void boucle_Inter(int argc,char ** argv){
   for (auto it = Teelol::players.begin() ; it != Teelol::players.end() ; it++){
     it->second->finish();
   }
+
 }
 
 
