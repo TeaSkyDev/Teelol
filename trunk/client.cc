@@ -174,7 +174,7 @@ namespace Teelol {
 
     //le joueur a pris dmg degat
     void do_hurt(int dmg){
-      cout<<dmg<<endl;
+
       if(dmg > 0){
 	player->set_image(I_TEE_DMG);
 	player->loose_life(dmg);
@@ -358,7 +358,7 @@ void * routine(void * arg){
 int main(int argc, char ** argv){
   TTF_Init();
   netez::client<Teelol::session_on_client> client(argc,argv);
-  cout<<"ici"<<endl;
+
   pthread_t th;
   pthread_create(&th, NULL, routine, (void*)&client.session);
   pthread_join(th,NULL);

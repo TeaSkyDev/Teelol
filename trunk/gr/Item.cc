@@ -32,7 +32,7 @@ void Item::pass_row(){
   collision_t col = collide();
   if(m_wait == 0){
     if(col.type == CHARACTER){
-      cout << "test" << endl;
+      
       Character * c = (Character*)col.element;
       switch(m_type){
       case AMMO:	  
