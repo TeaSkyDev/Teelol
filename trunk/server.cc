@@ -46,6 +46,7 @@ namespace Teelol{
  
   //lorsque le player meurt on le respawn ailleur avec toute sa vie et toute ses munitions
   void session_on_server::die(){
+    cout<<"["<<nick<<"] die"<<endl;
     int o_x = rand()%screen_s.l;
     m_player->spawn(o_x,-10);
     proto.nbAmmo(10);
@@ -69,12 +70,16 @@ namespace Teelol{
   void session_on_server::verif_lifeAndAmmo(){
     if(last_ammo_size != m_player->get_ammo()->get_NbAmmo())
       {
+	cout<<"["<<nick<<"] take ammo"<<endl;
 	int nb = m_player->get_ammo()->get_NbAmmo();
+	last_ammo_size = m_player->get_ammo()->get_NbAmmo();
 	proto.nbAmmo(nb);
       }
     if(last_life_size != m_player->get_life() && last_life_size < m_player->get_life())
       {
+	cout<<"["<<nick<<"] take life"<<endl;
 	int _health = m_player->get_life() - last_life_size;
+	last_life_size = m_player->get_life();
 	proto.health(_health);
       }
   }
@@ -88,9 +93,11 @@ namespace Teelol{
 	if(player_killed->get_life() == 0)
 	  {
 	    if(player_killed == m_player) {
+	      cout<<"["<<nick<<"] suicide"<<endl;
 	      m_player->loose_point();
 	      proto.loosePoint();
 	    } else {
+	      cout<<"["<<nick<<"] kill"<<endl;
 	      m_player->win_point();
 	      proto.winPoint();
 	    }
