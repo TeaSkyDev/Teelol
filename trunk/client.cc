@@ -281,7 +281,7 @@ namespace Teelol {
     
 };
 
-
+bool continuer = true;
 
 //boucle de connexion et d'interaction
 void * routine(void * arg){
@@ -316,12 +316,11 @@ void * routine(void * arg){
     if(e[JUMP]){ c->proto.move("jump"); e[JUMP] = 0;}
     if(e[LEFT_CL]){ c->shoot();}
     c->rotationArme(e().m_x, e().m_y);
-    c->affiche();
     c->map_Bullet_pass_row();
+    c->affiche();
     SDL_Delay(40);
   }
   }
-
   delete c->sc;
   c->proto.quit();
 }
@@ -330,7 +329,6 @@ void * routine(void * arg){
 int main(int argc, char ** argv){
   TTF_Init();
   netez::client<Teelol::session_on_client> client(argc,argv);
-
   pthread_t th;
   pthread_create(&th, NULL, routine, (void*)&client.session);
   pthread_join(th,NULL);

@@ -110,6 +110,7 @@ namespace Teelol {
 
     //envoi que le client a tire depuis les point envoyer
     void shoot();
+
     void map_Bullet_pass_row();
 
    };
