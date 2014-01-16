@@ -290,32 +290,19 @@ namespace Teelol{
   }
 
 
-  //un client envoi qu'il quitte 
+
   void session_on_server::do_quit() {
-    ezlock hold(ez_mutex);
     auto it = players.begin();
-    for(it = players.begin(); it != players.end(); it++) 
-      {
-	if(it->first->get_nick() != nick) 
-	  {
-	    it->second->proto.left(nick);
-	    for(int i = 0 ; i < m_player->get_ammo()->get_NbAmmo() ; i++)
-	      {
-		stringstream ss(nick); 
-		ss << (*m_player->get_ammo())[i]->get_id();
-		it->second->proto.explode(ss.str());
-	      }
-	
-	  }
-	else 
-	  {
-	    pthread_mutex_lock(&mutex);	
-	    players_to_delete.push_back(it->first);
-	    pthread_mutex_unlock(&mutex);
-	  }
-      }	
+    for(it = players.begin(); it != players.end(); it++) {
+      if(it->first->get_nick() != nick) {
+	it->second->proto.left(nick);
+      } else {
+	pthread_mutex_lock(&mutex);	
+	players_to_delete.push_back(it->first);
+	pthread_mutex_unlock(&mutex);
+      }
+    }	
   }
-  
 
   void * master_th(void * args) {
     while(1) {
