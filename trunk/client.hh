@@ -5,6 +5,7 @@
 #include "gr/Event.hh"
 #include "gr/Ecran.hh"
 #include "gr/Item.hh"
+#include "gr/Parse.hh"
 
 bool tentative_connexion = true;
 
@@ -29,6 +30,8 @@ namespace Teelol {
     Player * player;
     Ecran  *sc;
     state_t state;    
+    Parse p;
+    point mid_screen;
 
     session_on_client(socket &io);
 

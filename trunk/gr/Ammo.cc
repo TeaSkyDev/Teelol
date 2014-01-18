@@ -79,6 +79,19 @@ void Ammo::show(){
   show_mun();
 }
 
+void Ammo::show(Parse p, int x, int y){
+  for(int i = 0 ; i < m_ammo.size() ; i++){
+    point poi = p.parse_this(&m_ammo[i], x,y);
+    m_ammo[i].show(poi.x, poi.y);
+  }
+  for(int i = 0 ; i < m_exploded.size() ; i++){
+    point poi = p.parse_this(&m_exploded[i], x,y);
+    m_exploded[i].show(poi.x, poi.y);
+  }
+  show_mun();
+}
+
+
 
 void Ammo::show_mun(){
   SDL_Rect pos;

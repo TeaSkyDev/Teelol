@@ -4,6 +4,8 @@
 
 #include "Bullet.hh"
 #include "Rotable.hh"
+#include "Parse.hh"
+
 enum cartridge_t{
   GRENADE,
   SHOTGUN
@@ -21,6 +23,7 @@ public:
   void set_type(cartridge_t);
   void pass_row();
   void show();
+  void show(Parse , int , int);
   void show_mun();
   void set_nb(int);
   void set_screen(Ecran * e);

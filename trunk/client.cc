@@ -1,11 +1,14 @@
 #include "client.hh" 
+#include "gr/Parse.hh"
 
 namespace Teelol {
 
 
-  session_on_client::session_on_client(socket &io): session<my_proto>(io){
+  session_on_client::session_on_client(socket &io): session<my_proto>(io), p(187,187){
 
     sc = new Ecran(400,400);
+    mid_screen.x = 187;
+    mid_screen.y = 187;
     player = new Player("nameless" , I_TEE_P, 0, 0, 10, 10, sc);
     state  = STARTING;
      
@@ -203,8 +206,12 @@ namespace Teelol {
   //affiche les autres joueur avec leurs nom sur la tete
   void session_on_client::show_players(){
     for(int i = 0 ; i < players.size() ; i++){
-      players[i]->show();
+      point poi = p.parse_this(players[i], player->get_x(), player->get_y());
+      players[i]->show(poi.x, poi.y);
       players[i]->show_nick();
+      int x = poi.x + players[i]->get_l()/2;
+      int y = poi.y + players[i]->get_h()/2;
+      players[i]->get_weapon()->rotate(0,x,y,10);
       players[i]->get_weapon()->show();
       if(players[i]->get_wrong_img())
 	players[i]->set_image(I_TEE_A);
@@ -213,11 +220,12 @@ namespace Teelol {
 
   //affiche le joueur
   void session_on_client::show_m_player(){
-    player->show();
+    point poi = p.parse_this(player, player->get_x(), player->get_y());
+    player->show(poi.x, poi.y);
     if(player->get_wrong_img())
       player->set_image(I_TEE_P);
     player->get_weapon()->show();
-    player->get_ammo()->show();
+    player->get_ammo()->show(p, poi.x, poi.y);
     player->show_life();
     player->show_points();
       
@@ -228,21 +236,25 @@ namespace Teelol {
     ezlock hold(mutex);
     sc->clean();
     for(int i = 0 ; i < obstacle.size() ; i++){
-      obstacle[i].show();
+      point poi = p.parse_this(&obstacle[i], player->get_x(), player->get_y());
+      obstacle[i].show(poi.x, poi.y);
     }
     auto it = map_bullet.begin();
     for(; it != map_bullet.end(); it++) {
-      it->second->show();
+      point poi = p.parse_this(it->second, player->get_x(), player->get_y());
+      it->second->show(poi.x, poi.y);
     }
     for(int i = vec_explode.size()-1; i >= 0; i--) {
-      vec_explode[i].show();
+      point poi = p.parse_this(&vec_explode[i], player->get_x(), player->get_y());
+      vec_explode[i].show(poi.x, poi.y);
       vec_explode.pop_back();
     }
      
     show_players();
      
     for(auto it = map_item.begin() ; it != map_item.end() ; it++){
-      it->second->show();
+      point poi = p.parse_this(it->second, player->get_x(), player->get_y());
+      it->second->show(poi.x, poi.y);
     }
     show_m_player();
 
@@ -253,9 +265,9 @@ namespace Teelol {
   //fait tourner l'arme du joueur
   //envoi au serveur que l'arme a été tourne
   void session_on_client::rotationArme(int _x, int _y){
-    int angle = -atan2(_x-player->get_x(), _y-player->get_y())*180/M_PI+90;
-    int x = player->get_x()+ player->get_l()/2;;
-    int y = player->get_y() + player->get_h()/2; 
+    int angle = -atan2(_x-mid_screen.x, _y-mid_screen.y)*180/M_PI+90;
+    int x = mid_screen.x+ player->get_l()/2;;
+    int y = mid_screen.y + player->get_h()/2; 
     player->get_weapon()->set_angle(angle);
     player->get_weapon()->rotate(0, x, y,10);
     proto.rotate(angle);
@@ -263,11 +275,15 @@ namespace Teelol {
     
   //envoi que le client a tire depuis les point envoyer
   void session_on_client::shoot(){
+
     int x1 = player->get_weapon()->get_xb();
     int y1 = player->get_weapon()->get_yb();
+    point poi = p.inv_parse_this(x1, y1, player->get_x(), player->get_y());
+    x1 = poi.x; y1 = poi.y;
     int x2 = player->get_weapon()->get_xba();
     int y2 = player->get_weapon()->get_yba();
-      
+    poi = p.inv_parse_this(x2,y2, player->get_x(), player->get_y());
+    x2 = poi.x; y2 = poi.y;
     proto.shoot(x1,y1,x2,y2);
   }
 

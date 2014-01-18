@@ -71,6 +71,17 @@ void Item::show(){
   }
 }
 
+void Item::show(int x, int y){
+  if(m_wait == 0){
+    SDL_Rect rect;
+    rect.x = x;
+    rect.y = y;
+    rect.h = m_h;
+    rect.w = m_l;
+    m_e->put(m_surf,rect);
+  }
+}
+
 void Item::unhide(){
   m_wait = 0;
 }

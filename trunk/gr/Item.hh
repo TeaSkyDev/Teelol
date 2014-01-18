@@ -20,6 +20,7 @@ public:
   void pass_row();
   collision_t collide();
   void show();
+  void show(int, int);
   void hide();
   void unhide();
   bool hidden();
