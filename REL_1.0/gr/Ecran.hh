@@ -4,8 +4,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include "Const.hh"
-#include <iostream>
-using namespace std;
+
 
 
   class Ecran{
