@@ -41,6 +41,7 @@
     void shoot();
     collision_t collide();
     void show();
+    void show(int x, int y);
     void show_life();
 
     Rotable * get_weapon();
@@ -54,6 +55,7 @@
     void init_Weap();
     void init_eyes();
     void move_eyes();
+    void move_eyes(int, int);
   protected:
  
 

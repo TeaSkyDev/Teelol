@@ -191,12 +191,33 @@ void Character::move_eyes(){
 }
 
 
+void Character::move_eyes(int x, int y){
+  m_eyes->set_angle(m_weapon->get_angle());
+
+  m_eyes->rotate(0,x + m_l/2, y + m_h/2,-5);
+  //m_eyes->rotate_invacuo(-m_weapon->get_angle());
+}
+
+
 void Character::show(){
   //  m_ammo.show();
   move_eyes();
   SDL_Rect rect;
   rect.x = m_x;
   rect.y = m_y;
+  rect.w = m_l;
+  rect.h = m_h;
+  m_e->put(m_surf,rect);
+  m_eyes->show();
+}
+
+
+void Character::show(int x, int y){
+  //  m_ammo.show();
+  move_eyes(x,y);
+  SDL_Rect rect;
+  rect.x = x;
+  rect.y = y;
   rect.w = m_l;
   rect.h = m_h;
   m_e->put(m_surf,rect);

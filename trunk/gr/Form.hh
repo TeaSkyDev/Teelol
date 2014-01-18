@@ -52,6 +52,7 @@ class Form{
   bool get_wrong_img(){return m_wrong_img;}
   void set_screen(Ecran * e);
   virtual void show();
+  virtual void show(int x, int y);
   ~Form();
   
 protected:

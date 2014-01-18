@@ -47,6 +47,16 @@ void Form::show(){
 }
 
 
+void Form::show(int x, int y){
+
+ SDL_Rect rect;
+  rect.x = x;
+  rect.y = y;
+  rect.h = m_h;
+  rect.w = m_l;
+  m_e->put(m_surf,rect);
+}
+
 void Form::set_screen(Ecran * e){
   m_e = e;
 }
