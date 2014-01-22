@@ -6,6 +6,7 @@
 #include "gr/Ecran.hh"
 #include "gr/Item.hh"
 #include "gr/Parse.hh"
+#include "gr/Notif.hh"
 
 bool tentative_connexion = true;
 
@@ -29,6 +30,7 @@ namespace Teelol {
     map<int, Item*> map_item;
     Player * player;
     Ecran  *sc;
+    Notif  *notif;
     state_t state;    
     Parse p;
     point mid_screen;

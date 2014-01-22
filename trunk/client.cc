@@ -7,6 +7,8 @@ namespace Teelol {
   session_on_client::session_on_client(socket &io): session<my_proto>(io), p(187,187){
 
     sc = new Ecran(400,400);
+    notif = new Notif(sc);
+
     mid_screen.x = 187;
     mid_screen.y = 187;
     player = new Player("nameless" , I_TEE_P, 0, 0, 10, 10, sc);
@@ -72,7 +74,7 @@ namespace Teelol {
       tentative_connexion = false;
     }
     player->set_nick(n);
-      
+    notif->add_notif("Bienvenue !");
   }
     
   //reponse positive du serveur
@@ -83,6 +85,8 @@ namespace Teelol {
   //un nouveau joueur est present
   void session_on_client::do_joined(string nick) {
     players.push_back(new Player(nick, I_TEE_A, 0, 0, 10, 10, sc));
+    string msg = nick + " a joint la partie !";
+    notif->add_notif(msg.c_str());
   }
 
   //le joueur nick est partis
@@ -258,6 +262,8 @@ namespace Teelol {
     }
     show_m_player();
 
+    notif->pass_row();
+
     sc->Flip();
 
   }
@@ -305,23 +311,22 @@ void * routine(void * arg){
   Event e;
   Teelol::session_on_client * c = (Teelol::session_on_client*)arg;
 
-  string pseudo;
+  string pseudo="guidono";
   while(c->state == Teelol::STARTING) {
     cout << "Pseudo : ";
-    cin>>pseudo;
     c->proto.nick(pseudo);
     cout<<"message envoye"<<endl;
 
     while(tentative_connexion) {}
     tentative_connexion = true;
-  }
+    }
+  
   
   if(c->state == Teelol::STARTED) {
     while(!e[QUIT] && c->state == Teelol::STARTED){
     e.UpdateEvent();
     if(e[LEFT]){
       c->proto.move("left");
-
     }
     if(e[RIGHT]){
       c->proto.move("right");
