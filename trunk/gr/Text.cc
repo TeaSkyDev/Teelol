@@ -8,7 +8,7 @@ Text::Text(int x, int y, int h, int l): m_x(x), m_y(y), m_h(h), m_l(l) {
   m_f = TTF_OpenFont("../const/Font.ttf",20);
   m_col = {0,0,0};       
   m_content = TTF_RenderText_Blended(m_f, "", m_col);
-  
+  m_validated = false;
 }
 
 
@@ -47,7 +47,7 @@ void Text::pass_row(SDL_Event * e){
     if(e->key.keysym.sym == SDLK_BACKSPACE){
       m_text = m_text.substr(0, m_text.length()-1);
     }
-    if(e->key.keysym.sym == SDLK_RETURN){
+    if(e->key.keysym.sym == SDLK_RETURN && m_text.length() != 0){
       m_validated = true;
     }
     int deb = m_text.length() - 10;
