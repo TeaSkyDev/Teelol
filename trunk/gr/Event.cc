@@ -63,3 +63,9 @@ char& Event::operator[](Mapp m){
 position_t Event::operator()(){
   return {m_in.m_mouse_x, m_in.m_mouse_y};
 }
+
+
+
+SDL_Event & Event::getEvent(){
+  return m_event;
+}

@@ -29,8 +29,11 @@ public:
   void UpdateEvent();
   bool key_pressed(Mapp m);
   void reset_pressed(Mapp m);
+  SDL_Event & getEvent();
   char& operator[](Mapp m);
   position_t operator()();
+
+
 
 private:
   Input m_in;
