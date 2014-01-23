@@ -5,6 +5,7 @@
 #include "Parse.hh"
 #include "Button.hh"
 #include "Text.hh"
+#include "Menu.hh"
 
 void routine(){
   
@@ -12,20 +13,9 @@ void routine(){
   Button b("bonjour", 10,10,50,150);
   Text t(100,100,50,100);
   Event e; 
-  while(!e[QUIT]){
-    e.UpdateEvent();
-    sc.clean();
-    b.pass_row(e);
-
-    t.pass_row();
-
-    t.show(&sc);
-
-    b.show(&sc);
-    sc.Flip();
-
-  }
-
+  Menu m(&sc);
+  m.start();
+  cout<<m.getOption();
 }
 
 
