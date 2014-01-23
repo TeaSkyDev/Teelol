@@ -35,6 +35,7 @@ namespace Teelol{
     message <22, void()>                          winPoint;    //serveur envoi au client qu'il a gagner des points
     message <23, void()>                          loosePoint;  //serveur envoi au client qu'il a perdu des points
     message <24, void(string)>                    explode;     //serveur envoi l'explosion d'un bullet
+    message <25, void(string)>                    notif;       //serveur envoi une notification à afficher au client
 
     my_proto(socket &io): protocol<>(io), move(this), moveOk(this),
 			  nick(this),     err(this),  ok(this),
@@ -43,7 +44,7 @@ namespace Teelol{
 			  shoot(this), rotate(this), rotated(this), nbAmmo(this),
 			  hurt(this), hurted(this), health(this), 
 			  addItem(this), hideItem(this), showItem(this),
-			  winPoint(this), loosePoint(this), explode(this)
+			  winPoint(this), loosePoint(this), explode(this), notif(this)
 			  
     {}
     
