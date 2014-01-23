@@ -1,5 +1,8 @@
 #include "client.hh" 
 #include "gr/Parse.hh"
+#include "gr/Button.hh"
+#include "gr/Text.hh"
+
 
 namespace Teelol {
 
@@ -7,6 +10,8 @@ namespace Teelol {
   session_on_client::session_on_client(socket &io): session<my_proto>(io), p(187,187){
 
     sc = new Ecran(400,400);
+    notif = new Notif(sc);
+
     mid_screen.x = 187;
     mid_screen.y = 187;
     player = new Player("nameless" , I_TEE_P, 0, 0, 10, 10, sc);
@@ -72,7 +77,7 @@ namespace Teelol {
       tentative_connexion = false;
     }
     player->set_nick(n);
-      
+    notif->add_notif("Bienvenue !");
   }
     
   //reponse positive du serveur
@@ -83,6 +88,8 @@ namespace Teelol {
   //un nouveau joueur est present
   void session_on_client::do_joined(string nick) {
     players.push_back(new Player(nick, I_TEE_A, 0, 0, 10, 10, sc));
+    string msg = nick + " a joint la partie !";
+    notif->add_notif(msg.c_str());
   }
 
   //le joueur nick est partis
@@ -258,6 +265,8 @@ namespace Teelol {
     }
     show_m_player();
 
+    notif->pass_row();
+
     sc->Flip();
 
   }
@@ -299,43 +308,61 @@ namespace Teelol {
 
 bool continuer = true;
 
+
+string boucle_pseudo(Teelol::session_on_client * c){
+  Event e;
+  Button b("valider", 150,250,50,100);
+  Text t(150,150,50,100);
+  while(!e[QUIT] && !b.getClicked() && !t.Validated()){
+    e.UpdateEvent();
+    c->sc->clean();
+    b.pass_row(e);
+    t.pass_row(&e.getEvent());
+    b.show(c->sc);
+    t.show(c->sc);
+    c->sc->Flip();
+    SDL_Delay(50);
+  }
+  if(e[QUIT])
+    return "";
+  else return t.getText();
+}
+
+
 //boucle de connexion et d'interaction
 void * routine(void * arg){
   
   Event e;
   Teelol::session_on_client * c = (Teelol::session_on_client*)arg;
-
-  string pseudo;
   while(c->state == Teelol::STARTING) {
-    cout << "Pseudo : ";
-    cin>>pseudo;
+    string pseudo = boucle_pseudo(c);
+    if(pseudo == "")
+      break;
     c->proto.nick(pseudo);
-    cout<<"message envoye"<<endl;
-
+    
     while(tentative_connexion) {}
     tentative_connexion = true;
   }
-  
+    
   if(c->state == Teelol::STARTED) {
     while(!e[QUIT] && c->state == Teelol::STARTED){
-    e.UpdateEvent();
-    if(e[LEFT]){
-      c->proto.move("left");
-
+      e.UpdateEvent();
+      if(e[LEFT]){
+	c->proto.move("left");
+      }
+      if(e[RIGHT]){
+	c->proto.move("right");
+      }
+      if(!e[RIGHT] && !e[LEFT]){
+	c->proto.move("stopx");
+      }
+      if(e[JUMP]){ c->proto.move("jump"); e[JUMP] = 0;}
+      if(e[LEFT_CL]){ c->shoot();}
+      c->rotationArme(e().m_x, e().m_y);
+      c->map_Bullet_pass_row();
+      c->affiche();
+      SDL_Delay(40);
     }
-    if(e[RIGHT]){
-      c->proto.move("right");
-    }
-    if(!e[RIGHT] && !e[LEFT]){
-      c->proto.move("stopx");
-    }
-    if(e[JUMP]){ c->proto.move("jump"); e[JUMP] = 0;}
-    if(e[LEFT_CL]){ c->shoot();}
-    c->rotationArme(e().m_x, e().m_y);
-    c->map_Bullet_pass_row();
-    c->affiche();
-    SDL_Delay(40);
-  }
   }
   delete c->sc;
   c->proto.quit();
