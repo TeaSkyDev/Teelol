@@ -9,28 +9,28 @@
 
 enum Option{
   JOUER, QUITTER
-}
+};
 
 
 class Menu{
 public:
   
- 
-
-  std::string getText();
+  
+  Menu(Ecran *e);
+  void start();
   Option getOption();
   
  
 
 
 private:
-  Event m_e;
-  //  Text m_text;
-  Button m_ok;
-  Button m_exit;
-  Button m_jouer;
-
-}
+  Ecran * m_e;
+  
+  Event m_event;
+  Button * m_exit;
+  Button * m_jouer;
+  Option m_option;
+};
 
 
 
