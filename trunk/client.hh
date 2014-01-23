@@ -100,6 +100,9 @@ namespace Teelol {
     //le joueur perd 1 points
     void do_loosePoint();
 
+    //affiche la notification envoyée par le serveur
+    void do_notif(string msg);
+
     //affiche les autres joueur avec leurs nom sur la tete
     void show_players();
 

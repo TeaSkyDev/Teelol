@@ -37,6 +37,7 @@ namespace Teelol {
     proto.winPoint.sig_recv.connect(EZMETHOD(this, do_winPoint));
     proto.loosePoint.sig_recv.connect(EZMETHOD(this, do_loosePoint));
     proto.explode.sig_recv.connect(EZMETHOD(this, do_explode));
+    proto.notif.sig_recv.connect(EZMETHOD(this, do_notif));
 
     sig_end.connect(EZMETHOD(this, on_end));
   }
@@ -102,6 +103,8 @@ namespace Teelol {
 	break;
       }
     }
+    string msg = nick + " a quitté la partie !";
+    notif->add_notif(msg.c_str());
   }
 
   //reception d'un obstacle depuis le serveur
@@ -206,9 +209,12 @@ namespace Teelol {
   //le joueur perd 1 points
   void session_on_client::do_loosePoint() {
     player->loose_point();
-
   }
 
+  //affiche la notif envoyée par le serveur
+  void session_on_client::do_notif(string msg) {
+    notif->add_notif(msg.c_str());
+  }
 
   //affiche les autres joueur avec leurs nom sur la tete
   void session_on_client::show_players(){
@@ -303,7 +309,6 @@ namespace Teelol {
       it->second->pass_row();
     }
   }
-    
 };
 
 bool continuer = true;
