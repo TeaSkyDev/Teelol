@@ -95,16 +95,45 @@ namespace Teelol{
 	    if(player_killed == m_player) {
 	      cout<<"["<<nick<<"] suicide"<<endl;
 	      m_player->loose_point();
+	      proto.notif("Suicide !");
+	      send_notif_suicide();
 	      proto.loosePoint();
 	    } else {
 	      cout<<"["<<nick<<"] kill"<<endl;
 	      m_player->win_point();
+	      Player * p_killed = (Player*)(player_killed);
+	      string ntf = "Vous avez tué " + p_killed->get_nick() + " !";
+	      proto.notif(ntf.c_str());
+	      send_notif_death(p_killed->get_nick());
 	      proto.winPoint();
 	    }
 	  }
       }    
   }
   
+  void session_on_server::send_notif_suicide() {
+    string msg = m_player->get_nick() + " s'est suicidé !";
+    auto it = players.begin();
+    for(; it != players.end(); it++) {
+      if(it->first != m_player) {
+	it->second->proto.notif(msg.c_str());
+      }
+    }
+  }
+
+  void session_on_server::send_notif_death(string nick_killed) {
+    string msg  = m_player->get_nick() + " a tué " + nick_killed;
+    string msg2 = m_player->get_nick() + " vous a tué !";
+    auto it = players.begin();
+    for(; it != players.end(); it++) {
+      if(it->first->get_nick() == nick_killed) {
+	it->second->proto.notif(msg2);
+      } else {
+	it->second->proto.notif(msg);
+      }
+    }
+  }
+
   //envoi tout les mouvement perte de vie... aux autres joueur de m_player
   void session_on_server::send_all_to_other(int x, int y, int dmg){
     auto it = players.begin();

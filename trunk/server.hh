@@ -90,5 +90,11 @@ namespace Teelol {
 
     //un client envoi qu'il quitte 
     void do_quit();
+
+    //indique au client qu'un joueur s'est suicidé
+    void send_notif_suicide();
+
+    //indique la mort d'un joueur
+    void send_notif_death(string nick_killed);
   };
 };
