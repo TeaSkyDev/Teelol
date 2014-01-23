@@ -4,9 +4,9 @@ Notif::Notif( Ecran * ec ) {
   TTF_Init();
   m_ecran = ec;
   m_rows_init = 40;
-  m_rect.x = ec->get_l()/2;
-  m_rect.y = ec->get_h()/2;
-  m_police = TTF_OpenFont("../const/Font.ttf", 40);
+  m_rect.x = ec->get_l()/3;
+  m_rect.y = ec->get_h()/3;
+  m_police = TTF_OpenFont("../const/Freshman.ttf", 40);
   m_color  = {255, 0, 0};
 }
 
