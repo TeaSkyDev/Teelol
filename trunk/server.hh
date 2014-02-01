@@ -4,6 +4,7 @@
 
 #include "proto.hh"
 #include "player.hh"
+#include "Map.hh"
 
 #include "gr/Item.hh"
 
@@ -15,10 +16,6 @@ namespace Teelol {
   using namespace netez;
   using namespace std;
 
-  struct screen_size {
-    int l;
-    int h;
-  };
 
   ezmutex ez_mutex;
   struct session_on_server;
@@ -28,7 +25,8 @@ namespace Teelol {
   vector<Player*> players_to_delete;
   screen_size screen_s;
   int NbAmmo;
-  
+  Map map_server;
+
   enum state_t {
     STARTING,
     STARTED
@@ -73,6 +71,9 @@ namespace Teelol {
 
     //envoi une forme au client
     void send_Form(vector<Form>::iterator it);
+    
+    //envoi une Form f au client 
+    void send_Form(Form & f);
 
     //envoi un item au client
     void send_Item(Item *it, int i);

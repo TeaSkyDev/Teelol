@@ -58,12 +58,12 @@ namespace Teelol{
     int x = m_player->get_x();
     int y = m_player->get_y();
     int l = m_player->get_l();
-    if(y > screen_s.h)
+    if(y > map_server.get_Screen_Size().h)
       m_player->set_y(-10);
-    if(x > screen_s.l)
+    if(x > map_server.get_Screen_Size().l)
       m_player->set_x(0);
     if(x + l< 0)
-      m_player->set_x(screen_s.l - l);
+      m_player->set_x(map_server.get_Screen_Size().l - l);
   }
 
   //verifie si le player a pris un item qui donne de la vie
@@ -205,7 +205,7 @@ namespace Teelol{
 	
     if(nick_ok) {
       cout<<"nick accepte"<<endl;
-      m_player  = new Player(_nick, I_TEE_P,rand()%screen_s.l , -10, 50, 50, NULL);
+      m_player  = new Player(_nick, I_TEE_P,rand()%map_server.get_Screen_Size().l , -10, 50, 50, NULL);
 
       nick = _nick;
       proto.ok();
@@ -221,23 +221,35 @@ namespace Teelol{
     }
   }
 
+  void session_on_server::send_Form(Form &f){
+    int x = f.get_x();
+    int y = f.get_y();
+    int h = f.get_h();
+    int l = f.get_l();
+    int img = (int)f.get_img();
+    proto.addObstacle(img,x,y,h,l);
+  }
+
   //initialise le player avec le nom et une position aleatoire
   //ajoute tout les obstacles necessaire
   void session_on_server::init_NewPlayer(string _nick){
       
     proto.okNick(_nick);
 
-    for(auto it = obstacle.begin() ; it != obstacle.end() ; it++){
-      *m_player << *it;
-      send_Form(it);
+    for(Form &f: map_server.get_Object_vec()){
+      m_player->add_obstacle(&f);
+      send_Form(f);
     }
-    for(auto it = players.begin(); it != players.end(); it++) {
-      m_player->add_obstacle(it->first);
+    
+    for(auto it: players){
+      m_player->add_obstacle(it.first);
     }
-    for(int i = 0 ; i < tab_item.size() ; i++){
-      tab_item[i].add_obstacle(*m_player);
-      send_Item(&tab_item[i],i);
+    
+    for(int i = 0 ; i < map_server.get_Item_vec().size() ; i++){
+      map_server.get_Item(i).add_obstacle(*m_player);
+      send_Item(&map_server.get_Item(i),i);
     }
+   
     
     int nb = m_player->get_ammo()->get_NbAmmo();
     m_player->get_ammo()->set_dmg(NbAmmo);
@@ -338,16 +350,16 @@ namespace Teelol{
       SDL_Delay(40);
       ezlock hold(ez_mutex);
       //on appel pass row de chaque item savoir si ils sont en collision avec un joueur
-      for(int i = 0; i < tab_item.size(); i++) {
-	tab_item[i].pass_row();
-	bool showed = tab_item[i].get_just_showed();
-	if(tab_item[i].hidden() || showed) {
+      for(int i = 0; i < map_server.get_Item_vec().size(); i++) {
+	map_server.get_Item(i).pass_row();
+	bool showed = map_server.get_Item(i).get_just_showed();
+	if(map_server.get_Item(i).hidden() || showed) {
 
 	  for(auto it = players.begin(); it != players.end(); it++) {
 	    if(showed) {
 	      it->second->proto.showItem(i);
 	    }
-	    if(tab_item[i].hidden()) {
+	    if(map_server.get_Item(i).hidden()) {
 	      it->second->proto.hideItem(i);
 	    }
 	  }
@@ -426,7 +438,9 @@ int main(int argc, char ** argv){
   srand(time(NULL));
   string path = "../const/";
   string map = path + get_map_name(argc, argv);
-  Teelol::load_Map(map);
+  //  Teelol::load_Map(map);
+  Teelol::map_server.set_Map_Name(map);
+  Teelol::map_server.load_Map();
   pthread_t th_boucle_suppr;
   pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
   boucle_Inter(argc, argv);
