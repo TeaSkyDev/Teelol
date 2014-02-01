@@ -221,11 +221,11 @@ namespace Teelol {
     for(int i = 0 ; i < players.size() ; i++){
       point poi = p.parse_this(players[i], player->get_x(), player->get_y());
       players[i]->show(poi.x, poi.y);
-      players[i]->show_nick();
       int x = poi.x + players[i]->get_l()/2;
       int y = poi.y + players[i]->get_h()/2;
       players[i]->get_weapon()->rotate(0,x,y,10);
       players[i]->get_weapon()->show();
+      players[i]->show_nick(poi.x , poi.y);
       if(players[i]->get_wrong_img())
 	players[i]->set_image(I_TEE_A);
     }

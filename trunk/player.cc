@@ -50,6 +50,16 @@ void Player::show_nick(){
 
 }
 
+void Player::show_nick(int x, int y){
+  SDL_Color couleur = {255,255,255};
+  SDL_Surface * Name = TTF_RenderText_Blended(m_font, m_nick.c_str() , couleur);
+  SDL_Rect rect;
+  rect.x = x - Name->w/2;
+  rect.y = y - Name->h - Name->h/2;
+  rect.h = 10;
+  rect.w = 10;
+  m_e->put(Name, rect);
+}
 
 void Player::show_points(){
   SDL_Surface * cadre = IMG_Load(c[I_CADRE].c_str());
