@@ -32,6 +32,8 @@ public:
   std::vector<Item> &get_Item_vec();
 
   std::vector<std::string> &get_Map_Name();
+
+  int get_Nb_Ammo();
   
   screen_size get_Screen_Size();
   

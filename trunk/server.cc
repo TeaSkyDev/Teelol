@@ -5,30 +5,7 @@
 
 namespace Teelol{
 
-  //prend en entree un nom de map (name)
-  //lis le fichier et rempli les tableau en fonction
-  void load_Map(string name){
-    ifstream fichier(name.c_str());
-    int type,x,y,h,l, img,type2;
-    fichier >> screen_s.l >> screen_s.h >> NbAmmo;
-    while(!fichier.eof()){
-      fichier >> type >> x >> y >> h >> l >> img;
-      switch(type){
-      case 1:
-	obstacle.push_back(Form(x,y,h,l));
-	obstacle[obstacle.size()-1].set_image((Image_t)img);
-	break;
-      case 2:
-	fichier >> type2;
-	tab_item.push_back(Item(x,y,h,l,(ITEM_T)type2));
-	tab_item[tab_item.size()-1].set_image((Image_t)img);
-	break;		   
-      }
-    }
-    fichier.close();
-  }
-
-
+ 
   session_on_server::session_on_server(socket & io): session(io) {
     cur_id = 0;
     state = STARTING;
@@ -47,7 +24,7 @@ namespace Teelol{
   //lorsque le player meurt on le respawn ailleur avec toute sa vie et toute ses munitions
   void session_on_server::die(){
     cout<<"["<<nick<<"] die"<<endl;
-    int o_x = rand()%screen_s.l;
+    int o_x = rand()%map_server.get_Screen_Size().l;
     m_player->spawn(o_x,-10);
     proto.nbAmmo(10);
     proto.health(10);
@@ -113,10 +90,9 @@ namespace Teelol{
   
   void session_on_server::send_notif_suicide() {
     string msg = m_player->get_nick() + " s'est suicidé !";
-    auto it = players.begin();
-    for(; it != players.end(); it++) {
-      if(it->first != m_player) {
-	it->second->proto.notif(msg.c_str());
+    for(auto it : players) {
+      if(it.first != m_player) {
+	it.second->proto.notif(msg.c_str());
       }
     }
   }
@@ -124,38 +100,31 @@ namespace Teelol{
   void session_on_server::send_notif_death(string nick_killed) {
     string msg  = m_player->get_nick() + " a tué " + nick_killed;
     string msg2 = m_player->get_nick() + " vous a tué !";
-    auto it = players.begin();
-    for(; it != players.end(); it++) {
-      if(it->first->get_nick() == nick_killed) {
-	it->second->proto.notif(msg2);
+    for(auto it :players) {
+      if(it.first->get_nick() == nick_killed) {
+	it.second->proto.notif(msg2);
       } else {
-	it->second->proto.notif(msg);
+	it.second->proto.notif(msg);
       }
     }
   }
 
   //envoi tout les mouvement perte de vie... aux autres joueur de m_player
   void session_on_server::send_all_to_other(int x, int y, int dmg){
-    auto it = players.begin();
-    for(; it != players.end(); it++) {
-      if(it->first != m_player) 
-	{        
-	  it->second->proto.moved(x, y, nick);
-	  if(dmg > 0)
-	    it->second->proto.hurted(nick);
-	}
-    }
-    for(it = players.begin(); it != players.end() ; it++){
-      for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++)
-	{
-	  int id =m_player->get_ammo()->get_exploded(i)->get_id();
-	  stringstream ident(nick);
-	  ident << id;
-	  it->second->proto.explode(ident.str());
-	  verif_Points(i);
+    for(auto it: players) {
+      if(it.first != m_player) {        
+	it.second->proto.moved(x, y, nick);
+	if(dmg > 0)
+	  it.second->proto.hurted(nick);
       }
+      for(int i = 0 ; i < m_player->get_ammo()->get_explode_size() ; i++) {
+	int id =m_player->get_ammo()->get_exploded(i)->get_id();
+	stringstream ident(nick);
+	ident << id;
+	it.second->proto.explode(ident.str());
+	verif_Points(i);
+      }  
     }
-    
   }
   
   //sur la reception d'un event du client
@@ -180,7 +149,7 @@ namespace Teelol{
     verif_lifeAndAmmo();
     int dmg = m_player->get_hurt();
     if(dmg > 0){
-      proto.hurt(NbAmmo);
+      proto.hurt(map_server.get_Nb_Ammo());
       last_life_size = m_player->get_life();
     }
     int x = m_player->get_x();
@@ -195,10 +164,8 @@ namespace Teelol{
   //au debut lorsque le player demande un nom
   void session_on_server::do_nick(string _nick) {
     bool nick_ok = true;
-    auto it = players.begin();
-	
-    for(; it != players.end(); it++) {
-      if(it->first->get_nick() == _nick) {
+    for(auto it: players){	
+      if(it.first->get_nick() == _nick) {
 	nick_ok = false;
       }
     }
@@ -241,7 +208,7 @@ namespace Teelol{
       send_Form(f);
     }
     
-    for(auto it: players){
+    for(auto &it: players){
       m_player->add_obstacle(it.first);
     }
     
@@ -252,7 +219,7 @@ namespace Teelol{
    
     
     int nb = m_player->get_ammo()->get_NbAmmo();
-    m_player->get_ammo()->set_dmg(NbAmmo);
+    m_player->get_ammo()->set_dmg(map_server.get_Nb_Ammo());
     proto.nbAmmo(nb);
   }
     
@@ -276,46 +243,37 @@ namespace Teelol{
     
   //envoi a tout les joueur l'arrive d'un nouveau joueur
   void session_on_server::player_joined() {
-    auto it = players.begin();
-
-    for(it = players.begin(); it != players.end(); it++) {
-      if(it->first->get_nick() != nick)
-	{
-	  it->second->proto.joined(nick);
-	  proto.joined(it->first->get_nick());
-	  it->first->add_obstacle(m_player);
-	}
-    }
-			  
+    for (auto &it : players) {
+      if(it.first->get_nick() != nick) {
+	it.second->proto.joined(nick);
+	proto.joined(it.first->get_nick());
+	it.first->add_obstacle(m_player);
+      }
+    } 
   }
 
   //suite a la reception de l'info sur la rotation de l'arme d'un client
   void session_on_server::do_rotate(int angle){
-    auto it = players.begin();
-    for(; it != players.end(); it++) {
-      if(it->first != m_player)
-	{  
-	  it->second->proto.rotated( angle, nick);
-	}
+    for(auto it : players) {
+      if(it.first != m_player) {  
+	it.second->proto.rotated( angle, nick);
+      }
     }
-			      
   }
 
   void session_on_server::send_other_new_bullet(int x_s, int y_s){
 
-    auto it = players.begin();
-    for(; it != players.end(); it++)
-      {
-	int i = m_player->get_ammo()->get_nb()-1;
-	int x = (*m_player->get_ammo())[i]->get_x();
-	int y = (*m_player->get_ammo())[i]->get_y();
-	int id = (*m_player->get_ammo())[i]->get_id();
-	stringstream ss(nick);
-	ss << id;
-	it->second->proto.addBullet(ss.str(), x, y, x_s, y_s);
-      }
+    for(auto it : players) {
+      int i = m_player->get_ammo()->get_nb()-1;
+      int x = (*m_player->get_ammo())[i]->get_x();
+      int y = (*m_player->get_ammo())[i]->get_y();
+      int id = (*m_player->get_ammo())[i]->get_id();
+      stringstream ss(nick);
+      ss << id;
+      it.second->proto.addBullet(ss.str(), x, y, x_s, y_s);
+    }
   }
-
+  
 
 
   //suive a l'event de tir du client
@@ -333,13 +291,12 @@ namespace Teelol{
 
 
   void session_on_server::do_quit() {
-    auto it = players.begin();
-    for(it = players.begin(); it != players.end(); it++) {
-      if(it->first->get_nick() != nick) {
-	it->second->proto.left(nick);
+    for( auto it : players) {
+      if(it.first->get_nick() != nick) {
+	it.second->proto.left(nick);
       } else {
 	pthread_mutex_lock(&mutex);	
-	players_to_delete.push_back(it->first);
+	players_to_delete.push_back(it.first);
 	pthread_mutex_unlock(&mutex);
       }
     }	
@@ -355,12 +312,12 @@ namespace Teelol{
 	bool showed = map_server.get_Item(i).get_just_showed();
 	if(map_server.get_Item(i).hidden() || showed) {
 
-	  for(auto it = players.begin(); it != players.end(); it++) {
+	  for(auto it: players) {
 	    if(showed) {
-	      it->second->proto.showItem(i);
+	      it.second->proto.showItem(i);
 	    }
 	    if(map_server.get_Item(i).hidden()) {
-	      it->second->proto.hideItem(i);
+	      it.second->proto.hideItem(i);
 	    }
 	  }
 	}
@@ -382,9 +339,8 @@ void * boucle_suppr(void * arg) {
       Teelol::players_to_delete.pop_back();
 
       /* Pour chaque player, on supprime la collision avec le player supprimé */
-      auto itp = Teelol::players.begin();
-      for(; itp != Teelol::players.end(); itp++) {
-	itp->first->delete_obstacle(it->first);
+      for(auto itp : Teelol::players) {
+	itp.first->delete_obstacle(it->first);
       }
 
       pthread_mutex_unlock(&mutex);

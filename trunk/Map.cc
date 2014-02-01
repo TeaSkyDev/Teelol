@@ -75,5 +75,9 @@ screen_size Map::get_Screen_Size(){
 }
 
 
+int Map::get_Nb_Ammo(){
+  return m_nb_ammo;
+}
+
 Map::~Map(){
 }
