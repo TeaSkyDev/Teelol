@@ -29,6 +29,7 @@ public:
   void UpdateEvent();
   bool key_pressed(Mapp m);
   void reset_pressed(Mapp m);
+  int & WheelChange();
   SDL_Event & getEvent();
   char& operator[](Mapp m);
   position_t operator()();
@@ -40,7 +41,8 @@ private:
   SDLKey m_mapping[MAP_INTER];
   int m_mouse_mapping[MAP_LAST];
   SDL_Event m_event;
-  
+  int m_wheel;
+  int m_sensivity;
 };
 
 

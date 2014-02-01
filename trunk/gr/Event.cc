@@ -11,6 +11,8 @@ Event::Event(){
   m_in.m_key[m_mapping[LEFT]] = 0;
   m_in.m_key[m_mapping[RIGHT]] = 0;
   m_in.m_key[m_mapping[QUIT]] = 0;
+  m_wheel = 0;
+  m_sensivity = 1;
 }
 
 
@@ -36,6 +38,12 @@ void Event::UpdateEvent(){
     }
     if(m_event.type == SDL_MOUSEBUTTONDOWN){
       m_in.m_mousebuttons[m_event.button.button] = 1;
+      if(m_event.button.button == SDL_BUTTON_WHEELUP){
+	m_wheel += m_sensivity;
+      }
+      if(m_event.button.button == SDL_BUTTON_WHEELDOWN){
+	m_wheel -= m_sensivity;
+      }
     }
     if(m_event.type == SDL_MOUSEBUTTONUP){
       m_in.m_mousebuttons[m_event.button.button] = 0;
@@ -64,6 +72,10 @@ position_t Event::operator()(){
   return {m_in.m_mouse_x, m_in.m_mouse_y};
 }
 
+
+int & Event::WheelChange(){
+  return m_wheel;
+}
 
 
 SDL_Event & Event::getEvent(){
