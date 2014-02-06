@@ -5,7 +5,7 @@
 #include "Ecran.hh"
 #include "Event.hh"
 #include <iostream>
-#include "Button.hh"
+#include "Interface/Button.hh"
 
 enum Option{
   JOUER, QUITTER
