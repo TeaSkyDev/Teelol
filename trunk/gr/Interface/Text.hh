@@ -14,7 +14,7 @@ using boost::signals2::signal;
 
 class Text{
 public:
-    Text(int, int, int h,int l, int id);
+    Text(int, int, int h,int l);
     std::string getText();
     void pass_row(Event);
     void show(Ecran *);
@@ -46,6 +46,7 @@ private:
     int m_delai;
     int m_anc_key;
     bool m_validated, m_focus;
+    static int STATID;
 };
 
 

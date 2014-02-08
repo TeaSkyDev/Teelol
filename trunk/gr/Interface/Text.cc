@@ -1,8 +1,9 @@
 #include "Text.hh"
 using namespace std;
 
+int Text::STATID = 0;
 
-Text::Text(int x, int y, int h, int l, int id): m_x(x), m_y(y), m_h(h), m_l(l), m_id(id){
+Text::Text(int x, int y, int h, int l): m_x(x), m_y(y), m_h(h), m_l(l), m_id(STATID++){
   m_fond = SDL_CreateRGBSurface(SDL_HWSURFACE, l, h, 32,0,0,0,0);
   SDL_FillRect(m_fond, NULL, SDL_MapRGB(m_fond->format, 255,255,255));
   m_f = TTF_OpenFont("../const/Font.ttf",20);
