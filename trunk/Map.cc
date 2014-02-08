@@ -15,6 +15,7 @@ void Map::load_Map_Name(){
   ifstream fichier("../const/MapName");
   while(!fichier.eof()){
     string name;
+    fichier >> name;
     m_map_name.push_back(name);
   }
   fichier.close();

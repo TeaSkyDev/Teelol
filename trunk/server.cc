@@ -386,6 +386,37 @@ string get_map_name(int argc, char ** argv){
   return map;
 }
 
+bool launch_server() {
+    Ecran sc(400,400);
+    Event e;
+    Button ok("ok", 10,300, 25,380);
+    ListView lv(10,10,280,370,30);
+    Teelol::map_server.load_Map_Name();
+    for( auto it : Teelol::map_server.get_Map_Name()) {
+	lv.add_Item(new ListItem(it));
+    }
+    while(!e[QUIT] && !ok.getClicked()) {
+	e.UpdateEvent();
+	sc.clean();
+	lv.pass_row(e);
+	lv.show(&sc);
+	ok.pass_row(e);
+	ok.show(&sc);
+	sc.Flip();
+    }
+    if(lv.selected()) {
+	Teelol::map_server.set_Map_Name(lv.selected()->text());
+    }
+    else {
+	Teelol::map_server.set_Map_Name("../const/map.lvl");
+    }
+    if(!e[QUIT]) {
+	return true;
+    }
+    return false;
+}
+
+
 
 
 
@@ -394,12 +425,13 @@ int main(int argc, char ** argv){
   srand(time(NULL));
   string path = "../const/";
   string map = path + get_map_name(argc, argv);
-  //  Teelol::load_Map(map);
-  Teelol::map_server.set_Map_Name(map);
-  Teelol::map_server.load_Map();
-  pthread_t th_boucle_suppr;
-  pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
-  boucle_Inter(argc, argv);
-  pthread_cancel(th_boucle_suppr);
+  if(launch_server()) {
+      
+      Teelol::map_server.load_Map();
+      pthread_t th_boucle_suppr;
+      pthread_create(&th_boucle_suppr, NULL, boucle_suppr, (void*)NULL);
+      boucle_Inter(argc, argv);
+      pthread_cancel(th_boucle_suppr);
+  }
 }
 				

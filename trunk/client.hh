@@ -7,6 +7,7 @@
 #include "gr/Item.hh"
 #include "gr/Parse.hh"
 #include "gr/Notif.hh"
+#include "gr/Interface/Focuser.hh"
 
 bool tentative_connexion = true;
 

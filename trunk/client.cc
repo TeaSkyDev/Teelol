@@ -1,7 +1,7 @@
 #include "client.hh" 
 #include "gr/Parse.hh"
-#include "gr/Button.hh"
-#include "gr/Text.hh"
+#include "gr/Interface/Button.hh"
+#include "gr/Interface/Text.hh"
 
 
 namespace Teelol {
@@ -317,12 +317,15 @@ bool continuer = true;
 string boucle_pseudo(Teelol::session_on_client * c){
     Event e;
     Button b("valider", 150,250,50,100);
+    Focuser f;
     Text t(150,150,50,100);
+    f.add_focusable(&t);
+    t.focused.connect(f);
     while(!e[QUIT] && !b.getClicked() && !t.Validated()){
 	e.UpdateEvent();
 	c->sc->clean();
 	b.pass_row(e);
-	t.pass_row(&e.getEvent());
+	t.pass_row(e);
 	b.show(c->sc);
 	t.show(c->sc);
 	c->sc->Flip();

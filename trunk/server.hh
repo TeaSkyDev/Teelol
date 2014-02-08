@@ -5,6 +5,9 @@
 #include "proto.hh"
 #include "player.hh"
 #include "Map.hh"
+#include "gr/Event.hh"
+#include "gr/Interface/ListView.hh"
+#include "gr/Interface/Button.hh"
 
 #include "gr/Item.hh"
 
