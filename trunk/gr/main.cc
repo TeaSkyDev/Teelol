@@ -9,7 +9,8 @@
 #include "Interface/Focuser.hh"
 #include "Interface/ScrollBar.hh"
 #include "Interface/ListView.hh"
-
+#include <sstream>
+using namespace std;
 void foo(int purcent) {
     cout << purcent << endl;
 }
@@ -18,19 +19,13 @@ void routine(){
     Focuser f;
     Ecran sc(400,400);
     ListView lv(10,40,200,200,30);
-    lv.add_Item(new ListItem("salut les mec"));   
-    lv.add_Item(new ListItem("salut les mec"));   
-    lv.add_Item(new ListItem("salut les mec"));  
-    lv.add_Item(new ListItem("salut les mec"));  
-    lv.add_Item(new ListItem("salut les mec"));  
-    lv.add_Item(new ListItem("salut les mec"));  
-    lv.add_Item(new ListItem("salut les mec"));  
-    lv.add_Item(new ListItem("salut les mec"));  
-    lv.add_Item(new ListItem("salut les mec"));   
-    lv.add_Item(new ListItem("salut les mec"));  
-    lv.add_Item(new ListItem("salut les mec"));  
-    lv.add_Item(new ListItem("salut les mec"));  
-  
+    string text = "Item";
+    for (int i = 0 ; i < 10 ; i++) {
+	stringstream ss;
+	ss << text << " " << i;
+	cout << ss.str() << endl;
+	lv.add_Item(new ListItem(ss.str()));
+    }
     Event e; 
     while(!e[QUIT]){
 	e.UpdateEvent();

@@ -91,6 +91,7 @@ void ListView::show(Ecran * sc) {
 	    }
 	}
 	sc->put(elem, rect, rect2);
+	rect.x += 5;
 	sc->put(text, rect, rect2);
 	SDL_FreeSurface(elem);
 	SDL_FreeSurface(text);
