@@ -1,20 +1,24 @@
 #include "ScrollBar.hh"
+#include <iostream>
+using namespace std;
 
 ScrollBar::ScrollBar(int x, int y, int h, int l) :m_x(x), m_y(y), m_h(h), m_l(l) {
     m_lines = 10;
-    m_yb = m_y + 1;
-    m_hb = m_h-2;
+    m_yb = m_y;
+    m_hb = m_h;
     m_contour = SDL_CreateRGBSurface(SDL_HWSURFACE, m_l, m_h, 32, 0,0,0,0);
     m_bar = SDL_CreateRGBSurface(SDL_HWSURFACE, m_l, m_hb, 32, 0,0,0,0);
     SDL_FillRect(m_contour, NULL, SDL_MapRGB(m_contour->format,255,255,255));
+    m_lines_size = 1;
 }
 
-
-void ScrollBar::add_lines(int nb){
-    m_lines = nb;
-    if(m_lines > 10) {
-	m_hb = m_h - (m_lines + 10);
+//envoi le pourcentage afficher par rapport a la page entiere
+void ScrollBar::grown(int purcent){
+    if(purcent < 5) {
+	purcent = 5;
     }
+    m_purcent = purcent/100.0f;
+    m_hb = m_purcent * m_h;
 }
 
 void ScrollBar::pass_row(Event e) {
@@ -31,19 +35,27 @@ void ScrollBar::pass_row(Event e) {
 	else {
 	    if(e().m_y > m_y + m_h) {
 		m_yb = m_y + m_h - m_hb;
-	    } else if(e().m_y < m_y ) {
-		m_yb = m_y + 1;
+		scroll((m_yb - m_y) * 100/( m_h - m_hb));
+	    }else if(e().m_y < m_y) {
+		m_yb = m_y;
+		scroll((m_yb - m_y) * 100/( m_h - m_hb));
 	    } else if (anc_y < e().m_y) {
-		m_yb += e().m_y - anc_y;
-		anc_y = e().m_y;
-		if(m_yb + m_hb > m_y + m_h) {
-		    m_yb = m_y + m_h - m_hb;
+		if(m_y + m_h != m_yb + m_hb) {
+		    m_yb += e().m_y - anc_y;
+		    anc_y = e().m_y;
+		    if(m_yb + m_hb > m_y + m_h) {
+			m_yb = m_y + m_h - m_hb;
+		    }
+		    scroll((m_yb - m_y) * 100/( m_h - m_hb));
 		}
 	    } else if (anc_y > e().m_y) {
-		m_yb += e().m_y - anc_y;
-		anc_y = e().m_y;
-		if(m_yb < m_y) {
-		    m_yb = m_y;
+		if(m_y != m_yb)  {
+		    m_yb += e().m_y - anc_y;
+		    anc_y = e().m_y;
+		    if(m_yb < m_y) {
+			m_yb = m_y;
+		    }
+		    scroll((m_yb - m_y) * 100/(m_h - m_hb));
 		}
 	    }
 		   

@@ -7,19 +7,22 @@
 #include <boost/signals2.hpp>
 
 using boost::signals2::signal;
+#define signals /**/
+
 
 class ScrollBar {
 public:
     
     ScrollBar(int, int, int, int);
     void pass_row(Event);
-    void add_lines(int);
+    void grown(int);
     void show(Ecran *);
-    //signal
+		      
+public signals:
+		   
     
-    signal<void()> scroll_bottom;
-    signal<void()> scoll_up;
-    bool is_inside(int, int);
+    signal<void(int)> scroll; //signal avec le pourcentage de la barre
+
 
 private:
     SDL_Surface * m_contour, *m_bar;
@@ -28,6 +31,11 @@ private:
     int m_x, m_y, m_h, m_l;
     int m_yb, m_hb;
     bool m_click;
+    int m_lines_size;
+    double m_purcent;
+
+    bool is_inside(int, int);
+
 };
 
 #endif

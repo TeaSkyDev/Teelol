@@ -8,32 +8,65 @@
 #include "Menu.hh"
 #include "Interface/Focuser.hh"
 #include "Interface/ScrollBar.hh"
+#include "Interface/ListView.hh"
 
-
-void click(){
-    cout << "signal clique recu" << endl;
+void foo(int purcent) {
+    cout << purcent << endl;
 }
-
-void hover(){
-    cout << "signal hover recu" << endl;
-}
-
-void focus(int i){
-    cout << "champ texte " << i << " est focus" << endl;
-}
-
 
 void routine(){
     Focuser f;
     Ecran sc(400,400);
-    ScrollBar b(10,10,200,10);
-    b.add_lines(100);
-
+    ListView lv(10,10,200,200,20);
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
+    lv.add_Item(new ListItem("salut les mec"));   
     Event e; 
     while(!e[QUIT]){
 	e.UpdateEvent();
-	b.pass_row(e);
-	b.show(&sc);
+	lv.pass_row(e);
+	lv.show(&sc);
 	sc.Flip();
 	sc.clean();
 	SDL_Delay(10);
