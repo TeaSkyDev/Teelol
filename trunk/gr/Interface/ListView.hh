@@ -19,7 +19,8 @@ public:
 
     void pass_row(Event & e);
     void show(Ecran * sc);
-
+    
+    ListItem * selected();
 
 
     
@@ -29,6 +30,7 @@ private:
     std::vector<ListItem*> m_item;
     ScrollBar m_bar;
     int m_xb, m_yb;
+    ListItem * select;
     int m_item_h;
 		
 

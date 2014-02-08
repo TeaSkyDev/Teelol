@@ -8,6 +8,7 @@ ListView::ListView(int x, int y, int h, int l, int item_h) :m_bar(x,y,h, 10){
     m_y = y;
     m_item_h = item_h;
     m_bar.scroll.connect(boost::bind(&ListView::scroll, this, _1));
+    select = NULL;
 }
 
 
@@ -31,6 +32,7 @@ void ListView::clicked(int i) {
 	    it->r() = 0;
 	    it->g() = 255;
 	    it->b() = 255;
+	    select = it;
 	} else {
 	    it->r() = 255;
 	    it->g() = 255;
@@ -98,4 +100,8 @@ void ListView::show(Ecran * sc) {
     }
     SDL_FreeSurface(fond);
     m_bar.show(sc);
+}
+
+ListItem *ListView::selected() {
+    return select;
 }

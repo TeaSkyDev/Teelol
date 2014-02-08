@@ -35,6 +35,7 @@ void routine(){
 	sc.clean();
 	SDL_Delay(10);
     }
+    cout << lv.selected()->text() << endl;
 }
 
 
