@@ -6,26 +6,18 @@ ListItem::ListItem(string text) {
     m_text = text;
     m_police = TTF_OpenFont("../const/Font.ttf", 20);
     m_color = {0,0,0};
+    m_r = 255;
+    m_g = 255;
+    m_b = 255;
+    hidden = false;
+    m_clicked = false;
 }
 
 
 void ListItem::pass_row(Event &e) {
-    if(e[LEFT_CL] && is_inside(e().m_x, e().m_y)) {
-	if(m_clicked && !m_double_clicked) {
-	    m_double_clicked = true;
-	    double_clicked();
-	} else {
-	    m_delay = 0;
-	    m_clicked = true;
-	    clicked(m_id);
-	}
-    } else {
-	if( m_delay < 10 && m_delay != -1) {
-	    m_delay ++;
-	} else {
-	    m_delay = -1;
-	    m_clicked = false;
-	}
+    if(e[LEFT_CL] && is_inside(e().m_x, e().m_y) && !hidden) {
+	m_clicked = true;
+	clicked(m_id);
     }
 }
 
@@ -82,4 +74,20 @@ SDL_Color & ListItem::color() {
 
 TTF_Font * ListItem::police() {
     return m_police;
+}
+
+int & ListItem::r() {
+    return m_r;
+}
+
+int & ListItem::g() {
+    return m_g;
+}
+
+int & ListItem::b() {
+    return m_b;
+}
+
+void ListItem::hide(bool hi) {
+    hidden = hi;
 }

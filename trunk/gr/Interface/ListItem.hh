@@ -22,11 +22,15 @@ public:
     int &y();
     int &h();
     int &l();
+    int &r();
+    int &g();
+    int &b();
     SDL_Color & color();
     TTF_Font *police();
     void set_y(int);
     int sauve_y();
     std::string text();
+    void hide(bool);
 
 private:
     bool is_inside(int, int);
@@ -37,7 +41,9 @@ private:
     std::string m_text;
     bool m_clicked, m_double_clicked;
     int m_delay;
+    bool hidden;
     int m_sauve_y;
+    int m_r, m_g, m_b;
     int m_x, m_y, m_h, m_l;
 			  
 public signals:

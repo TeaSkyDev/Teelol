@@ -8,24 +8,26 @@
 using namespace std;
 
 
-  class Ecran{
+class Ecran{
     
-  public:
+public:
     Ecran(int hauteur, int largeur);
     void Resize(int hauteur, int largeur);
     void pause();
     void Flip();
     void put(SDL_Surface * s, SDL_Rect r); 
+    void put(SDL_Surface *s , SDL_Rect r1, SDL_Rect r2);
+
     void clean();
     int get_h();
     int get_l();
     ~Ecran();
-  private:
+private:
   
     SDL_Surface * ecran, *m_fond;
     
     int height, width;
     Const c;
-  };
+};
 
 #endif
