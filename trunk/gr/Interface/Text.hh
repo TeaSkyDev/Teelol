@@ -6,13 +6,13 @@
 #include <SDL/SDL.h>
 #include "../Ecran.hh"
 #include "../Event.hh"
+#include "Focusable.hh"
 #include <iostream>
 #include <boost/signals2.hpp>
 
 using boost::signals2::signal;
 
-
-class Text{
+class Text : public Focusable{
 public:
     Text(int, int, int h,int l);
     std::string getText();
@@ -20,14 +20,11 @@ public:
     void show(Ecran *);
     bool Validated();
     void set_focus(bool);
-    int getId();
-
     //slot
 
 
     //signal doivent être public
     
-    signal<void(int)> focused;
     signal<void(string)> value_change;
     signal<void(string)> validated;
 
@@ -35,7 +32,6 @@ public:
 private:
     bool is_inside(int, int);
     bool verif_type(Uint16);
-    int m_id;
     SDL_Event e;
     SDL_Surface * m_fond;
     SDL_Surface * m_content;
@@ -45,8 +41,7 @@ private:
     int m_h, m_l, m_x, m_y;
     int m_delai;
     int m_anc_key;
-    bool m_validated, m_focus;
-    static int STATID;
+    bool m_validated;
 };
 
 

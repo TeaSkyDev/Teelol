@@ -10,6 +10,8 @@
 #include "Interface/ScrollBar.hh"
 #include "Interface/ListView.hh"
 #include <sstream>
+#include "Interface/TextNumber.hh"
+
 using namespace std;
 void foo(int purcent) {
     cout << purcent << endl;
@@ -18,24 +20,19 @@ void foo(int purcent) {
 void routine(){
     Focuser f;
     Ecran sc(400,400);
-    ListView lv(10,40,200,200,30);
-    string text = "Item";
-    for (int i = 0 ; i < 10 ; i++) {
-	stringstream ss;
-	ss << text << " " << i;
-	cout << ss.str() << endl;
-	lv.add_Item(new ListItem(ss.str()));
-    }
+    TextNumber t(10,10,30,200);
+    t.set_focus(true);
+    cout << t.getId() << endl;
     Event e; 
     while(!e[QUIT]){
 	e.UpdateEvent();
-	lv.pass_row(e);
-	lv.show(&sc);
+	t.pass_row(e);
+	t.show(&sc);
 	sc.Flip();
 	sc.clean();
 	SDL_Delay(10);
     }
-    cout << lv.selected()->text() << endl;
+    cout << t.getValue_int() << endl;
 }
 
 
