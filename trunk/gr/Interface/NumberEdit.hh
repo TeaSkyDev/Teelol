@@ -20,6 +20,7 @@ public:
     void pass_row(Event &e);
     void show(Ecran *);
     void set_focus(bool);
+    void set_x(int);
     
 
 private:

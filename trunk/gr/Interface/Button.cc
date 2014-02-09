@@ -57,5 +57,25 @@ bool Button::is_inside(int x, int y){
 }
 
 
+int & Button::x() {
+    return m_x;
+}
+
+int & Button::y() {
+    return m_y;
+}
+
+
+int & Button::h() {
+    return m_h;
+}
+
+int & Button::l() {
+    return m_l;
+}
+
 Button::~Button(){
 }
+
+
+

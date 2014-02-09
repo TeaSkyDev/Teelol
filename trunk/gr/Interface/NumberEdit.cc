@@ -64,7 +64,6 @@ void NumberEdit::pass_row(Event & e) {
 	}
     } else {
 	if( is_inside(e().m_x, e().m_y) && e[LEFT_CL] ) {
-	    cout << "ici" << endl;
 	    set_focus(true);
 	    focused(m_id);
 	}
@@ -98,3 +97,12 @@ bool NumberEdit::is_inside(int x, int y) {
 	return false;
     }
 }
+
+
+void NumberEdit::set_x(int x) {
+    m_left.x() = x;
+    m_right.x() = x + m_l - 10;
+    m_line.x() = x + 10;
+    m_x = x;
+}
+

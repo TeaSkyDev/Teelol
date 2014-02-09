@@ -7,9 +7,9 @@
 namespace Teelol {
 
 
-    session_on_client::session_on_client(socket &io): session<my_proto>(io), p(187,187){
+    session_on_client::session_on_client(socket &io): session<my_proto>(io), p(screen_s.h/2.0f - 25/2.0f ,screen_s.l/2.0f - 25/2.0f){
 
-	sc = new Ecran(400,400);
+	sc = new Ecran(screen_s.h,screen_s.l);
 	notif = new Notif(sc);
 
 	mid_screen.x = 187;
@@ -336,6 +336,51 @@ string boucle_pseudo(Teelol::session_on_client * c){
     else return t.getText();
 }
 
+bool Menu(Ecran * sc) {
+    Event e;
+    Focuser f;
+    Button continuer("Continuer", Teelol::screen_s.l/2 - 50, 100, 30, 100);
+    Button quitter("quitter", Teelol::screen_s.l/2 - 50, 350, 30, 100);
+    NumberEdit largeur(Teelol::screen_s.l/2 - 100, 150, 30,200, 900,400);
+    NumberEdit hauteur(Teelol::screen_s.l/2 - 100, 200, 30,200,800,400);
+    Button ok("ok", Teelol::screen_s.l/2 - 50, 250,30, 100);
+    f.add_focusable(&largeur);
+    f.add_focusable(&hauteur);
+    largeur.focused.connect(f);
+    hauteur.focused.connect(f);
+    while( !e[QUIT] && !continuer.getClicked() && !quitter.getClicked() ) {
+	e.UpdateEvent();
+	sc->clean();
+	continuer.pass_row(e);
+	quitter.pass_row(e);
+	largeur.pass_row(e);
+	hauteur.pass_row(e);
+	ok.pass_row(e);
+	continuer.show(sc);
+	quitter.show(sc);
+	largeur.show(sc);
+	hauteur.show(sc);
+	ok.show(sc);
+	sc->Flip();
+	if( ok.getClicked() ) {
+	    Teelol::screen_s.l = largeur.getValue();
+	    Teelol::screen_s.h = hauteur.getValue();
+	    continuer.x() = Teelol::screen_s.l/2 - 50;
+	    quitter.x() = Teelol::screen_s.l/2 - 50;
+	    ok.x() = Teelol::screen_s.l/2 - 50;
+	    hauteur.set_x(Teelol::screen_s.l/2 - 100);
+	    largeur.set_x(Teelol::screen_s.l/2 - 100);
+	    sc->Resize(hauteur.getValue(), largeur.getValue());
+	}
+    }
+    if (!quitter.getClicked() ) {
+	return true;
+    } else {
+	return false;
+    }
+}
+
+
 
 //boucle de connexion et d'interaction
 void * routine(void * arg){
@@ -367,10 +412,16 @@ void * routine(void * arg){
 	    }
 	    if(e[JUMP]){ c->proto.move("jump"); e[JUMP] = 0;}
 	    if(e[LEFT_CL]){ c->shoot();}
+	    if( e[QUIT] ) {
+		if ( Menu(c->sc) ) {
+		    e[QUIT] = 0;
+		}
+	    }
 	    if(e.WheelChange() != prec_wheel){
 		c->proto.change_weap(e.WheelChange() - prec_wheel);
 		prec_wheel = e.WheelChange();
 	    }
+	    
 	    c->rotationArme(e().m_x, e().m_y);
 	    c->map_Bullet_pass_row();
 	    c->affiche();
@@ -379,11 +430,14 @@ void * routine(void * arg){
     }
     delete c->sc;
     c->proto.quit();
+    c->finish();
 }
 
 
 int main(int argc, char ** argv){
     TTF_Init();
+    Teelol::screen_s.h = 400;
+    Teelol::screen_s.l = 400;
     netez::client<Teelol::session_on_client> client(argc,argv);
     pthread_t th;
     pthread_create(&th, NULL, routine, (void*)&client.session);

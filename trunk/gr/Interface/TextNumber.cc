@@ -111,3 +111,20 @@ void TextNumber::show(Ecran * e) {
 	e->put(m_content, rect);
     }
 }
+
+
+int &TextNumber::x() {
+    return m_x;
+}
+
+int &TextNumber::y() {
+    return m_y;
+}
+
+int &TextNumber::h() {
+    return m_h;
+}
+
+int &TextNumber::l() {
+    return m_l;
+}

@@ -5,12 +5,15 @@ Event::Event(){
   m_mapping[RIGHT] = SDLK_d;
   m_mapping[JUMP] = SDLK_SPACE;
   m_mapping[QUIT] = SDLK_ESCAPE;
+  m_mapping[TAB] = SDLK_TAB;
   m_mouse_mapping[LEFT_CL] = SDL_BUTTON_LEFT;
   m_mouse_mapping[RIGHT_CL] = SDL_BUTTON_RIGHT;
   m_in.m_key[m_mapping[JUMP]] = 0;
   m_in.m_key[m_mapping[LEFT]] = 0;
   m_in.m_key[m_mapping[RIGHT]] = 0;
   m_in.m_key[m_mapping[QUIT]] = 0;
+  m_in.m_key[m_mapping[TAB]] = 0;
+  m_in.m_mousebuttons[m_mouse_mapping[LEFT_CL]] = 0;
   m_wheel = 0;
   m_sensivity = 1;
 }

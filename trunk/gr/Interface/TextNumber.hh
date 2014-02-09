@@ -19,7 +19,10 @@ public:
     void pass_row(Event & e);
     void set_value(int);
     void show(Ecran * sc);
-			 
+    int &x();
+    int &y();
+    int &h();
+    int &l();
 			 
 public signals:
 

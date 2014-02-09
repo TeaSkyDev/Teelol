@@ -16,7 +16,10 @@ public:
     void pass_row(Event&);
     bool getClicked();
     void show(Ecran *);
-
+    int &x();
+    int &y();
+    int &h();
+    int &l();
 
     ~Button();
     

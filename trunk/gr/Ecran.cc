@@ -42,7 +42,7 @@ void Ecran::Resize(int hauteur, int largeur){
     SDL_FreeSurface(ecran);
     height = hauteur;
     width = largeur;
-    ecran = SDL_SetVideoMode(height, width, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    ecran = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 }
 
 int Ecran::get_l(){
