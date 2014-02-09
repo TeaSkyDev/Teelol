@@ -1,6 +1,6 @@
 #include "TextNumber.hh"
 
-TextNumber::TextNumber(int x, int y, int h, int l):m_x(x), m_y(y), m_h(h), m_l(l) {
+TextNumber::TextNumber(int x, int y, int h, int l, int nb):m_x(x), m_y(y), m_h(h), m_l(l) {
     TTF_Init();
     m_fond = SDL_CreateRGBSurface(SDL_HWSURFACE, l, h, 32, 0,0,0,0);
     SDL_FillRect(m_fond, NULL, SDL_MapRGB(m_fond->format, 255,255,255));
@@ -8,6 +8,7 @@ TextNumber::TextNumber(int x, int y, int h, int l):m_x(x), m_y(y), m_h(h), m_l(l
     m_col = {0,0,0};
     m_content = TTF_RenderText_Blended(m_font, " ", m_col);
     m_focus = false;
+    m_nb = nb;
 }
 
 
@@ -16,10 +17,21 @@ string TextNumber::getValue() {
 }
 
 int TextNumber::getValue_int() {
-    stringstream ss(m_value);
-    int s;
-    ss >> s;
-    return s;
+    if( m_value.length() > 0 ) {
+	stringstream ss(m_value);
+	int s;
+	ss >> s;
+	return s;
+    } else {
+	return 0;
+    }
+}
+
+void TextNumber::set_value(int value) {
+    stringstream ss;
+    ss << value;
+    m_value = ss.str();
+    m_content = TTF_RenderText_Blended(m_font, m_value.c_str(), m_col);
 }
 
 bool TextNumber::verif_type(Uint16 e) {
@@ -41,13 +53,15 @@ bool TextNumber::is_inside(int x , int y) {
 void TextNumber::pass_row(Event & e) {
     if( m_focus ) {
 	if( e.getEvent().type == SDL_KEYDOWN ) {
-	    if( verif_type( e.getEvent().key.keysym.sym ) ) {
-		if( m_anc_key != e.getEvent().key.keysym.sym || m_delai >= 20 ) {
-		    m_value += (char)(e.getEvent().key.keysym.sym - 208);
-		    stringstream ss(m_value);
-		    int s;
-		    ss >> s;
-		    value_change(s);
+	    if( m_nb > m_value.length() ) {
+		if( verif_type( e.getEvent().key.keysym.sym ) ) {
+		    if( m_anc_key != e.getEvent().key.keysym.sym || m_delai >= 20 ) {
+			m_value += (char)(e.getEvent().key.keysym.sym - 208);
+			stringstream ss(m_value);
+			int s;
+			ss >> s;
+			value_change(s);
+		    }
 		}
 	    }
 	    if(e.getEvent().key.keysym.sym == SDLK_BACKSPACE ) {
@@ -66,15 +80,13 @@ void TextNumber::pass_row(Event & e) {
 		m_delai = 0;
 	    }
 	    m_delai++;
-	    if( e.getEvent().type == SDL_KEYUP ) {
-		m_delai = 0;
-		m_anc_key = 0;
-	    }
-	}
 	
+	}
+	if( e.getEvent().type == SDL_KEYUP ) {
+	    m_delai = 0;
+	    m_anc_key = 0;
+	}	
     }
-
-
 }
 
 

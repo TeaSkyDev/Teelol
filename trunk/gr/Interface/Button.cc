@@ -21,7 +21,7 @@ void Button::show(Ecran * e){
   e->put(m_form, rect);
 }
 
-void Button::pass_row(Event e){
+void Button::pass_row(Event &e){
   if(e[LEFT_CL] && is_inside(e().m_x, e().m_y)){
     SDL_FillRect(m_fond, NULL, SDL_MapRGB(m_fond->format, 102,51,0));
     if(!m_clicked)

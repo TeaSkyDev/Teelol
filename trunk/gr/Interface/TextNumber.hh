@@ -13,12 +13,13 @@
 class TextNumber : public Focusable{
 public:
 
-    TextNumber(int, int, int, int);
+    TextNumber(int, int, int, int, int nb = 5);
     std::string getValue();
     int getValue_int();
     void pass_row(Event & e);
+    void set_value(int);
     void show(Ecran * sc);
-
+			 
 			 
 public signals:
 
@@ -36,7 +37,7 @@ private:
     int m_h, m_l, m_x, m_y;
     int m_delai;
     int m_anc_key;
-
+    int m_nb;
 
 };
 

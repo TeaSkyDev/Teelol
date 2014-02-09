@@ -13,7 +13,7 @@ class Button{
 public:
     Button(std::string, int, int ,int ,int);
   
-    void pass_row(Event);
+    void pass_row(Event&);
     bool getClicked();
     void show(Ecran *);
 

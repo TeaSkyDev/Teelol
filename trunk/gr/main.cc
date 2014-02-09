@@ -10,7 +10,7 @@
 #include "Interface/ScrollBar.hh"
 #include "Interface/ListView.hh"
 #include <sstream>
-#include "Interface/TextNumber.hh"
+#include "Interface/NumberEdit.hh"
 
 using namespace std;
 void foo(int purcent) {
@@ -20,9 +20,7 @@ void foo(int purcent) {
 void routine(){
     Focuser f;
     Ecran sc(400,400);
-    TextNumber t(10,10,30,200);
-    t.set_focus(true);
-    cout << t.getId() << endl;
+    NumberEdit t(10,10,20,100,900);
     Event e; 
     while(!e[QUIT]){
 	e.UpdateEvent();
@@ -32,7 +30,7 @@ void routine(){
 	sc.clean();
 	SDL_Delay(10);
     }
-    cout << t.getValue_int() << endl;
+    cout << t.getValue() << endl;
 }
 
 
