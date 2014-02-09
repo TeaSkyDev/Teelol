@@ -13,7 +13,7 @@
 class NumberEdit : public Focusable {
 public:
 
-    NumberEdit(int, int , int, int, int max = 100);
+    NumberEdit(int, int , int, int, int max = 100, int min = 0);
     int getValue();
     void pass_row(Event &e);
     void show(Ecran *);
@@ -26,7 +26,7 @@ private:
     void decrement();
 
     TextNumber m_line;
-    int m_max;
+    int m_max, m_min;
     int m_value;
     Button m_left, m_right;
     int m_x, m_y, m_h, m_l;

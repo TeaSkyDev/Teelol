@@ -23,13 +23,13 @@ void routine(){
     Focuser f;
     Ecran sc(400,400);
     Focuser s;
-    NumberEdit t(10,10,20,100,900);
-    NumberEdit t2(10,45,20,100,500);
+    NumberEdit t(10,10,20,100,900,100);
+    NumberEdit t2(10,45,20,100,500,300);
     s.add_focusable(&t);
     s.add_focusable(&t2);
     t.focused.connect(s);
     t2.focused.connect(s);
-    Button ok("OK", 10,100,10,100);
+    Button ok("OK", 10,100,30,100);
     Event e; 
     while(!e[QUIT]){
 	e.UpdateEvent();

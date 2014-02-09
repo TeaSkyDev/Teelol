@@ -1,14 +1,15 @@
 #include "NumberEdit.hh"
 
 
-NumberEdit::NumberEdit(int x, int y, int h, int l, int max):m_left("<", x,y,h, 10), m_right(">",x + l - 10, y, h, 10), m_line(x + 10, y, h, l-20) {
+NumberEdit::NumberEdit(int x, int y, int h, int l, int max, int min):m_left("<", x,y,h, 10), m_right(">",x + l - 10, y, h, 10), m_line(x + 10, y, h, l-20) {
     m_l = l;
     m_h = h;
     m_x = x;
     m_y = y;
     m_max = max;
-    m_line.set_value(max/2);
-    m_value = max/2;
+    m_min = min;
+    m_value = (m_max + m_min)/2;
+    m_line.set_value(m_value);
     m_left.clicked.connect(boost::bind(&NumberEdit::decrement, this));
     m_left.pressed.connect(boost::bind(&NumberEdit::decrement, this));
     m_right.clicked.connect(boost::bind(&NumberEdit::increment, this));
@@ -19,7 +20,7 @@ NumberEdit::NumberEdit(int x, int y, int h, int l, int max):m_left("<", x,y,h, 1
 
 
 void NumberEdit::decrement() {
-    if( m_value > 0 ) {
+    if( m_value > m_min ) {
 	if( m_delai > 10 ) {
 	    m_value --;
 	    m_delai = 0;
@@ -45,8 +46,9 @@ void NumberEdit::pass_row(Event & e) {
 	m_right.pass_row(e);
 	m_line.pass_row(e);
 	m_value = m_line.getValue_int();
-	if ( m_value == 0 ) {
-	    m_line.set_value(0);
+	if ( m_value < m_min ) {
+	    m_value = m_min;
+	    m_line.set_value(m_min);
 	}
 	if ( m_value > m_max ) {
 	    m_value = m_max;
