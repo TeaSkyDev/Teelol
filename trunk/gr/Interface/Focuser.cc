@@ -10,7 +10,7 @@ void Focuser::operator()(int id) {
 }
 
 
-void Focuser::add_focusable(Text * t){
+void Focuser::add_focusable(Focusable * t){
     m_focusable.push_back(t);
     //t->set_focus(true);
 }

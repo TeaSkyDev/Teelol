@@ -1,17 +1,17 @@
 #ifndef _FOCUS
 #define _FOCUS
 
-#include "Text.hh"
+#include "Focusable.hh"
 #include <vector>
 
 class Focuser {
 public:
     void operator()(int);
-    void add_focusable(Text * t);
+    void add_focusable(Focusable * t);
 
 
 private:
-    std::vector<Text*> m_focusable;
+    std::vector<Focusable*> m_focusable;
 
 };
 
