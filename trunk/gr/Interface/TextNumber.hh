@@ -24,6 +24,8 @@ public:
 public signals:
 
     signal<void(int)> value_change;
+    signal<void()> validated;
+
 
 private:
     
@@ -38,7 +40,7 @@ private:
     int m_delai;
     int m_anc_key;
     int m_nb;
-
+    bool m_set;
 };
 
 

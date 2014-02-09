@@ -10,6 +10,8 @@
 #include "Button.hh"
 #include "Focusable.hh"
 
+#define slots /**/
+
 class NumberEdit : public Focusable {
 public:
 
@@ -22,15 +24,19 @@ public:
 
 private:
     bool is_inside(int , int);
-    void increment();
-    void decrement();
-
     TextNumber m_line;
     int m_max, m_min;
     int m_value;
     Button m_left, m_right;
     int m_x, m_y, m_h, m_l;
     int m_delai;
+
+private slots:
+
+    void increment();
+    void decrement();
+    void validated();
+
 };
 
 

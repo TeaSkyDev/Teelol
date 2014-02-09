@@ -14,6 +14,7 @@ NumberEdit::NumberEdit(int x, int y, int h, int l, int max, int min):m_left("<",
     m_left.pressed.connect(boost::bind(&NumberEdit::decrement, this));
     m_right.clicked.connect(boost::bind(&NumberEdit::increment, this));
     m_right.pressed.connect(boost::bind(&NumberEdit::increment, this));
+    m_line.validated.connect(boost::bind(&NumberEdit::validated, this));
     m_delai = 11;
     m_focus = false;
 }
@@ -39,6 +40,17 @@ void NumberEdit::increment() {
     m_line.set_value(m_value);
 }
 
+void NumberEdit::validated() {
+    m_value = m_line.getValue_int();
+    if ( m_value < m_min ) {
+	m_value = m_min;
+	m_line.set_value( m_min );
+    } else if ( m_value > m_max ) {
+	m_value = m_max;
+	m_line.set_value( m_max );
+    }
+}
+
 
 void NumberEdit::pass_row(Event & e) {
     if( m_focus ) {
@@ -46,14 +58,6 @@ void NumberEdit::pass_row(Event & e) {
 	m_right.pass_row(e);
 	m_line.pass_row(e);
 	m_value = m_line.getValue_int();
-	if ( m_value < m_min ) {
-	    m_value = m_min;
-	    m_line.set_value(m_min);
-	}
-	if ( m_value > m_max ) {
-	    m_value = m_max;
-	    m_line.set_value(m_max);
-	}
 	m_delai ++;
 	if( m_delai > 20 ) {
 	    m_delai = 21;
@@ -76,6 +80,7 @@ void NumberEdit::show(Ecran * e) {
 
 
 int NumberEdit::getValue() {
+    validated();
     return m_value;
 }
 

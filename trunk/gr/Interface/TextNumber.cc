@@ -28,6 +28,7 @@ int TextNumber::getValue_int() {
 }
 
 void TextNumber::set_value(int value) {
+    m_set = true;
     stringstream ss;
     ss << value;
     m_value = ss.str();
@@ -56,6 +57,10 @@ void TextNumber::pass_row(Event & e) {
 	    if( m_nb > m_value.length() ) {
 		if( verif_type( e.getEvent().key.keysym.sym ) ) {
 		    if( m_anc_key != e.getEvent().key.keysym.sym || m_delai >= 20 ) {
+			if ( m_set ) {
+			    m_value = "";
+			    m_set = false;
+			}	
 			m_value += (char)(e.getEvent().key.keysym.sym - 208);
 			stringstream ss(m_value);
 			int s;
@@ -66,6 +71,11 @@ void TextNumber::pass_row(Event & e) {
 	    }
 	    if(e.getEvent().key.keysym.sym == SDLK_BACKSPACE ) {
 		m_value = m_value.substr(0, m_value.length() - 1);
+	    }
+	    
+	    if( e.getEvent().key.keysym.sym == SDLK_RETURN ) {
+		m_set = true;
+		validated();
 	    }
 	    
 	    int deb = m_value.length() - 10;
