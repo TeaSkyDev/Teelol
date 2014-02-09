@@ -12,8 +12,7 @@ namespace Teelol {
 	sc = new Ecran(screen_s.h,screen_s.l);
 	notif = new Notif(sc);
 
-	mid_screen.x = 187;
-	mid_screen.y = 187;
+
 	player = new Player("nameless" , I_TEE_P, 0, 0, 10, 10, sc);
 	state  = STARTING;
      
@@ -280,9 +279,9 @@ namespace Teelol {
     //fait tourner l'arme du joueur
     //envoi au serveur que l'arme a été tourne
     void session_on_client::rotationArme(int _x, int _y){
-	int angle = -atan2(_x-mid_screen.x, _y-mid_screen.y)*180/M_PI+90;
-	int x = mid_screen.x+ player->get_l()/2;;
-	int y = mid_screen.y + player->get_h()/2; 
+	int angle = -atan2(_x-(screen_s.l/2 - 25/2), _y-(screen_s.h/2 - 25/2))*180/M_PI+90;
+	int x = screen_s.l/2 - 25/2 + player->get_l()/2;
+	int y = screen_s.h/2 - 25/2 + player->get_h()/2; 
 	player->get_weapon()->set_angle(angle);
 	player->get_weapon()->rotate(0, x, y,10);
 	proto.rotate(angle);
@@ -414,6 +413,8 @@ void * routine(void * arg){
 	    if(e[LEFT_CL]){ c->shoot();}
 	    if( e[QUIT] ) {
 		if ( Menu(c->sc) ) {
+		    c->p.x() = Teelol::screen_s.l/2.0f - 25/2.0f;
+		    c->p.y() = Teelol::screen_s.h/2.0f - 25/2.0f;
 		    e[QUIT] = 0;
 		}
 	    }
