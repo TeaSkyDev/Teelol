@@ -14,7 +14,7 @@ class ScrollBar {
 public:
     
     ScrollBar(int, int, int, int);
-    void pass_row(Event);
+    void pass_row(Event&);
     void grown(int);
     void show(Ecran *);
 		      
