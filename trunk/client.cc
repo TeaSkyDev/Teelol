@@ -1,8 +1,4 @@
 #include "client.hh" 
-#include "gr/Parse.hh"
-#include "gr/Interface/Button.hh"
-#include "gr/Interface/Text.hh"
-
 
 namespace Teelol {
 
@@ -434,16 +430,34 @@ void * routine(void * arg){
     c->finish();
 }
 
+void choose_server() {
+  Ecran sc(Teelol::screen_s.h, Teelol::screen_s.l);
+  Event e;
+  ListView lv(10, 10, 280, 370, 30);
+  Button ok("Lancer", 10, 300, 25, 380);
+  lv.add_Item(new ListItem("test"));
+
+  while(!e[QUIT] && !ok.getClicked()) {
+    e.UpdateEvent();
+    sc.clean();
+    lv.pass_row(e);
+    lv.show(&sc);
+    ok.pass_row(e);
+    ok.show(&sc);
+    sc.Flip();
+  }
+}
 
 int main(int argc, char ** argv){
     TTF_Init();
     Teelol::screen_s.h = 400;
     Teelol::screen_s.l = 400;
-    netez::client<Teelol::session_on_client> client(argc,argv);
+    choose_server();
+    /*netez::client<Teelol::session_on_client> client(argc,argv);
     pthread_t th;
     pthread_create(&th, NULL, routine, (void*)&client.session);
-    pthread_join(th,NULL);
-    client.join();
+    pthread_join(th,NULL);*/
+    //client.join();
   
   
 }
