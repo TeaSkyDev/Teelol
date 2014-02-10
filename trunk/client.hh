@@ -7,9 +7,11 @@
 #include "gr/Item.hh"
 #include "gr/Parse.hh"
 #include "gr/Notif.hh"
+#include "gr/Interface/Text.hh"
 #include "gr/Interface/Focuser.hh"
 #include "gr/Interface/NumberEdit.hh"
 #include "gr/Interface/Button.hh"
+#include "gr/Interface/ListView.hh"
 #include "Map.hh"
 
 bool tentative_connexion = true;
