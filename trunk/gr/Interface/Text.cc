@@ -48,7 +48,7 @@ bool Text::is_inside(int x, int y) {
 }
 
 
-void Text::pass_row(Event e){
+void Text::pass_row(Event &e){
     if(m_focus) {
 	if(e.getEvent().type == SDL_KEYDOWN) {
 	    if(m_text.length() <= 20) {

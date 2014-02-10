@@ -130,5 +130,24 @@ namespace Teelol {
 
 	void map_Bullet_pass_row();
 
+	/*
+	  les méthode suivant sont des slot sur les entrees clavier
+	 */
+	void do_event_left();
+
+	void do_event_right();
+
+	void do_event_jump();
+
+	void do_event_quit();
+	
+	void do_mouseevent_left();
+	
+	void do_mouseevent_motion(int, int);
+
+	void do_event_wheel(int);
+
+
+
     };
 };
