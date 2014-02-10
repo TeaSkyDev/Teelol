@@ -435,9 +435,9 @@ void choose_server() {
   Event e;
   ListView lv(10, 10, 280, 370, 30);
   Button ok("Lancer", 10, 300, 25, 380);
-  lv.add_Item(new ListItem("test"));
+  lv.add_Item(new ListItem("localhost"));
 
-  while(!e[QUIT] && !ok.getClicked()) {
+  while(!e[QUIT] && (!ok.getClicked() || !lv.selected())) {
     e.UpdateEvent();
     sc.clean();
     lv.pass_row(e);
@@ -446,6 +446,11 @@ void choose_server() {
     ok.show(&sc);
     sc.Flip();
   }
+
+  netez::client<Teelol::session_on_client> client(lv.selected()->text(), 9999);
+  pthread_t th;
+  pthread_create(&th, NULL, routine, (void*)&client.session);
+  pthread_join(th, NULL);
 }
 
 int main(int argc, char ** argv){
