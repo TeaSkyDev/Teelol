@@ -5,12 +5,17 @@ using namespace std;
 
 Text::Text(int x, int y, int h, int l): m_x(x), m_y(y), m_h(h), m_l(l){
   m_fond = SDL_CreateRGBSurface(SDL_HWSURFACE, l, h, 32,0,0,0,0);
-  SDL_FillRect(m_fond, NULL, SDL_MapRGB(m_fond->format, 255,255,255));
-  m_f = TTF_OpenFont("../const/Font.ttf",20);
+  SDL_FillRect(m_fond, NULL, SDL_MapRGB(m_fond->format, 255,200,255));
+  TTF_Init();
+  m_f = TTF_OpenFont("../const/Font.ttf",15);
+  m_nb_lettre = l/12;
+  cout << m_nb_lettre << endl;
   m_col = {0,0,0};       
   m_content = TTF_RenderText_Blended(m_f, "", m_col);
   m_validated = false;
   m_focus = false;
+  m_delai = 400;
+  m_anc_key = 0;
 }
 
 
@@ -51,12 +56,10 @@ bool Text::is_inside(int x, int y) {
 void Text::pass_row(Event &e){
     if(m_focus) {
 	if(e.getEvent().type == SDL_KEYDOWN) {
-	    if(m_text.length() <= 20) {
-		if(verif_type(e.getEvent().key.keysym.sym)) {
-		    if(m_anc_key != e.getEvent().key.keysym.sym || m_delai >= 20){
-			m_text += e.getEvent().key.keysym.sym;
-			value_change(m_text);
-		    }
+	    if(verif_type(e.getEvent().key.keysym.sym)) {
+		if(m_anc_key != e.getEvent().key.keysym.sym || m_delai >= 20){
+		    m_text += e.getEvent().key.keysym.sym;
+		    value_change(m_text);
 		}
 	    }
 	    if(e.getEvent().key.keysym.sym == SDLK_BACKSPACE) {
@@ -68,7 +71,7 @@ void Text::pass_row(Event &e){
 		validated(m_text);
 	    }
 	    
-	    int deb = m_text.length() - 10;
+	    int deb = m_text.length() - m_nb_lettre;
 	    if(deb < 0) {
 		deb = 0;
 	    }
@@ -90,12 +93,11 @@ void Text::pass_row(Event &e){
 	    m_focus = true;
 	    focused(m_id);
 	    int deb = m_text.length() - 10;
-	      if(deb < 0) {
+	    if(deb < 0) {
 		deb = 0;
 	    }
 	    string t = m_text.substr(deb, m_text.length()) + "|";
 	    m_content = TTF_RenderText_Blended(m_f, t.c_str(), m_col);
-	    
 	}
     }
 }
@@ -106,9 +108,11 @@ void Text::show(Ecran * e){
   rect.x = m_x;
   rect.y = m_y;
   e->put(m_fond, rect);
-  rect.x += 2;
-  rect.y += 2;
-  e->put(m_content, rect);
+  if (m_content) {
+      rect.x += m_l/2 - m_content->w/2;
+      rect.y += m_h/2 - m_content->h/2;
+      e->put(m_content, rect);
+  }
 }
 
 
@@ -116,7 +120,7 @@ void Text::set_focus(bool b){
     m_focus = b;
     cout<< m_id << " " << b << endl;
     if(b) {
-	int deb = m_text.length() - 10;
+	int deb = m_text.length() - m_nb_lettre;
 	if(deb < 0) {
 	    deb = 0;
 	}
@@ -125,7 +129,7 @@ void Text::set_focus(bool b){
 	focused(m_id);
     }
     else {
-	int deb = m_text.length() - 10;
+	int deb = m_text.length() - m_nb_lettre;
 	if(deb < 0) {
 	    deb = 0;
 	}

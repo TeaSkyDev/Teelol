@@ -42,6 +42,7 @@ private:
     int m_delai;
     int m_anc_key;
     bool m_validated;
+    int m_nb_lettre;
 };
 
 
