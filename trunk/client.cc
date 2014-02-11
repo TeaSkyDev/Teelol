@@ -456,7 +456,7 @@ void choose_server() {
   Ecran sc(Teelol::screen_s.h, Teelol::screen_s.l);
   Event e;
   ListView lv(10, 10, 280, 370, 30);
-  Text zoneIp(20, 300, 25, 300);
+  Text zoneIp(150, 295, 25, 200);
   Button ok("Lancer", 10, 330, 25, 380);
   lv.add_Item(new ListItem("localhost"));
   
@@ -470,6 +470,7 @@ void choose_server() {
     ok.pass_row(e);
     ok.show(&sc);
     sc.Flip();
+    SDL_Delay(50);
   }
   
   if(lv.selected() && !e[QUIT]) {
