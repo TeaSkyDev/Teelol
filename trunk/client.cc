@@ -434,23 +434,28 @@ void choose_server() {
   Ecran sc(Teelol::screen_s.h, Teelol::screen_s.l);
   Event e;
   ListView lv(10, 10, 280, 370, 30);
-  Button ok("Lancer", 10, 300, 25, 380);
+  Text zoneIp(20, 300, 25, 300);
+  Button ok("Lancer", 10, 330, 25, 380);
   lv.add_Item(new ListItem("localhost"));
-
+  
   while(!e[QUIT] && (!ok.getClicked() || !lv.selected())) {
     e.UpdateEvent();
     sc.clean();
     lv.pass_row(e);
     lv.show(&sc);
+    zoneIp.pass_row(e);
+    zoneIp.show(&sc);
     ok.pass_row(e);
     ok.show(&sc);
     sc.Flip();
   }
-
-  netez::client<Teelol::session_on_client> client(lv.selected()->text(), 9999);
-  pthread_t th;
-  pthread_create(&th, NULL, routine, (void*)&client.session);
-  pthread_join(th, NULL);
+  
+  if(lv.selected() && !e[QUIT]) {
+    netez::client<Teelol::session_on_client> client(lv.selected()->text(), 9999);
+    pthread_t th;
+    pthread_create(&th, NULL, routine, (void*)&client.session);
+    pthread_join(th, NULL);
+  }
 }
 
 int main(int argc, char ** argv){
@@ -458,11 +463,4 @@ int main(int argc, char ** argv){
     Teelol::screen_s.h = 400;
     Teelol::screen_s.l = 400;
     choose_server();
-    /*netez::client<Teelol::session_on_client> client(argc,argv);
-    pthread_t th;
-    pthread_create(&th, NULL, routine, (void*)&client.session);
-    pthread_join(th,NULL);*/
-    //client.join();
-  
-  
 }
