@@ -57,10 +57,14 @@ void routine(){
     lv.add_Item(new ListItem("slut"));
     
     Text t(10,220,10,200);
+    NumberEdit ed(10,300,20,200,200,100);
     f.add_focusable(&t);
+    f.add_focusable(&ed);
     f.add_focusable(&lv);
     t.focused.connect(f);
+    ed.focused.connect(f);
     lv.focused.connect(f);
+
 
     while(!e[QUIT]){
 	e.UpdateEvent();
@@ -68,6 +72,8 @@ void routine(){
 	lv.show(&sc);
 	t.pass_row(e);
 	t.show(&sc);
+	ed.pass_row(e);
+	ed.show(&sc);
 	f.pass_row(e);
 	sc.Flip();
 	sc.clean();

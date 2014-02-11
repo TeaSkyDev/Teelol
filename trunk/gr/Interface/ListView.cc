@@ -97,6 +97,14 @@ void ListView::add_Item(ListItem * item) {
 
 void ListView::show(Ecran * sc) {
     int i = 0;
+    if ( m_focus ) {
+	SDL_Surface * doublefond = SDL_CreateRGBSurface(SDL_HWSURFACE, m_l + 4, m_h + 4, 32 , 0,0,0,0);
+	SDL_FillRect(doublefond, NULL, SDL_MapRGB(doublefond->format, 255,20,255));
+	SDL_Rect r;
+	r.x = m_x - 2; r.y = m_y - 2;
+	sc->put(doublefond, r);
+	SDL_FreeSurface(doublefond);
+    }
     SDL_Surface * fond = SDL_CreateRGBSurface(SDL_HWSURFACE, m_l, m_h, 32, 0,0,0,0);
     SDL_FillRect(fond, NULL, SDL_MapRGB(fond->format, 255,200,255));
     SDL_Rect r;

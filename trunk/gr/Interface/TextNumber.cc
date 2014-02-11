@@ -101,6 +101,15 @@ void TextNumber::pass_row(Event & e) {
 
 
 void TextNumber::show(Ecran * e) {
+    if ( m_focus ) {
+	SDL_Surface * doublefond = SDL_CreateRGBSurface(SDL_HWSURFACE, m_l + 4, m_h + 4, 32 , 0,0,0,0);
+	SDL_FillRect(doublefond, NULL, SDL_MapRGB(doublefond->format, 255,20,255));
+	SDL_Rect r;
+	r.x = m_x - 2; r.y = m_y - 2;
+	e->put(doublefond, r);
+    }
+	
+	
     SDL_Rect rect;
     rect.x = m_x;
     rect.y = m_y;

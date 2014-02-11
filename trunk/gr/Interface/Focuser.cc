@@ -25,8 +25,9 @@ void Focuser::add_focusable(Focusable * t){
 
 
 void Focuser::pass_row(Event & e) {
-    if ( m_delay > 10 ) {
-	if ( e.getEvent().type == SDL_KEYDOWN ) {
+
+    if ( e.getEvent().type == SDL_KEYDOWN ) {
+	if ( m_delay > 4 ) {
 	    if ( e.getEvent().key.keysym.sym == SDLK_TAB ) {
 		if( m_select != -1 ) {
 		    m_select++;
@@ -39,7 +40,10 @@ void Focuser::pass_row(Event & e) {
 		m_delay = 0;
 	    }
 	}
-    } else if ( m_delay != 11 ){
-	m_delay ++;
+    } else if ( e.getEvent().type == SDL_KEYUP ) {
+	m_delay = 5;
     }
+	if ( m_delay != 11 ){
+	    m_delay ++;
+	}
 }
