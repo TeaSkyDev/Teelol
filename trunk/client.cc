@@ -304,6 +304,32 @@ namespace Teelol {
 	    it->second->pass_row();
 	}
     }
+
+
+    void session_on_client::do_event_left() {
+	proto.move("left");
+    }
+
+    void session_on_client::do_event_right() {
+	proto.move("right");
+    }
+
+    void session_on_client::do_event_jump() {
+	proto.move("jump");
+    }
+
+    void session_on_client::do_event_quit() {
+	//proto.quit();
+    }
+
+    void session_on_client::do_mouseevent_left() {
+	shoot();
+    }
+
+    void session_on_client::do_mouseevent_motion(int x, int y) {
+	rotationArme(x,y);
+    }
+
 };
 
 bool continuer = true;
@@ -376,8 +402,6 @@ bool Menu(Ecran * sc) {
 }
 
 
-
-//boucle de connexion et d'interaction
 void * routine(void * arg){
   
     Event e;
@@ -394,19 +418,19 @@ void * routine(void * arg){
     
     if(c->state == Teelol::STARTED) {
 	int prec_wheel = e.WheelChange();
+	e.key_left.connect(boost::bind(&Teelol::session_on_client::do_event_left, c));
+	e.key_right.connect(boost::bind(&Teelol::session_on_client::do_event_right, c));
+	e.key_jump.connect(boost::bind(&Teelol::session_on_client::do_event_jump, c));
+	e.left_click.connect(boost::bind(&Teelol::session_on_client::do_mouseevent_left, c));
+	e.mouse_motion.connect(boost::bind(&Teelol::session_on_client::do_mouseevent_motion, c,_1, _2));
 	while(!e[QUIT] && c->state == Teelol::STARTED){
 	    e.UpdateEvent();
-	    if(e[LEFT]){
-		c->proto.move("left");
-	    }
-	    if(e[RIGHT]){
-		c->proto.move("right");
+	    if(e[JUMP]) { 
+		e[JUMP] = 0;
 	    }
 	    if(!e[RIGHT] && !e[LEFT]){
 		c->proto.move("stopx");
 	    }
-	    if(e[JUMP]){ c->proto.move("jump"); e[JUMP] = 0;}
-	    if(e[LEFT_CL]){ c->shoot();}
 	    if( e[QUIT] ) {
 		if ( Menu(c->sc) ) {
 		    c->p.x() = Teelol::screen_s.l/2.0f - 25/2.0f;
@@ -418,8 +442,6 @@ void * routine(void * arg){
 		c->proto.change_weap(e.WheelChange() - prec_wheel);
 		prec_wheel = e.WheelChange();
 	    }
-	    
-	    c->rotationArme(e().m_x, e().m_y);
 	    c->map_Bullet_pass_row();
 	    c->affiche();
 	    SDL_Delay(40);

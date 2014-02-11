@@ -52,6 +52,37 @@ void Event::UpdateEvent(){
       m_in.m_mousebuttons[m_event.button.button] = 0;
     }
   }
+  launch_key_sig();
+  launch_mouse_sig();
+}
+
+
+void Event::launch_key_sig() {
+    if( m_in.m_key[m_mapping[LEFT]] ) {
+	key_left();
+    }
+    if( m_in.m_key[m_mapping[RIGHT]] ) {
+	key_right();
+    }
+    if( m_in.m_key[m_mapping[JUMP]] ) {
+	key_jump();
+    }
+    if( m_in.m_key[m_mapping[QUIT]] ) {
+	key_quit();
+    }
+}
+
+
+
+void Event::launch_mouse_sig() {
+    if( m_in.m_mousebuttons[m_mouse_mapping[LEFT_CL]] ) {
+	left_click();
+    }
+    if( m_in.m_mousebuttons[m_mouse_mapping[RIGHT_CL]] ) {
+	right_click();
+    }
+    wheel(m_wheel);
+    mouse_motion(m_in.m_mouse_x, m_in.m_mouse_y);
 }
 
 bool Event::key_pressed(Mapp m){

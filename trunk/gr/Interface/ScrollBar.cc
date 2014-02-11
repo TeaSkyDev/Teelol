@@ -21,7 +21,7 @@ void ScrollBar::grown(int purcent){
     m_hb = m_purcent * m_h;
 }
 
-void ScrollBar::pass_row(Event e) {
+void ScrollBar::pass_row(Event& e) {
     if(!m_click) {
 	if(is_inside(e().m_x, e().m_y) && e[LEFT_CL]) {
 	    m_click = true;

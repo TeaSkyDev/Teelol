@@ -18,6 +18,22 @@ void foo(int purcent) {
 }
 
 
+void do_left() {
+    cout << "appuie sur left" << endl;
+}
+
+
+void do_right() {
+    cout << "appuie sur right" << endl;
+}
+
+void do_jump() {
+    cout << "appuie sur jump" << endl;
+}
+
+void do_quit() {
+    cout << "appuie sur quit" << endl;
+}
 
 void routine(){
     Focuser f;
@@ -31,6 +47,10 @@ void routine(){
     t2.focused.connect(s);
     Button ok("OK", 10,100,30,100);
     Event e; 
+    e.key_left.connect(do_left);
+    e.key_right.connect(do_right);
+    e.key_jump.connect(do_jump);
+    e.key_quit.connect(do_quit);
     while(!e[QUIT]){
 	e.UpdateEvent();
 	t.pass_row(e);

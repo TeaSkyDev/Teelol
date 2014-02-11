@@ -1,7 +1,11 @@
 #ifndef DEF_INPUT
 #define DEF_INPUT
 
+#include <boost/signals2.hpp>
 #include <SDL/SDL.h>
+
+using boost::signals2::signal;
+
 
 struct Input{
   char m_key[SDLK_LAST];
@@ -20,6 +24,9 @@ struct position_t{
 };
 
 
+
+
+
 class Event {
 public: 
 
@@ -36,7 +43,21 @@ public:
 
 
 
+    signal<void()> key_left;
+    signal<void()> key_right;
+    signal<void()> key_jump;
+    signal<void()> key_quit;
+    signal<void()> key_tab;
+    signal<void()> left_click;
+    signal<void()> right_click;
+    signal<void(int)> wheel;
+    signal<void(int, int)> mouse_motion;
+
 private:
+
+    void launch_key_sig();
+    void launch_mouse_sig();
+
   Input m_in;
   SDLKey m_mapping[MAP_INTER];
   int m_mouse_mapping[MAP_LAST];

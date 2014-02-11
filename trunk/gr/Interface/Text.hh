@@ -16,7 +16,7 @@ class Text : public Focusable{
 public:
     Text(int, int, int h,int l);
     std::string getText();
-    void pass_row(Event);
+    void pass_row(Event&);
     void show(Ecran *);
     bool Validated();
     void set_focus(bool);
