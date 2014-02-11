@@ -61,10 +61,14 @@ void routine(){
     f.add_focusable(&lv);
     t.focused.connect(f);
     lv.focused.connect(f);
+
     while(!e[QUIT]){
 	e.UpdateEvent();
 	lv.pass_row(e);
 	lv.show(&sc);
+	t.pass_row(e);
+	t.show(&sc);
+	f.pass_row(e);
 	sc.Flip();
 	sc.clean();
 	SDL_Delay(50);
