@@ -84,3 +84,5 @@ bool ScrollBar::is_inside(int x, int y) {
 	return false;
     }
 }
+
+

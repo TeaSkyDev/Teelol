@@ -9,17 +9,54 @@ ListView::ListView(int x, int y, int h, int l, int item_h) :m_bar(x,y,h, 10){
     m_item_h = item_h;
     m_bar.scroll.connect(boost::bind(&ListView::scroll, this, _1));
     select = NULL;
+    m_focus = false;
 }
 
 
 void ListView::scroll(int purcent) {
+    m_focus = true;
     double temp = purcent * ( m_item_h * m_item.size()) / 100.0f;
     for( auto it : m_item ) {
 	it->y() = it->sauve_y() - temp; 
     }
+    focused(m_id);
 }
 
 void ListView::pass_row(Event &e) {
+    if( m_focus ) {
+	if( e.getEvent().type == SDL_KEYDOWN ) {
+	    if ( e.getEvent().key.keysym.sym == SDLK_UP ) {
+		if( !select && m_item.size() > 0 ) {
+		    clicked(m_item[m_item.size() - 1]->id());
+		} else if ( m_item.size() > 0 ){
+		    int i = select->id();
+		    i--;
+		    if( i == -1 ) {
+			i = m_item.size() - 1;
+		    }
+		    clicked(i);
+		}
+		for( auto it : m_item ) {
+		    it->y() = it->sauve_y() - select->sauve_y() + m_y; 
+		}	    
+	    } else if ( e.getEvent().key.keysym.sym == SDLK_DOWN ) {
+		if ( !select && m_item.size() > 0 ) {
+		    clicked(m_item[0]->id());
+		} else if ( m_item.size() > 0 ) {
+		    int i = select->id();
+		    i++;
+		    if ( i == m_item.size() ) {
+			i = 0;
+		    }
+		    clicked(i);
+		}
+		for( auto it : m_item ) {
+		    it->y() = it->sauve_y() - select->sauve_y() + m_y; 
+		}	    
+	    } 
+
+	}
+    }
     for (auto it : m_item ) {
 	it->pass_row(e);
     }
@@ -27,6 +64,7 @@ void ListView::pass_row(Event &e) {
 }
 
 void ListView::clicked(int i) {
+    m_focus = true;
     for (auto it : m_item ) {
 	if( it->id() == i ) {
 	    it->r() = 0;
@@ -39,6 +77,7 @@ void ListView::clicked(int i) {
 	    it->b() = 255;
 	}
     }
+    focused(m_id);
 }
 
 void ListView::add_Item(ListItem * item) {
@@ -53,6 +92,7 @@ void ListView::add_Item(ListItem * item) {
 	m_bar.grown(m_h * 100/(m_item_h * m_item.size()));
     }
     scroll(0);
+    m_focus = false;
 }
 
 void ListView::show(Ecran * sc) {

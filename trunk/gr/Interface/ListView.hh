@@ -7,10 +7,11 @@
 #include "../Event.hh"
 #include "ListItem.hh"
 #include "ScrollBar.hh"
+#include "Focusable.hh"
 
 #define slots /**/
 
-class ListView {
+class ListView : public Focusable{
 public:
     
     ListView(int x, int y, int h, int l, int = 5);

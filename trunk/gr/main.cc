@@ -40,15 +40,31 @@ void routine(){
     Event e;
     Ecran sc(400,400);
     Focuser f;
-    Text t(10,10,20,300);
+    ListView lv(10,10,200,200,30);
+    lv.add_Item(new ListItem("salut"));
+    lv.add_Item(new ListItem("slut"));
+    lv.add_Item(new ListItem("salut"));
+    lv.add_Item(new ListItem("slut"));
+    lv.add_Item(new ListItem("salut"));
+    lv.add_Item(new ListItem("slut"));
+    lv.add_Item(new ListItem("salut"));
+    lv.add_Item(new ListItem("slut"));
+    lv.add_Item(new ListItem("salut"));
+    lv.add_Item(new ListItem("slut"));
+    lv.add_Item(new ListItem("salut"));
+    lv.add_Item(new ListItem("slut"));
+    lv.add_Item(new ListItem("salut"));
+    lv.add_Item(new ListItem("slut"));
+    
+    Text t(10,220,10,200);
     f.add_focusable(&t);
+    f.add_focusable(&lv);
     t.focused.connect(f);
-    Label l(10,45,"salut");
+    lv.focused.connect(f);
     while(!e[QUIT]){
 	e.UpdateEvent();
-	t.pass_row(e);
-	t.show(&sc);
-	l.show(&sc);
+	lv.pass_row(e);
+	lv.show(&sc);
 	sc.Flip();
 	sc.clean();
 	SDL_Delay(50);

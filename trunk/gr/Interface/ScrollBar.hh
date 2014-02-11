@@ -17,7 +17,8 @@ public:
     void pass_row(Event&);
     void grown(int);
     void show(Ecran *);
-		      
+
+
 public signals:
 		   
     
