@@ -35,12 +35,14 @@ namespace Teelol{
     int x = m_player->get_x();
     int y = m_player->get_y();
     int l = m_player->get_l();
-    if(y > map_server.get_Screen_Size().h)
-      m_player->set_y(-10);
-    if(x > map_server.get_Screen_Size().l)
-      m_player->set_x(0);
-    if(x + l< 0)
-      m_player->set_x(map_server.get_Screen_Size().l - l);
+    if(y > map_server.get_Screen_Size().h + 200) {
+	die();
+	cout<<"["<<nick<<"] suicide"<<endl;
+	m_player->loose_point();
+	proto.notif("Suicide !");
+	send_notif_suicide();
+	proto.loosePoint();
+    }
   }
 
   //verifie si le player a pris un item qui donne de la vie

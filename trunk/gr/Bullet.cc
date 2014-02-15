@@ -53,17 +53,8 @@ void Bullet::pass_row(){
     explode();
   }    
   m_x += m_speed.m_x;
-  if(m_x + 10> 400){
-    if(m_first) { m_x = 0; m_first = false;}
-    else explode();
-  } 
-  if(m_y + 10> 400){
-    if(m_first) { m_y = 0; m_first = false;}
-    else explode();
-  }
-  if(m_x + m_l + 10 < 0){
-    if(m_first) { m_x = 400; m_first = false;}
-    else explode();
+  if ( m_y > 10000 ) {
+      explode();
   }
 }
 
