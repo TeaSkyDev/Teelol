@@ -8,6 +8,7 @@ namespace Teelol{
  
   session_on_server::session_on_server(socket & io): session(io) {
     cur_id = 0;
+    nb_time_death = respawn_time = 0;
     state = STARTING;
     last_ammo_size = last_life_size = 10;
     f = new Form(10,300,10,300);
@@ -28,13 +29,13 @@ namespace Teelol{
     m_player->spawn(o_x,-10);
     proto.nbAmmo(10);
     proto.health(10);
+    nb_time_death ++;
+    respawn_time = 5;
   }
     
   //si le player sort de l'ecran on le repop de l'autre cote
   void session_on_server::verif_repop(){
-    int x = m_player->get_x();
     int y = m_player->get_y();
-    int l = m_player->get_l();
     if(y > map_server.get_Screen_Size().h + 200) {
 	die();
 	cout<<"["<<nick<<"] suicide"<<endl;
@@ -131,35 +132,43 @@ namespace Teelol{
   
   //sur la reception d'un event du client
   void session_on_server::do_move(string mv) {
-    ezlock hold(ez_mutex);
-    if(mv == "right") {
-      m_player->move_right();
+      if( respawn_time == 0) {
+	  ezlock hold(ez_mutex);
+	  if(mv == "right") {
+	      m_player->move_right();
+	      
+	  } else if(mv == "left") {
+	      m_player->move_left();
+	      
+	  } else if(mv == "jump") {
+	      m_player->jump();
+	      
+	  } else if(mv == "stopx") {
+	      m_player->stop_x();
+	      
+	  }
+	  m_player->pass_row();  
 	  
-    } else if(mv == "left") {
-      m_player->move_left();
-	  
-    } else if(mv == "jump") {
-      m_player->jump();
-	  
-    } else if(mv == "stopx") {
-      m_player->stop_x();
-	  
-    }
-    m_player->pass_row();  
-
-    verif_repop();
-    verif_lifeAndAmmo();
-    int dmg = m_player->get_hurt();
-    if(dmg > 0){
-      proto.hurt(map_server.get_Nb_Ammo());
-      last_life_size = m_player->get_life();
-    }
-    int x = m_player->get_x();
-    int y = m_player->get_y();
-    proto.moveOk(x, y);
-    send_all_to_other(x,y,dmg);
-    if(m_player->get_life() <= 0)
-      die();
+	  verif_repop();
+	  verif_lifeAndAmmo();
+	  int dmg = m_player->get_hurt();
+	  if(dmg > 0){
+	      proto.hurt(map_server.get_Nb_Ammo());
+	      last_life_size = m_player->get_life();
+	  }
+	  int x = m_player->get_x();
+	  int y = m_player->get_y();
+	  proto.moveOk(x, y);
+	  send_all_to_other(x,y,dmg);
+	  if(m_player->get_life() <= 0)
+	      die();
+      } else {
+	  stringstream ss;
+	  ss << "attend " << respawn_time;
+	  proto.notif(ss.str());
+	  respawn_time--;
+	  sleep(1);
+      }
   }
    
     
