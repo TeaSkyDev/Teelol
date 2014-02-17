@@ -29,8 +29,6 @@ namespace Teelol {
     screen_size screen_s;
     int NbAmmo;
     Map map_server;
-    int nb_time_death;
-    int respawn_time;
 
     enum state_t {
 	STARTING,
@@ -45,6 +43,8 @@ namespace Teelol {
 	Form * f;
 	int cur_id;
 	int last_ammo_size, last_life_size;
+	int nb_time_death;
+	int respawn_time;
 
 	session_on_server(socket & io);  	
 
