@@ -18,6 +18,7 @@ void Focuser::operator()(int id) {
 
 void Focuser::add_focusable(Focusable * t){
     m_focusable.push_back(t);
+    t->focused.connect(*this);
     t->set_focus(true);
     m_select == m_focusable.size() - 1;
     (*this)(t->getId());

@@ -39,7 +39,7 @@ namespace Teelol {
 
     void session_on_client::on_end() {
 	proto.quit();
-	state = QUIT;
+	state = QUITTING;
     }
     
     //le serveur envoi que le joueur est en x,y
@@ -330,160 +330,211 @@ namespace Teelol {
 	rotationArme(x,y);
     }
 
-};
 
-bool continuer = true;
-
-
-string boucle_pseudo(Teelol::session_on_client * c){
-    Event e;
-    Button b("valider", 150,250,50,100);
-    Focuser f;
-    Text t(150,150,50,100);
-    f.add_focusable(&t);
-    t.focused.connect(f);
-    while(!e[QUIT] && !b.getClicked() && !t.Validated()){
-	e.UpdateEvent();
-	c->sc->clean();
-	b.pass_row(e);
-	t.pass_row(e);
-	b.show(c->sc);
-	t.show(c->sc);
-	c->sc->Flip();
-	SDL_Delay(50);
-    }
-    if(e[QUIT])
-	return "";
-    else return t.getText();
-}
-
-bool Menu(Ecran * sc) {
-    Event e;
-    Focuser f;
-    Button continuer("Continuer", Teelol::screen_s.l/2 - 50, 100, 30, 100);
-    Button quitter("quitter", Teelol::screen_s.l/2 - 50, 350, 30, 100);
-    NumberEdit largeur(Teelol::screen_s.l/2 - 100, 150, 30,200, 900,400);
-    NumberEdit hauteur(Teelol::screen_s.l/2 - 100, 200, 30,200,800,400);
-    Button ok("ok", Teelol::screen_s.l/2 - 50, 250,30, 100);
-    f.add_focusable(&largeur);
-    f.add_focusable(&hauteur);
-    largeur.focused.connect(f);
-    hauteur.focused.connect(f);
-    while( !e[QUIT] && !continuer.getClicked() && !quitter.getClicked() ) {
-	e.UpdateEvent();
-	sc->clean();
-	continuer.pass_row(e);
-	quitter.pass_row(e);
-	largeur.pass_row(e);
-	hauteur.pass_row(e);
-	ok.pass_row(e);
-	continuer.show(sc);
-	quitter.show(sc);
-	largeur.show(sc);
-	hauteur.show(sc);
-	ok.show(sc);
-	sc->Flip();
-	if( ok.getClicked() ) {
-	    Teelol::screen_s.l = largeur.getValue();
-	    Teelol::screen_s.h = hauteur.getValue();
-	    continuer.x() = Teelol::screen_s.l/2 - 50;
-	    quitter.x() = Teelol::screen_s.l/2 - 50;
-	    ok.x() = Teelol::screen_s.l/2 - 50;
-	    hauteur.set_x(Teelol::screen_s.l/2 - 100);
-	    largeur.set_x(Teelol::screen_s.l/2 - 100);
-	    sc->Resize(hauteur.getValue(), largeur.getValue());
-	}
-    }
-    if (!quitter.getClicked() ) {
-	return true;
-    } else {
-	return false;
-    }
-}
+    bool continuer = true;
 
 
-void * routine(void * arg){
-  
-    Event e;
-    Teelol::session_on_client * c = (Teelol::session_on_client*)arg;
-    while(c->state == Teelol::STARTING) {
-	string pseudo = boucle_pseudo(c);
-	if(pseudo == "")
-	    break;
-	c->proto.nick(pseudo);
-    
-	while(tentative_connexion) {}
-	tentative_connexion = true;
-    }
-    
-    if(c->state == Teelol::STARTED) {
-	int prec_wheel = e.WheelChange();
-	e.key_left.connect(boost::bind(&Teelol::session_on_client::do_event_left, c));
-	e.key_right.connect(boost::bind(&Teelol::session_on_client::do_event_right, c));
-	e.key_jump.connect(boost::bind(&Teelol::session_on_client::do_event_jump, c));
-	e.left_click.connect(boost::bind(&Teelol::session_on_client::do_mouseevent_left, c));
-	e.mouse_motion.connect(boost::bind(&Teelol::session_on_client::do_mouseevent_motion, c,_1, _2));
-	while(!e[QUIT] && c->state == Teelol::STARTED){
+    string boucle_pseudo(Teelol::session_on_client * c){
+
+	Button b("valider", 150,250,50,100);
+	Focuser f;
+	Text t(150,150,50,100);
+	f.add_focusable(&t);
+	t.focused.connect(f);
+	while(!e[QUIT] && !b.getClicked() && !t.Validated()){
 	    e.UpdateEvent();
-	    if(e[JUMP]) { 
-		e[JUMP] = 0;
-	    }
-	    if(!e[RIGHT] && !e[LEFT]){
-		c->proto.move("stopx");
-	    }
-	    if( e[QUIT] ) {
-		if ( Menu(c->sc) ) {
-		    c->p.x() = Teelol::screen_s.l/2.0f - 25/2.0f;
-		    c->p.y() = Teelol::screen_s.h/2.0f - 25/2.0f;
-		    e[QUIT] = 0;
-		}
-	    }
-	    if(e.WheelChange() != prec_wheel){
-		c->proto.change_weap(e.WheelChange() - prec_wheel);
-		prec_wheel = e.WheelChange();
-	    }
-	    c->map_Bullet_pass_row();
-	    c->affiche();
-	    SDL_Delay(40);
+	    c->sc->clean();
+	    b.pass_row(e);
+	    t.pass_row(e);
+	    b.show(c->sc);
+	    t.show(c->sc);
+	    c->sc->Flip();
+	    SDL_Delay(50);
+	}
+	if(e[QUIT])
+	    return "";
+	else return t.getText();
+    }
+
+
+    void MapMenu(Ecran * sc) {
+	Focuser f;
+
+	CatchKey left(screen_s.l/2 , 50, 30,100), right (screen_s.l/2, 100, 30, 100) , jump(screen_s.l/2,150,30,100);
+	Label l_left(screen_s.l/2 - 100 , 50,  "left"), l_right(screen_s.l/2 - 100, 100, "right"), l_jump(screen_s.l/2 - 100, 150 ,"jump");
+	Button ok("OK", screen_s.l/2 - 50, 200, 30, 100);
+	f.add_focusable(&left);
+	f.add_focusable(&right);
+	f.add_focusable(&jump);
+	while ( !e[QUIT] && !ok.getClicked() ) {
+	    e.UpdateEvent();
+	    left.pass_row(e);
+	    right.pass_row(e);
+	    jump.pass_row(e);
+	    left.show(sc);
+	    right.show(sc);
+	    jump.show(sc);
+	    l_left.show(sc);
+	    l_right.show(sc);
+	    l_jump.show(sc);
+	    ok.pass_row(e);
+	    ok.show(sc);
+	    sc->Flip();
+	    sc->clean();
+	}
+	if ( left.getKey() != SDLK_EURO && left.getKey() != SDLK_ESCAPE ) {
+	    e.change_key(LEFT, left.getKey());
+	}
+	if ( right.getKey() != SDLK_EURO  && right.getKey() != SDLK_ESCAPE ) {
+	    e.change_key(RIGHT, right.getKey());
+	}
+	if ( jump.getKey() != SDLK_EURO && jump.getKey() != SDLK_ESCAPE  ) {
+	    e.change_key(JUMP, jump.getKey());
 	}
     }
-    delete c->sc;
-    c->proto.quit();
-    c->finish();
-}
 
-void choose_server() {
-  Ecran sc(Teelol::screen_s.h, Teelol::screen_s.l);
-  Event e;
-  ListView lv(10, 10, 280, 370, 30);
-  Text zoneIp(150, 295, 25, 200);
-  Button ok("Lancer", 10, 330, 25, 380);
-  lv.add_Item(new ListItem("localhost"));
+
+
+
+    bool Menu(Ecran * sc) {
+	e[QUIT] = 0;
+	Focuser f;
+	Button continuer("Continuer", Teelol::screen_s.l/2 - 50, 100, 30, 100);
+	Button quitter("quitter", Teelol::screen_s.l/2 - 50, 350, 30, 100);
+	NumberEdit largeur(Teelol::screen_s.l/2 - 100, 150, 30,200, 900,400);
+	NumberEdit hauteur(Teelol::screen_s.l/2 - 100, 200, 30,200,800,400);
+	Button map("Controle", screen_s.l/2 - 50 , 250, 30 , 100);
+	Button ok("ok", Teelol::screen_s.l/2 - 50, 300,30, 100);
+	f.add_focusable(&largeur);
+	f.add_focusable(&hauteur);
+	while( !e[QUIT] && !continuer.getClicked() && !quitter.getClicked() ) {
+	    e.UpdateEvent();
+	    sc->clean();
+	    continuer.pass_row(e);
+	    quitter.pass_row(e);
+	    map.pass_row(e);
+	    largeur.pass_row(e);
+	    hauteur.pass_row(e);
+	    ok.pass_row(e);
+	    continuer.show(sc);
+	    quitter.show(sc);
+	    largeur.show(sc);
+	    hauteur.show(sc);
+	    ok.show(sc);
+	    map.show(sc);
+	    sc->Flip();
+	    if( ok.getClicked() ) {
+		Teelol::screen_s.l = largeur.getValue();
+		Teelol::screen_s.h = hauteur.getValue();
+		continuer.x() = Teelol::screen_s.l/2 - 50;
+		quitter.x() = Teelol::screen_s.l/2 - 50;
+		ok.x() = Teelol::screen_s.l/2 - 50;
+		map.x() = screen_s.l/2 - 50;
+		hauteur.set_x(Teelol::screen_s.l/2 - 100);
+		largeur.set_x(Teelol::screen_s.l/2 - 100);
+		sc->Resize(hauteur.getValue(), largeur.getValue());
+	    }
+	    if ( map.getClicked() ) {
+		MapMenu(sc);
+	    }
+	}
+	if (!quitter.getClicked() ) {
+	    return true;
+	} else {
+	    return false;
+	}
+    }
+
+
+    void * routine(void * arg){
   
-  while(!e[QUIT] && (!ok.getClicked() || !lv.selected())) {
-    e.UpdateEvent();
-    sc.clean();
-    lv.pass_row(e);
-    lv.show(&sc);
-    zoneIp.pass_row(e);
-    zoneIp.show(&sc);
-    ok.pass_row(e);
-    ok.show(&sc);
-    sc.Flip();
-    SDL_Delay(50);
-  }
+	Teelol::session_on_client * c = (Teelol::session_on_client*)arg;
+	while(c->state == Teelol::STARTING) {
+	    string pseudo = boucle_pseudo(c);
+	    if(pseudo == "")
+		break;
+	    c->proto.nick(pseudo);
+    
+	    while(tentative_connexion) {}
+	    tentative_connexion = true;
+	}
+    
+	if(c->state == Teelol::STARTED) {
+	    int prec_wheel = e.WheelChange();
+	    e.key_left.connect(boost::bind(&Teelol::session_on_client::do_event_left, c));
+	    e.key_right.connect(boost::bind(&Teelol::session_on_client::do_event_right, c));
+	    e.key_jump.connect(boost::bind(&Teelol::session_on_client::do_event_jump, c));
+	    e.left_click.connect(boost::bind(&Teelol::session_on_client::do_mouseevent_left, c));
+	    e.mouse_motion.connect(boost::bind(&Teelol::session_on_client::do_mouseevent_motion, c,_1, _2));
+	    while(!e[QUIT] && c->state == Teelol::STARTED){
+		e.UpdateEvent();
+		if(e[JUMP]) { 
+		    e[JUMP] = 0;
+		}
+		if(!e[RIGHT] && !e[LEFT]){
+		    c->proto.move("stopx");
+		}
+		if( e[QUIT] ) {
+		    if ( Menu(c->sc) ) {
+			c->p.x() = Teelol::screen_s.l/2.0f - 25/2.0f;
+			c->p.y() = Teelol::screen_s.h/2.0f - 25/2.0f;
+			e[QUIT] = 0;
+		    } else {
+			e[QUIT] = 1;
+		    }
+		}
+		if(e.WheelChange() != prec_wheel){
+		    c->proto.change_weap(e.WheelChange() - prec_wheel);
+		    prec_wheel = e.WheelChange();
+		}
+		c->map_Bullet_pass_row();
+		c->affiche();
+		SDL_Delay(40);
+	    }
+	}
+	delete c->sc;
+	c->proto.quit();
+	c->finish();
+    }
+
+    void choose_server() {
+	Ecran sc(Teelol::screen_s.h, Teelol::screen_s.l);
+	Event e;
+	ListView lv(10, 10, 280, 370, 30);
+	Text zoneIp(150, 295, 25, 200);
+	Button ok("Lancer", 10, 330, 25, 380);
+	Focuser focus;
+	focus.add_focusable(&zoneIp);
+	focus.add_focusable(&lv);
+
+	lv.add_Item(new ListItem("localhost"));
   
-  if(lv.selected() && !e[QUIT]) {
-    netez::client<Teelol::session_on_client> client(lv.selected()->text(), 9999);
-    pthread_t th;
-    pthread_create(&th, NULL, routine, (void*)&client.session);
-    pthread_join(th, NULL);
-  }
-}
+	while(!e[QUIT] && (!ok.getClicked() || !lv.selected())) {
+	    e.UpdateEvent();
+	    sc.clean();
+	    lv.pass_row(e);
+	    lv.show(&sc);
+	    focus.pass_row(e);
+	    zoneIp.pass_row(e);
+	    zoneIp.show(&sc);
+	    ok.pass_row(e);
+	    ok.show(&sc);
+	    sc.Flip();
+	    SDL_Delay(50);
+	}
+  
+	if(lv.selected() && !e[QUIT]) {
+	    netez::client<Teelol::session_on_client> client(lv.selected()->text(), 9999);
+	    pthread_t th;
+	    pthread_create(&th, NULL, routine, (void*)&client.session);
+	    pthread_join(th, NULL);
+	}
+    }
+};
 
 int main(int argc, char ** argv){
     TTF_Init();
     Teelol::screen_s.h = 400;
     Teelol::screen_s.l = 400;
-    choose_server();
+    Teelol::choose_server();
 }

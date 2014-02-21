@@ -12,6 +12,8 @@
 #include "gr/Interface/NumberEdit.hh"
 #include "gr/Interface/Button.hh"
 #include "gr/Interface/ListView.hh"
+#include "gr/Interface/CatchKey.hh"
+#include "gr/Interface/Label.hh"
 #include "Map.hh"
 
 bool tentative_connexion = true;
@@ -24,11 +26,12 @@ namespace Teelol {
     enum state_t {
 	STARTING,
 	STARTED,
-	QUIT
+	QUITTING
     };
 
 
     screen_size screen_s;    
+    Event e;
 
     struct session_on_client: public session<my_proto>{
 	ezmutex mutex;
