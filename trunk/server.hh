@@ -1,3 +1,6 @@
+#ifndef _SESSION
+#define _SESSION
+
 #include <map>
 #include <vector>
 #include <pthread.h>
@@ -102,5 +105,16 @@ namespace Teelol {
 
 	//indique la mort d'un joueur
 	void send_notif_death(string nick_killed);
+
+	//signals
+
+	signal<void(std::string, Player*)> connection;
+	signal<void(std::string, Player*)> move;
+	signal<void(int, int, int, int, Player*)> shoot;
+	signal<void(Player*)> quit;
+	
+
     };
 };
+
+#endif

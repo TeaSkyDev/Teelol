@@ -7,7 +7,10 @@ ADD_DEFINITIONS(-std=c++0x -ggdb)
 ADD_EXECUTABLE(client client.cc player.cc Map.cc)
 
 ADD_EXECUTABLE(server server.cc player.cc Map.cc)
+ADD_EXECUTABLE(Master Master.cc server.cc player.cc Map.cc)
 
-TARGET_LINK_LIBRARIES(client -Wl,--copy-dt-needed-entries -lnetez -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf -lgr)
+TARGET_LINK_LIBRARIES(client  -Wl,--copy-dt-needed-entries -lnetez -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf -lgr)
 
 TARGET_LINK_LIBRARIES(server -Wl,--copy-dt-needed-entries -lnetez -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf -lgr)
+
+TARGET_LINK_LIBRARIES(Master -Wl,--copy-dt-needed-entries -lnetez -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf -lgr)
