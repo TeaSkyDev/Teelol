@@ -12,6 +12,7 @@
 namespace Teelol {
 
   using boost::signals2::signal;
+  using namespace std;
 
   template <typename S>
   struct server;
@@ -27,12 +28,22 @@ namespace Teelol {
     
     void new_session(S * _session) {
       m_temp.push_back(_session);
-      _session->set_master(this);
-      _session->ping_recv.connect(boost::bind(&Master::do_ping, this, _1));
+      _session->master_nick.connect(boost::bind(&Master::do_nick, this, _1, _2));
     }
 
-    void do_ping(S * _session) {
-      _session->ping_recv_slot();
+
+    void do_nick( string name , S * session) {
+      bool found = false;
+      for ( auto it : m_session ) {
+	if ( it.first == name ) {
+	  session->error("nick deja utilisé");
+	  found = true;
+	}
+      }
+      if ( !found ) {
+	m_session[name] = session;
+	session->success();
+      }
     }
 
     void join() {

@@ -15,24 +15,23 @@ namespace Teelol {
   public :
   
     session_(socket &io) : session<m_proto>(io) {
-      proto.ping.sig_recv.connect(EZMETHOD(this, do_ping));
+      proto.nick.sig_recv.connect(EZMETHOD(this, do_nick));
     }
-  
+    
+    void do_nick( string nick ) {
+      master_nick(nick, this);
+    }
+    
 
-    void set_master(Master<session_> * m) {
+    void error(string msg) {
+      proto.err(msg);
     }
 
-    void do_ping() {
-      cout << "PING" << endl;
-      ping_recv(this);
+    void success() {
+      proto.ok();
     }
-  
 
-    void ping_recv_slot() {
-      proto.pong();
-    }
-  
-    signal<void(session_ *)> ping_recv;
+    signal<void(string, session_ *)> master_nick;
 
   };
 
