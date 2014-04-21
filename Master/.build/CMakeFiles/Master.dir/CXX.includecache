@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/emile2/Teelol/Master/src/../include/Master.hh
+iostream
+-
+map
+-
+vector
+-
+netez.hh
+/home/emile2/Teelol/Master/src/../include/netez.hh
+boost/signals2.hpp
+-
+
+/home/emile2/Teelol/Master/src/../include/proto.hh
+netez.hh
+/home/emile2/Teelol/Master/src/../include/netez.hh
+
+/home/emile2/Teelol/Master/src/main.cc
+../include/Master.hh
+/home/emile2/Teelol/Master/src/../include/Master.hh
+../include/proto.hh
+/home/emile2/Teelol/Master/src/../include/proto.hh
+iostream
+-
+boost/signals2.hpp
+-
+

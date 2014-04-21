@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/client.dir/src/client.cc.o  -o client -rdynamic -Wl,--copy-dt-needed-entries -lnetez -lSDL -lSDL_image -lSDL_gfx -lSDL_ttf -lgr 

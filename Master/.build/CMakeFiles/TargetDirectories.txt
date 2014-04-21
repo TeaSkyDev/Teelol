@@ -1,0 +1,2 @@
+/home/emile2/Teelol/Master/.build/CMakeFiles/Master.dir
+/home/emile2/Teelol/Master/.build/CMakeFiles/client.dir

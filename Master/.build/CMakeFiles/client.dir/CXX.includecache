@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/emile2/Teelol/Master/src/../include/proto.hh
+netez.hh
+/home/emile2/Teelol/Master/src/../include/netez.hh
+
+/home/emile2/Teelol/Master/src/client.cc
+../include/proto.hh
+/home/emile2/Teelol/Master/src/../include/proto.hh
+iostream
+-
+
