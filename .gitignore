@@ -1,0 +1,14 @@
+# Created by http://www.gitignore.io
+
+### ArchLinuxPackages ###
+*.tar
+*.tar.*
+*.zip
+*.tgz
+*.log
+*.log.*
+*.sig
+*.build/
+pkg/
+src/
+
